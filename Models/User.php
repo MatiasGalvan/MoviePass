@@ -6,17 +6,17 @@
 
     class User{
 
-        private $username;
+        private $email;
         private $password;
         private UserProfile $profile; 
         private $role; # Mirar si vale la pena hacer una clase aparte para el rol
 
-        public function getUsername(){
-            return $this->username;
+        public function getEmail(){
+            return $this->email;
         }
 
-        public function setUsername($username){
-            $this->username = $username;
+        public function setEmail($email){
+            $this->email = $email;
         }
 
         public function getPassword(){
@@ -27,12 +27,12 @@
             $this->password = $password;
         }
 
-        public function getUserProfile(){
-            return $this->userProfile;
+        public function getProfile(){
+            return $this->profile;
         }
 
-        public function setUserProfile(UserProfile $userProfile){
-            $this->userProfile = $userProfile;
+        public function setProfile(UserProfile $profile){
+            $this->profile = $profile;
         }
 
         public function getRole(){
