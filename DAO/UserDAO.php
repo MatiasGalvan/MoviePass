@@ -12,28 +12,44 @@
         private $fileName;
 
         public function __construct(){
-            $this->fileName = dirname(__DIR__)."Data/users.json";
+            $this->fileName = dirname(__DIR__)."/Data/users.json";
         }
 
-        public function add(User $user){
-            $this->retrieveData();
+        public function Add(User $user){
+            $this->RetrieveData();
             array_push($this->userList, $user);
-            $this->saveData();
+            $this->SaveData();
         }
 
-        public function getAll(){
-            $this->retrieveData();
+        public function GetAll(){
+            $this->RetrieveData();
             return $this->userList;
         }
 
-        private function saveData(){
+        public function Remove($email){
+            $response = false;
+            $i = 0;
+            $this->RetrieveData();
+
+            foreach($this->userList as $user){
+                if($user->getEmail() == $email){
+                    unset($this->userList[$i]);
+                    $this->SaveData();
+                    $response = true;
+                }
+                $i++;
+            }
+            return $response;
+        }
+
+        private function SaveData(){
             $arrayToEnconde = array();
 
             foreach ($this->userList as $user) {
                 $valuesArray['email'] = $user->getEmail();
                 $valuesArray['password'] = $user->getPassword();
                 $valuesArray['role'] = $user->getRole();
-                $valuesArray['userprofile'] = serialize($user->getProfile())
+                $valuesArray['userprofile'] = serialize($user->getProfile());
 
                 array_push($arrayToEnconde, $valuesArray);
             }
@@ -43,7 +59,7 @@
             file_put_contents($this->fileName, $jsonContent);
         }
 
-        private function retrieveData(){
+        private function RetrieveData(){
             $this->userList = array();
 
             if(file_exists($this->fileName)){

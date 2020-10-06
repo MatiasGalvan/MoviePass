@@ -1,0 +1,8 @@
+[
+    {
+        "email": "jSalchichon@gmail.com",
+        "password": "123456",
+        "role": "client",
+        "userprofile": "O:18:\"Models\\UserProfile\":3:{s:23:\"\u0000Models\\UserProfile\u0000dni\";s:8:\"12928129\";s:24:\"\u0000Models\\UserProfile\u0000name\";s:4:\"John\";s:28:\"\u0000Models\\UserProfile\u0000lastname\";s:10:\"Salchichon\";}"
+    }
+]
