@@ -2,7 +2,7 @@
 
     namespace Models;
 
-    class FilmFunction{
+    class MovieFunction{
 
         private $date = date("Y-m-d H:i:s");
         private $movieId;

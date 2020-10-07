@@ -2,7 +2,7 @@
 
     namespace Models;
 
-    use Models\FilmFunction as FilmFunction;
+    use Models\MovieFunction as MovieFunction;
 
     class Cinema{
 
@@ -10,7 +10,7 @@
         private $address;
         private $capacity; 
         private $ticketValue;
-        private FilmFunction $functions = array();
+        private MovieFunction $functions = array();
 
         public function getName(){
             return $this->name;

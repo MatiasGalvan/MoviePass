@@ -36,9 +36,11 @@
             }
 
             if($flag){
-                #require_once(VIEWS_PATH.".php");
+            
+                header("location", FRONT_ROOT . "Movie/ShowMovies");
+                # El header este no redirige bien
                 # Aca tiene que redirigir a la pagina principal
-                echo $_SESSION["email"];
+                #echo $_SESSION["email"];
             }
             else{
                 $this->ShowLoginView("Los datos ingresados no son validos.");

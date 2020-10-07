@@ -4,7 +4,7 @@
 
     use Models\Genre as Genre;
 
-    class Film{
+    class Movie{
 
         private $title;
         private $tagline;
@@ -12,7 +12,7 @@
         private $posterPath;
         private $overview;
         private $originalLanguage;
-        private Genre $genres = array();
+        private $genres = array();
 
         public function getTitle(){
             return $this->title;
