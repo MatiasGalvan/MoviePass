@@ -5,6 +5,7 @@
     use Models\User as User;
     use Models\UserProfile as UserProfile;
     use DAO\UserDAO as UserDAO;
+    use Controllers\MovieController as MovieController;
 
     class HomeController{
 
@@ -37,8 +38,12 @@
 
             if($flag){
             
-                header("location", FRONT_ROOT . "Movie/ShowMovies");
-                # El header este no redirige bien
+                #header("location:". FRONT_ROOT . "Movie/ShowMovies");
+                # login para admin o harcodearlo
+                $movies = new MovieController();
+                $movies->ShowMovies();
+
+                # require_once(FRONT_ROOT."Movie/ShowMovies");
                 # Aca tiene que redirigir a la pagina principal
                 #echo $_SESSION["email"];
             }

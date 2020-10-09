@@ -2,9 +2,31 @@
 
     $imgUrl = "https://image.tmdb.org/t/p/w300";
 
-    foreach ($movieList as $movie) {
-        echo "<h4> Titulo: " . $movie->getTitle() . "</h4>";
-        echo "<img src=" . $imgUrl . $movie->getPosterPath() . ">";
-    }
-
 ?>
+
+<style>
+    .card-body{
+        padding: 0.75rem 1rem;
+    }
+    .card{
+        margin: 5px 10px;
+    }
+    .card-title{
+        color: black;
+    }
+</style>
+
+<div class="container">
+    <h3 class="mb-2 mt-2">Now Playing Movies</h3>
+    <div class="row justify-content-center">
+        <?php foreach ($movieList as $movie) { ?>
+        <div class="card" style="width: 220px;">
+            <img src="<?php echo $imgUrl . $movie->getPosterPath() ?>" class="card-img-top">
+            <div class="card-body">
+                <h5 class="card-title"><?php echo $movie->getTitle() ?></h5>
+                <p class="card-subtitle mb-2 text-muted"><?php echo $movie->getReleaseDate() ?></p>
+            </div>
+        </div>
+        <?php } ?>
+    </div>
+</div>    
