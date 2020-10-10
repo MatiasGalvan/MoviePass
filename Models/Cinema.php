@@ -10,7 +10,7 @@
         private $address;
         private $capacity; 
         private $ticketValue;
-        private MovieFunction $functions = array();
+        #private MovieFunction $functions = array();
 
         public function getName(){
             return $this->name;
