@@ -3,6 +3,9 @@
         <form action="<?php echo FRONT_ROOT ?>Cinema/AddCinema" method="POST" class="login-form text-center">
             <h1 class="mb-5 font-weight-light text-uppercase">Add Cinema</h1>
             <div class="form-group">
+                <input type="number" name="id" class="form-control form-control-lg" placeholder="ID" required>
+            </div>
+            <div class="form-group">
                 <input type="text" name="name" class="form-control form-control-lg" placeholder="Name" required>
             </div>
             <div class="form-group">

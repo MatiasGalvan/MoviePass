@@ -1,8 +1,9 @@
 [
     {
+        "id": "1",
         "name": "cine1",
-        "address": "av de las olimpiadas",
-        "capacity": "200",
-        "ticketValue": "135"
+        "address": "calle1",
+        "capacity": "100",
+        "ticketValue": "100"
     }
 ]

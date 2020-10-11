@@ -41,10 +41,23 @@
             return $response;
         }*/ #Ver el tipo de parametro para remover
 
+        public function Remove($id){
+            $this->retrieveData();
+            $newList = array();
+            foreach ($this->cinemaList as $cinema) {
+                if($cinema->getId() != $id){
+                    array_push($newList, $cinema);
+                }
+            }
+            $this->cinemaList = $newList;
+            $this->saveData();
+        }
+
         private function SaveData(){
             $arrayToEncode = array();
 
             foreach ($this->cinemaList as $cinema) {
+                $valuesArray['id'] = $cinema->getId();
                 $valuesArray['name'] = $cinema->getName();
                 $valuesArray['address'] = $cinema->getAddress();
                 $valuesArray['capacity'] = $cinema->getCapacity();
@@ -66,12 +79,14 @@
                 $arrayToDecode = ($jsonContent) ? json_decode($jsonContent, true) : array();
 
                 foreach($arrayToDecode as $valuesArray){
+                    $id = $valuesArray['id'];
                     $name = $valuesArray['name'];
                     $address = $valuesArray['address'];
                     $capacity = $valuesArray['capacity'];
                     $ticketValue = $valuesArray['ticketValue'];
 
                     $cinema = new Cinema();
+                    $cinema->setId($id);
                     $cinema->setName($name);
                     $cinema->setAddress($address);
                     $cinema->setCapacity($capacity);
