@@ -22,6 +22,12 @@
             <button type="submit" class="btn mt-5 btn-lg btn-custom btn-block text-uppercase">Create account</button>
             <p class="mt-3 font-weight-normal">Already have an account? <a href="<?php echo FRONT_ROOT ?>Home/ShowLoginView"><strong>Sign in</strong></a></p>
         </form>
-
+        <?php
+            if(isset($errors)){
+                foreach ($errors as $error){
+                    echo $error;
+                }
+            }
+        ?>
     </div>
 </main>
