@@ -48,26 +48,31 @@
         }
 
         public function Register($name, $lastname, $dni, $email, $password){
-            # Agregar un comprobacion para ver que el email no este registrado previamente
             $errors = $this->checkData($name, $lastname, $dni, $email, $password);
             if(count($errors) == 0){
-                $user = new User();
-                $profile = new UserProfile();
-                $role = new Role();
-                $role->setDescription('client');
+                if(!($this->userDAO->Exist($email))){
+                    $user = new User();
+                    $profile = new UserProfile();
+                    $role = new Role();
+                    $role->setDescription('client');
 
-                $profile->setName($name);
-                $profile->setLastname($lastname);
-                $profile->setDni($dni);
+                    $profile->setName($name);
+                    $profile->setLastname($lastname);
+                    $profile->setDni($dni);
 
-                $user->setEmail($email);
-                $user->setPassword($password);
-                $user->setProfile($profile);
-                $user->setRole($role);
+                    $user->setEmail($email);
+                    $user->setPassword($password);
+                    $user->setProfile($profile);
+                    $user->setRole($role);
 
-                $this->userDAO->Add($user);
+                    $this->userDAO->Add($user);
 
-                $this->ShowLoginView("Tu cuenta ha sido creada");
+                    $this->ShowLoginView("Tu cuenta ha sido creada");
+                }
+                else{
+                    array_push($errors, "El email ingresado ya se encuentra registrado.");
+                    $this->ShowRegistrationView($errors);
+                }
             }
             else{
                 $this->ShowRegistrationView($errors);

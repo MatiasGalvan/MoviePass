@@ -43,6 +43,17 @@
             return $response;
         }
 
+        public function Exist($email){
+            $response = false;
+            $this->RetrieveData();
+            foreach($this->userList as $user){
+                if($user->getEmail() == $email){
+                    $response = true;
+                }
+            }
+            return $response;
+        }
+
         private function SaveData(){
             $arrayToEnconde = array();
 
