@@ -3,13 +3,14 @@
     namespace Models;
 
     use Models\UserProfile as UserProfile;
+    use Models\Role as Role;
 
     class User{
 
         private $email;
         private $password;
         private UserProfile $profile; 
-        private $role; # Mirar si vale la pena hacer una clase aparte para el rol
+        private Role $role;
 
         public function getEmail(){
             return $this->email;
@@ -39,7 +40,7 @@
             return $this->role;
         }
 
-        public function setRole($role){
+        public function setRole(Role $role){
             $this->role = $role;
         }
 

@@ -5,6 +5,7 @@
     use DAO\IUserDAO as IUserDAO;
     use Models\User as User;
     use Models\UserProfile as UserProfile;
+    use Models\Role as Role;
 
     class UserDAO implements IUserDAO{
 
@@ -48,8 +49,12 @@
             foreach ($this->userList as $user) {
                 $valuesArray['email'] = $user->getEmail();
                 $valuesArray['password'] = $user->getPassword();
-                $valuesArray['role'] = $user->getRole();
-                $valuesArray['userprofile'] = serialize($user->getProfile());
+                $valuesArray['role'] = $user->getRole()->getDescription();
+
+                $valuesProfile = $user->getProfile();
+                $valuesArray['dni'] = $valuesProfile->getDni();
+                $valuesArray['name'] = $valuesProfile->getName();
+                $valuesArray['lastname'] = $valuesProfile->getLastname();
 
                 array_push($arrayToEnconde, $valuesArray);
             }
@@ -70,9 +75,14 @@
                 foreach($arrayToDecode as $valuesArray){
                     $email = $valuesArray['email'];
                     $password = $valuesArray['password'];
-                    $role = $valuesArray['role'];
-                    $profileSerialized = $valuesArray['userprofile'];
-                    $profile = unserialize($profileSerialized);
+
+                    $role = new Role();
+                    $role->setDescription($valuesArray['role']);
+
+                    $profile = new UserProfile();
+                    $profile->setDni($valuesArray['dni']);
+                    $profile->setName($valuesArray['name']);
+                    $profile->setLastname($valuesArray['lastname']);
 
                     $user = new User();
                     $user->setEmail($email);

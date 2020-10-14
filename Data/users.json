@@ -1,20 +1,10 @@
 [
     {
-        "email": "jSalchichon@gmail.com",
-        "password": "123456",
-        "role": "client",
-        "userprofile": "O:18:\"Models\\UserProfile\":3:{s:23:\"\u0000Models\\UserProfile\u0000dni\";s:8:\"12928129\";s:24:\"\u0000Models\\UserProfile\u0000name\";s:4:\"John\";s:28:\"\u0000Models\\UserProfile\u0000lastname\";s:10:\"Salchichon\";}"
-    },
-    {
-        "email": "matiasgalvan92@gmail.com",
-        "password": "123456",
-        "role": "client",
-        "userprofile": "O:18:\"Models\\UserProfile\":3:{s:23:\"\u0000Models\\UserProfile\u0000dni\";s:8:\"41928193\";s:24:\"\u0000Models\\UserProfile\u0000name\";s:6:\"Matias\";s:28:\"\u0000Models\\UserProfile\u0000lastname\";s:6:\"Galvan\";}"
-    },
-    {
         "email": "girandi@outlook.com",
-        "password": "1234Girandi",
+        "password": "1234Mario",
         "role": "client",
-        "userprofile": "O:18:\"Models\\UserProfile\":3:{s:23:\"\u0000Models\\UserProfile\u0000dni\";s:8:\"24399678\";s:24:\"\u0000Models\\UserProfile\u0000name\";s:15:\"Marcos Ezequiel\";s:28:\"\u0000Models\\UserProfile\u0000lastname\";s:7:\"Girandi\";}"
+        "dni": "12300190",
+        "name": "Mario Hernesto",
+        "lastname": "Girandi"
     }
 ]

@@ -4,6 +4,7 @@
 
     use Models\User as User;
     use Models\UserProfile as UserProfile;
+    use Models\Role as Role;
     use DAO\UserDAO as UserDAO;
     use Controllers\MovieController as MovieController;
 
@@ -30,6 +31,7 @@
             foreach($userList as $user){
                 if($user->getEmail() == $email){
                     if($user->getPassword() == $password){
+                        #$_SESSION['user'] = $user;
                         $_SESSION["email"] = $email;
                         $flag = true;
                     }
@@ -37,14 +39,8 @@
             }
 
             if($flag){
-            
-                #header("location:". FRONT_ROOT . "Movie/ShowMovies");
                 $movies = new MovieController();
                 $movies->ShowMovies();
-
-                # require_once(FRONT_ROOT."Movie/ShowMovies");
-                # Aca tiene que redirigir a la pagina principal
-                # echo $_SESSION["email"];
             }
             else{
                 $this->ShowLoginView("Los datos ingresados no son validos.");
@@ -52,13 +48,13 @@
         }
 
         public function Register($name, $lastname, $dni, $email, $password){
-            # En algun lado hay que validar la info que entra. Se puede hacer desde php o javascript
-
             # Agregar un comprobacion para ver que el email no este registrado previamente
             $errors = $this->checkData($name, $lastname, $dni, $email, $password);
             if(count($errors) == 0){
                 $user = new User();
                 $profile = new UserProfile();
+                $role = new Role();
+                $role->setDescription('client');
 
                 $profile->setName($name);
                 $profile->setLastname($lastname);
@@ -67,7 +63,7 @@
                 $user->setEmail($email);
                 $user->setPassword($password);
                 $user->setProfile($profile);
-                $user->setRole('client');
+                $user->setRole($role);
 
                 $this->userDAO->Add($user);
 
