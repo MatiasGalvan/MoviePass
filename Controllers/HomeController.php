@@ -43,7 +43,7 @@
                 $movies->ShowMovies();
             }
             else{
-                $this->ShowLoginView("Los datos ingresados no son validos.");
+                $this->ShowLoginView("The email or password is incorrect");
             }
         }
 
@@ -67,10 +67,10 @@
 
                     $this->userDAO->Add($user);
 
-                    $this->ShowLoginView("Tu cuenta ha sido creada");
+                    $this->ShowLoginView("Your account has been created successfully");
                 }
                 else{
-                    array_push($errors, "El email ingresado ya se encuentra registrado.");
+                    array_push($errors, "The email has already been taken");
                     $this->ShowRegistrationView($errors);
                 }
             }
@@ -86,11 +86,11 @@
 
         public function checkData($name, $lastname, $dni, $email, $password){
             $errors = array();
-            if (!$this->checkString($name)) array_push($errors, "El nombre ingresado no es valido. Debe comenzar con mayuscula y tener entre 3 y 20 caracteres.");
-            if (!$this->checkString($lastname)) array_push($errors, "El apellido ingresado no es valido. Debe comenzar con mayuscula y tener entre 3 y 20 caracteres.");
-            if (!$this->checkDNI($dni)) array_push($errors, "El DNI ingresado no es valido. Debe tener 8 numeros sin espacios, puntos u otros caracteres.");
-            if (!$this->checkEmail($email)) array_push($errors, "El email ingresado no es valido. Ejemplo: 'example@domain.com'");
-            if (!$this->checkPassword($password)) array_push($errors, "Entre 8-15 caracteres - 1 Mayúscula - 1 Minucula - 1 Dígito - Sin espacios");
+            if (!$this->checkString($name)) array_push($errors, "Invalid format. Name must be between 3 and 20 characters. And start with uppercase.");
+            if (!$this->checkString($lastname)) array_push($errors, "Invalid format. Lastname must be between 3 and 20 characters. And start with uppercase.");
+            if (!$this->checkDNI($dni)) array_push($errors, "Invalid format. DNI must have 8 numbers without spaces, periods or characters.");
+            if (!$this->checkEmail($email)) array_push($errors, "Invalid format. Example: 'example@domain.com'");
+            if (!$this->checkPassword($password)) array_push($errors, "Password must be at least 8 characters long with 1 uppercase 1 lowercase and 1 numeric character");
 
             return $errors;
         }
