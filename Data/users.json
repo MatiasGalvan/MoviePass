@@ -6,5 +6,13 @@
         "dni": "12300190",
         "name": "Mario Hernesto",
         "lastname": "Girandi"
+    },
+    {
+        "email": "matiasgalvan92@gmail.com",
+        "password": "1234Asdf",
+        "role": "client",
+        "dni": "41929109",
+        "name": "Matias",
+        "lastname": "Galvan"
     }
 ]

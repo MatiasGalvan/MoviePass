@@ -1,7 +1,7 @@
 <main>
     <div class="d-flex justify-content-center align-items-center login-container">
         <form action="<?php echo FRONT_ROOT ?>Home/Register" method="POST" class="login-form text-center">
-            <h1 class="mb-5 font-weight-light text-uppercase">Sign Up</h1>
+            <h1 id="signUp" class="mb-4 font-weight-light text-uppercase">Sign Up</h1>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <input type="text" name="name" class="form-control form-control-lg" placeholder="Name" required>
@@ -19,15 +19,17 @@
             <div class="form-group">
                 <input type="password" name="password" class="form-control form-control-lg" placeholder="Password" required>
             </div>
-            <button type="submit" class="btn mt-5 btn-lg btn-custom btn-block text-uppercase">Create account</button>
+            <?php
+            if(isset($errors)){
+                echo "<ul>";
+                foreach ($errors as $error){
+                    echo "<li class=\"message\">" . $error . "</li>";
+                }
+                echo "</ul>";
+            }
+            ?>
+            <button id="submitBtn" type="submit" class="btn mt-4 btn-lg btn-custom btn-block text-uppercase">Create account</button>
             <p class="mt-3 font-weight-normal">Already have an account? <a href="<?php echo FRONT_ROOT ?>Home/ShowLoginView"><strong>Sign in</strong></a></p>
         </form>
-        <?php
-            if(isset($errors)){
-                foreach ($errors as $error){
-                    echo $error;
-                }
-            }
-        ?>
     </div>
 </main>
