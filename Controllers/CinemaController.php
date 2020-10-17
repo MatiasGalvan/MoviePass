@@ -13,12 +13,20 @@
             $this->cinemaDAO = new CinemaDAO();
         }
         
-        public function ShowAddCinemaView(){
+        public function ShowAddCinemaView($data = array()){
             require_once(VIEWS_PATH."add-cinema.php");
         }
 
         public function ShowRemoveCinemaView(){
             require_once(VIEWS_PATH."remove-cinema.php");
+        }
+        public function ShowCinemas(){
+            $cinemaList = $this->cinemaDAO->GetAll();
+            require_once(VIEWS_PATH."cinema-list.php");
+        }
+
+        public function ShowModifyCinemaView(){
+            require_once(VIEWS_PATH."modify-cinema.php");
         }
 
         public function AddCinema($id, $name, $address, $capacity, $ticketValue){
@@ -51,6 +59,26 @@
         public function RemoveCinema($id){
             $this->cinemaDAO->Remove($id);
             $this->ShowRemoveCinemaView("Cine removido con exito");
+        }
+
+        public function ModifyCinema($id){
+            $cinemaList = $this->cinemaDAO->GetAll();
+            $ModifyCinema;
+            foreach($cinemaList as $cinema){
+                if($cinema->getId() == $id){
+                    $ModifyCinema = $cinema;
+                }
+            }
+            $this->cinemaDAO->Remove($id);
+
+            $data['id'] = $ModifyCinema->GetId();
+            $data['name'] = $ModifyCinema->GetName();
+            $data['address'] = $ModifyCinema->GetAddress();
+            $data['capacity'] = $ModifyCinema->GetCapacity();
+            $data['ticketValue'] = $ModifyCinema->GetTicketValue();
+            $this->ShowAddCinemaView($data);
+
+
         }
     }
 
