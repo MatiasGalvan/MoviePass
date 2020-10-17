@@ -9,7 +9,8 @@
         }
         ?>
         <div class="form-group">
-            <input type="email" name="email" class="form-control form-control-lg" placeholder="Email" required>
+            <input type="email" name="email" class="form-control form-control-lg" placeholder="Email" required
+            value="<?php if(isset($email)) echo $email; ?>">
         </div>
         <div class="form-group">
             <input type="password" name="password" class="form-control form-control-lg" placeholder="Password" required>

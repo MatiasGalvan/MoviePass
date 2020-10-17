@@ -16,11 +16,11 @@
             $this->userDAO = new UserDAO();
         }
 
-        public function ShowLoginView($message = ""){
+        public function ShowLoginView($message = "", $email = ""){
             require_once(VIEWS_PATH."home.php");
         }
         
-        public function ShowRegistrationView($errors = array()){
+        public function ShowRegistrationView($errors = array(), $data = array()){
             require_once(VIEWS_PATH."registration.php");
         }
 
@@ -43,7 +43,7 @@
                 $movies->ShowMovies();
             }
             else{
-                $this->ShowLoginView("The email or password is incorrect");
+                $this->ShowLoginView("The email or password is incorrect", $email);
             }
         }
 
@@ -75,7 +75,12 @@
                 }
             }
             else{
-                $this->ShowRegistrationView($errors);
+                $data['name'] = $name;
+                $data['lastname'] = $lastname;
+                $data['dni'] = $dni;
+                $data['email'] = $email;
+                $data['password'] = $password;
+                $this->ShowRegistrationView($errors, $data);
             }
         }
 
@@ -84,7 +89,7 @@
             $this->ShowLoginView();
         }
 
-        public function checkData($name, $lastname, $dni, $email, $password){
+        private function checkData($name, $lastname, $dni, $email, $password){
             $errors = array();
             if (!$this->checkString($name)) array_push($errors, "Invalid format. Name must be between 3 and 20 characters. And start with uppercase.");
             if (!$this->checkString($lastname)) array_push($errors, "Invalid format. Lastname must be between 3 and 20 characters. And start with uppercase.");
@@ -95,7 +100,7 @@
             return $errors;
         }
 
-        function checkEmail($value){
+        private function checkEmail($value){
             $response = false;
             if(filter_var($value, FILTER_VALIDATE_EMAIL)){
                 $response = true;
@@ -103,7 +108,7 @@
             return $response;
         }
     
-        function checkString($value){
+        private function checkString($value){
             $regularString = "/(^(?=.{3,20}$)[A-ZÁÉÍÓÚ]{1}([a-zñáéíóú]+){2,})(\s[A-ZÁÉÍÓÚ]{1}([a-zñáéíóú]+){2,})?$/";
             $response = false;
             if (preg_match($regularString, $value)){
@@ -112,7 +117,7 @@
             return $response;
         }
     
-        function checkDNI($value){
+        private function checkDNI($value){
             $regularDNI = "/^[0-9]{8}$/";
             $response = false;
             if (preg_match($regularDNI, $value)){
@@ -122,7 +127,7 @@
         }
     
     
-        function checkPassword($value){
+        private function checkPassword($value){
             /*
             Minimo 8 caracteres
             Maximo 15
