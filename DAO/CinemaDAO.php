@@ -25,22 +25,6 @@
             return $this->cinemaList;
         }
 
-        /*public function Remove($name){
-            $response = false;
-            $i = 0;
-            $this->RetrieveData();
-
-            foreach($this->userList as $user){
-                if($user->getEmail() == $name){
-                    unset($this->userList[$i]);
-                    $this->SaveData();
-                    $response = true;
-                }
-                $i++;
-            }
-            return $response;
-        }*/ #Ver el tipo de parametro para remover
-
         public function Remove($id){
             $this->retrieveData();
             $newList = array();

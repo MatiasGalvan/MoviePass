@@ -62,23 +62,27 @@
         }
 
         public function ModifyCinema($id){
-            $cinemaList = $this->cinemaDAO->GetAll();
-            $ModifyCinema;
-            foreach($cinemaList as $cinema){
+            $this->cinemaList = $this->cinemaDAO->GetAll();
+            $available = false;
+            $ModifyCinema = new Cinema();
+            foreach($this->cinemaList as $cinema){
                 if($cinema->getId() == $id){
                     $ModifyCinema = $cinema;
+                    $available = true;
                 }
             }
-            $this->cinemaDAO->Remove($id);
 
-            $data['id'] = $ModifyCinema->GetId();
-            $data['name'] = $ModifyCinema->GetName();
-            $data['address'] = $ModifyCinema->GetAddress();
-            $data['capacity'] = $ModifyCinema->GetCapacity();
-            $data['ticketValue'] = $ModifyCinema->GetTicketValue();
-            $this->ShowAddCinemaView($data);
-
-
+            if($available){
+                $data['id'] = $ModifyCinema->getId();
+                $data['name'] = $ModifyCinema->getName();
+                $data['address'] = $ModifyCinema->getAddress();
+                $data['capacity'] = $ModifyCinema->getCapacity();
+                $data['ticketValue'] = $ModifyCinema->getTicketValue();
+                $this->cinemaDAO->Remove($id);
+                $this->ShowAddCinemaView($data);
+            }else{
+                $this->ShowModifyCinemaView("Id no existente");
+            }
         }
     }
 

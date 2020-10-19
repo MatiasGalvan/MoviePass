@@ -1,3 +1,6 @@
+<?php
+    require_once(VIEWS_PATH."nav-admin.php")
+?>
 <main>
     <div class="d-flex justify-content-center align-items-center login-container">
         <form action="<?php echo FRONT_ROOT ?>Cinema/RemoveCinema" method="POST" class="login-form text-center">

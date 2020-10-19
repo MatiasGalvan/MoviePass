@@ -23,8 +23,6 @@
             foreach($movies as $movie){
                 $m = new Movie();
                 $m->setTitle($movie['title']);
-                # $m->setTagline($movie['tagline']);
-                # Me tira error en el tagline 
                 $m->setReleaseDate($movie['release_date']);
                 $m->setPosterPath($movie['poster_path']);
                 $m->setOverview($movie['overview']);
@@ -36,7 +34,6 @@
                 array_push($this->movieList, $m);
             }
         }
-
     }
 
 ?>

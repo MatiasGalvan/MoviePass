@@ -1,3 +1,6 @@
+<?php
+    require_once(VIEWS_PATH."nav-admin.php")
+?>
 <div class="container">
     <h3 class="mb-2 mt-2">Cinemas List</h3>
     <div class="row justify-content-center">

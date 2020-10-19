@@ -66,7 +66,7 @@
             return $this->genres;
         }
 
-        public function setGenres(Genre $genres){
+        public function setGenres($genres){
             $this->genres = $genres;
         }
 
