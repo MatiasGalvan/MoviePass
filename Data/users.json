@@ -1,14 +1,18 @@
 [
     {
-        "email": "jSalchichon@gmail.com",
-        "password": "123456",
+        "email": "girandi@outlook.com",
+        "password": "1234Mario",
         "role": "client",
-        "userprofile": "O:18:\"Models\\UserProfile\":3:{s:23:\"\u0000Models\\UserProfile\u0000dni\";s:8:\"12928129\";s:24:\"\u0000Models\\UserProfile\u0000name\";s:4:\"John\";s:28:\"\u0000Models\\UserProfile\u0000lastname\";s:10:\"Salchichon\";}"
+        "dni": "12300190",
+        "name": "Mario Hernesto",
+        "lastname": "Girandi"
     },
     {
         "email": "matiasgalvan92@gmail.com",
-        "password": "123456",
+        "password": "1234Asdf",
         "role": "client",
-        "userprofile": "O:18:\"Models\\UserProfile\":3:{s:23:\"\u0000Models\\UserProfile\u0000dni\";s:8:\"41928193\";s:24:\"\u0000Models\\UserProfile\u0000name\";s:6:\"Matias\";s:28:\"\u0000Models\\UserProfile\u0000lastname\";s:6:\"Galvan\";}"
+        "dni": "41929109",
+        "name": "Matias",
+        "lastname": "Galvan"
     }
 ]
