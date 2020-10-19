@@ -1,0 +1,9 @@
+[
+    {
+        "id": "1",
+        "name": "cine1Modificado",
+        "address": "calle1Modificada",
+        "capacity": "150",
+        "ticketValue": "100"
+    }
+]

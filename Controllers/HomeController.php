@@ -31,7 +31,6 @@
             foreach($userList as $user){
                 if($user->getEmail() == $email){
                     if($user->getPassword() == $password){
-                        #$_SESSION['user'] = $user;
                         $_SESSION["email"] = $email;
                         $flag = true;
                     }
