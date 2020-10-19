@@ -3,6 +3,7 @@
     namespace Controllers;
 
     use Models\Movie as Movie;
+    use DAO\MovieDAO as MovieDAO;
     use DAO\GenreDAO as GenreDAO;
     use Models\Genre as Genre;
 
@@ -10,17 +11,24 @@
 
         private $genreDAO;
         private $movieList = array();
+        private $movieDAO; 
+
+        public function __construct(){
+            $this->movieDAO = new MovieDAO();
+        }
 
         public function __construct(){
             $this->genreDAO = new GenreDAO();
         }
 
 
-        public function ShowMovies($message = ""){
-            $this->RetrieveMovies();
-            $movieList = $this->movieList;
-            $genreList = $this->genreDAO->GetAll();
-            require_once(VIEWS_PATH."billboard.php");
+        public function ShowMovies($message = "", $movieList = array()){
+            if(empty($movieList)){
+                $this->RetrieveMovies();
+                    $movieList = $this->movieList;
+            }
+                 $genreList = $this->genreDAO->GetAll();
+                require_once(VIEWS_PATH."billboard.php");
         }
 
         # Funcion para actualizar peliculas levantandolas de la api
@@ -46,6 +54,9 @@
                 $m->setOriginalLanguage($movie['original_language']);
 
                 $genres = $movie['genre_ids'];
+                
+                $m->setGenres($genres);
+                
                  # Devuelve una lista solo con lo id de los generos
                 # Habria que hacer una funcio en GenreDAO para recuperar el nombre de uun genero pasandole el id
                
@@ -65,6 +76,21 @@
             }
         }
 
+      
+        
+        public function FilterMovies(){
+            $this->RetrieveMovies();
+            $filteredMovies = array();
+            $filterList = $_POST["genres"];
+        
+            foreach($this->movieList as $movie){
+                $result = array_intersect($filterList, $movie->getGenres());
+                if(count($result) == count($filterList)) array_push($filteredMovies, $movie);
+            }
+        
+            $this->ShowMovies("",$filteredMovies);
+        }
+        
     }
 
 ?>

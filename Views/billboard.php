@@ -20,13 +20,15 @@
 <div class="container">
     <h3 class="mb-2 mt-2">Now Playing Movies</h3>
     <div class="row justify-content-center">
+        <form action="<?php echo FRONT_ROOT ?>Movie/FilterMovies" METHOD="Post">
           <?php  foreach($genreList as $genre)   {?>
 
-            <input type="checkbox" name="genres[]" value="<?php $genre->getId()?>">
+            <input type="checkbox" name="genres[]" value="<?php echo $genre->getId()?>">
             <label class=""><?php echo $genre->getName() ?></label>
             <?php   }?>
 
           <input type='submit' class='buttons'>
+          </form>
         </div>
     <div class="row justify-content-center">
         <?php foreach ($movieList as $movie) { ?>
