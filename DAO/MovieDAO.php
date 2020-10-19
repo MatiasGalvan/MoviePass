@@ -61,7 +61,6 @@
 
                     $movie = new Movie();
                     $movie->setTitle($title);
-                    $movie->setTagline($tagline);
                     $movie->setReleaseDate($releaseDate);
                     $movie->setPosterPath($posterPath);
                     $movie->setOverview($overview);

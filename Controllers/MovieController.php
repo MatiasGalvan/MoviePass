@@ -13,13 +13,13 @@
         private $movieList = array();
         private $movieDAO; 
 
-        public function __construct(){
-            $this->movieDAO = new MovieDAO();
-        }
 
         public function __construct(){
             $this->genreDAO = new GenreDAO();
+            $this->movieDAO = new MovieDAO();
+
         }
+
 
 
         public function ShowMovies($message = "", $movieList = array()){
@@ -35,16 +35,10 @@
 
         # Funcion para actualizar generos levantandolas de la api
 
-        public function RetrieveMovies(){ #Modificar esta para que las agarre del json
-
+        public function ReloadMovies(){
             $moviesToDecode = file_get_contents("https://api.themoviedb.org/3/movie/now_playing?" . TMDb_KEY);
-            # "https://api.themoviedb.org/3/movie/now_playing?" . TMBd_KEY . "&page=3"
             $result = json_decode($moviesToDecode, true);
             $movies = $result['results'];
-
-
-
-
             foreach($movies as $movie){
                 $m = new Movie();
                 $m->setTitle($movie['title']);
@@ -52,18 +46,17 @@
                 $m->setPosterPath($movie['poster_path']);
                 $m->setOverview($movie['overview']);
                 $m->setOriginalLanguage($movie['original_language']);
-
                 $genres = $movie['genre_ids'];
-                
                 $m->setGenres($genres);
-                
-                 # Devuelve una lista solo con lo id de los generos
-                # Habria que hacer una funcio en GenreDAO para recuperar el nombre de uun genero pasandole el id
-               
-                array_push($this->movieList,$m);
+                $this->movieDAO->Add($m);
             }
-
         }
+
+
+        public function RetrieveMovies(){
+           $this->movieList = $this->movieDAO->GetAll();
+            }
+        
         public function SaveGenres(){
             $genreToDecode = file_get_contents("https://api.themoviedb.org/3/genre/movie/list?api_key=a2c8cc87dc896f37eb6ca3258529f6d5");
             $result = json_decode($genreToDecode, true);
@@ -82,13 +75,18 @@
             $this->RetrieveMovies();
             $filteredMovies = array();
             $filterList = $_POST["genres"];
-        
+            
             foreach($this->movieList as $movie){
                 $result = array_intersect($filterList, $movie->getGenres());
                 if(count($result) == count($filterList)) array_push($filteredMovies, $movie);
             }
+            if(empty($filteredMovies)){
+             $message=("There are no movies with the specified genres");
+            }else{
+                $message="";
+            }
         
-            $this->ShowMovies("",$filteredMovies);
+            $this->ShowMovies($message,$filteredMovies);
         }
         
     }
