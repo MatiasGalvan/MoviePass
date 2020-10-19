@@ -3,14 +3,23 @@
     namespace Controllers;
 
     use Models\Movie as Movie;
+    use DAO\GenreDAO as GenreDAO;
+    use Models\Genre as Genre;
 
     class MovieController{
 
+        private $genreDAO;
         private $movieList = array();
+
+        public function __construct(){
+            $this->genreDAO = new GenreDAO();
+        }
+
 
         public function ShowMovies($message = ""){
             $this->RetrieveMovies();
             $movieList = $this->movieList;
+            $genreList = $this->genreDAO->GetAll();
             require_once(VIEWS_PATH."billboard.php");
         }
 
@@ -19,10 +28,14 @@
         # Funcion para actualizar generos levantandolas de la api
 
         public function RetrieveMovies(){ #Modificar esta para que las agarre del json
+
             $moviesToDecode = file_get_contents("https://api.themoviedb.org/3/movie/now_playing?" . TMDb_KEY);
             # "https://api.themoviedb.org/3/movie/now_playing?" . TMBd_KEY . "&page=3"
             $result = json_decode($moviesToDecode, true);
             $movies = $result['results'];
+
+
+
 
             foreach($movies as $movie){
                 $m = new Movie();
@@ -33,10 +46,22 @@
                 $m->setOriginalLanguage($movie['original_language']);
 
                 $genres = $movie['genre_ids'];
-                # Devuelve una lista solo con lo id de los generos
+                 # Devuelve una lista solo con lo id de los generos
                 # Habria que hacer una funcio en GenreDAO para recuperar el nombre de uun genero pasandole el id
+               
+                array_push($this->movieList,$m);
+            }
 
-                array_push($this->movieList, $m);
+        }
+        public function SaveGenres(){
+            $genreToDecode = file_get_contents("https://api.themoviedb.org/3/genre/movie/list?api_key=a2c8cc87dc896f37eb6ca3258529f6d5");
+            $result = json_decode($genreToDecode, true);
+            $genres = $result['genres'];
+            foreach ($genres as $value) {
+                $genre = new Genre();
+                $genre->setId($value['id']);
+                $genre->setName($value['name']);
+                $this->genreDAO->Add($genre);
             }
         }
 

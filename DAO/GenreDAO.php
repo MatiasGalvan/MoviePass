@@ -15,9 +15,11 @@
             $this->fileName = dirname(__DIR__)."/Data/genre.json";
         }
 
+
+
         public function Add(Genre $genre){
             $this->RetrieveData();
-            array_push($this->genreList, $genre;
+            array_push($this->genreList, $genre);
             $this->SaveData();
         }
 
@@ -44,8 +46,8 @@
 
             foreach ($this->genreList as $genre) {
                 $valuesArray['id'] = $genre->getId();
-                $valuesArray['name'] = $genre->getName()
-                array_push($arrayToEncode, $valuesArray);
+                $valuesArray['name'] = $genre->getName();
+                array_push($arrayToEncode,$valuesArray);
             }
 
             $jsonContent = json_encode($arrayToEncode, JSON_PRETTY_PRINT);
@@ -60,15 +62,15 @@
                 $jsonContent = file_get_contents($this->fileName);
 
                 $arrayToDecode = ($jsonContent) ? json_decode($jsonContent, true) : array();
-
+                
                 foreach($arrayToDecode as $valuesArray){
                     $id = $valuesArray['id'];
                     $name = $valuesArray['name'];
                     $genre = new Genre();
                     $genre->setId($id);
                     $genre->setName($name);
-                 
-                    array_push($this->genreList, $Genre);
+
+                    array_push($this->genreList, $genre);
                 }
             }
         }

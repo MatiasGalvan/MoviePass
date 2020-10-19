@@ -1,7 +1,8 @@
 <?php
 
     $imgUrl = "https://image.tmdb.org/t/p/w300";
-
+   
+    
 ?>
 
 <style>
@@ -18,6 +19,15 @@
 
 <div class="container">
     <h3 class="mb-2 mt-2">Now Playing Movies</h3>
+    <div class="row justify-content-center">
+          <?php  foreach($genreList as $genre)   {?>
+
+            <input type="checkbox" name="genres[]" value="<?php $genre->getId()?>">
+            <label class=""><?php echo $genre->getName() ?></label>
+            <?php   }?>
+
+          <input type='submit' class='buttons'>
+        </div>
     <div class="row justify-content-center">
         <?php foreach ($movieList as $movie) { ?>
         <div class="card" style="width: 220px;">
