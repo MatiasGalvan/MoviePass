@@ -6,12 +6,19 @@
 
     class Cinema{
 
+        private $id;
         private $name;
         private $address;
         private $capacity; 
         private $ticketValue;
-        private MovieFunction $functions = array();
+        #private MovieFunction $functions = array();
 
+        public function getId(){
+            return $this->id;
+        }
+        public function setId($id){
+            $this->id = $id;
+        }
         public function getName(){
             return $this->name;
         }
@@ -39,11 +46,10 @@
         public function getTicketValue(){
             return $this->ticketValue;
         }
-
+        
         public function setTicketValue($ticketValue){
             $this->ticketValue = $ticketValue;
         }
-
     }
     
 ?>

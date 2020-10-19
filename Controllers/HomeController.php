@@ -4,6 +4,7 @@
 
     use Models\User as User;
     use Models\UserProfile as UserProfile;
+    use Models\Role as Role;
     use DAO\UserDAO as UserDAO;
     use Controllers\MovieController as MovieController;
 
@@ -15,11 +16,11 @@
             $this->userDAO = new UserDAO();
         }
 
-        public function ShowLoginView($message = ""){
+        public function ShowLoginView($message = "", $email = ""){
             require_once(VIEWS_PATH."home.php");
         }
         
-        public function ShowRegistrationView(){
+        public function ShowRegistrationView($errors = array(), $data = array()){
             require_once(VIEWS_PATH."registration.php");
         }
 
@@ -37,40 +38,49 @@
             }
 
             if($flag){
-            
-                #header("location:". FRONT_ROOT . "Movie/ShowMovies");
-                # login para admin o harcodearlo
                 $movies = new MovieController();
                 $movies->ShowMovies();
-
-                # require_once(FRONT_ROOT."Movie/ShowMovies");
-                # Aca tiene que redirigir a la pagina principal
-                #echo $_SESSION["email"];
             }
             else{
-                $this->ShowLoginView("Los datos ingresados no son validos.");
+                $this->ShowLoginView("The email or password is incorrect", $email);
             }
         }
 
         public function Register($name, $lastname, $dni, $email, $password){
-            # En algun lado hay que validar la info que entra. Se puede hacer desde php o javascript
+            $errors = $this->checkData($name, $lastname, $dni, $email, $password);
+            if(count($errors) == 0){
+                if(!($this->userDAO->Exist($email))){
+                    $user = new User();
+                    $profile = new UserProfile();
+                    $role = new Role();
+                    $role->setDescription('client');
 
-            # Agregar un comprobacion para ver que el email no este registrado previamente
-            $user = new User();
-            $profile = new UserProfile();
+                    $profile->setName($name);
+                    $profile->setLastname($lastname);
+                    $profile->setDni($dni);
 
-            $profile->setName($name);
-            $profile->setLastname($lastname);
-            $profile->setDni($dni);
+                    $user->setEmail($email);
+                    $user->setPassword($password);
+                    $user->setProfile($profile);
+                    $user->setRole($role);
 
-            $user->setEmail($email);
-            $user->setPassword($password);
-            $user->setProfile($profile);
-            $user->setRole('client');
+                    $this->userDAO->Add($user);
 
-            $this->userDAO->Add($user);
-
-            $this->ShowLoginView("Tu cuenta ha sido creada");
+                    $this->ShowLoginView("Your account has been created successfully");
+                }
+                else{
+                    array_push($errors, "The email has already been taken");
+                    $this->ShowRegistrationView($errors);
+                }
+            }
+            else{
+                $data['name'] = $name;
+                $data['lastname'] = $lastname;
+                $data['dni'] = $dni;
+                $data['email'] = $email;
+                $data['password'] = $password;
+                $this->ShowRegistrationView($errors, $data);
+            }
         }
 
         public function Logout(){
@@ -78,6 +88,61 @@
             $this->ShowLoginView();
         }
 
+        private function checkData($name, $lastname, $dni, $email, $password){
+            $errors = array();
+            if (!$this->checkString($name)) array_push($errors, "Invalid format. Name must be between 3 and 20 characters. And start with uppercase.");
+            if (!$this->checkString($lastname)) array_push($errors, "Invalid format. Lastname must be between 3 and 20 characters. And start with uppercase.");
+            if (!$this->checkDNI($dni)) array_push($errors, "Invalid format. DNI must have 8 numbers without spaces, periods or characters.");
+            if (!$this->checkEmail($email)) array_push($errors, "Invalid format. Example: 'example@domain.com'");
+            if (!$this->checkPassword($password)) array_push($errors, "Password must be at least 8 characters long with 1 uppercase 1 lowercase and 1 numeric character");
+
+            return $errors;
+        }
+
+        private function checkEmail($value){
+            $response = false;
+            if(filter_var($value, FILTER_VALIDATE_EMAIL)){
+                $response = true;
+            }
+            return $response;
+        }
+    
+        private function checkString($value){
+            $regularString = "/(^(?=.{3,20}$)[A-ZÁÉÍÓÚ]{1}([a-zñáéíóú]+){2,})(\s[A-ZÁÉÍÓÚ]{1}([a-zñáéíóú]+){2,})?$/";
+            $response = false;
+            if (preg_match($regularString, $value)){
+                $response = true;
+            }
+            return $response;
+        }
+    
+        private function checkDNI($value){
+            $regularDNI = "/^[0-9]{8}$/";
+            $response = false;
+            if (preg_match($regularDNI, $value)){
+                $response = true;
+            }
+            return $response; 
+        }
+    
+    
+        private function checkPassword($value){
+            /*
+            Minimo 8 caracteres
+            Maximo 15
+            Al menos una letra mayúscula
+            Al menos una letra minucula
+            Al menos un dígito
+            No espacios en blanco
+            */
+            $regularPass = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)([A-Za-z\d]|[^ ]){8,15}$/";
+            $response = false;
+            if (preg_match($regularPass, $value)){
+                $response = true;
+            }
+            return $response; 
+        }
+        
     }
 
 ?>

@@ -1,7 +1,6 @@
 <?php
-
     $imgUrl = "https://image.tmdb.org/t/p/w300";
-
+    require_once(VIEWS_PATH."nav-client.php")
 ?>
 
 <style>
@@ -29,4 +28,4 @@
         </div>
         <?php } ?>
     </div>
-</div>    
+</div>   

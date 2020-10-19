@@ -7,7 +7,6 @@
     class Movie{
 
         private $title;
-        private $tagline;
         private $releaseDate;
         private $posterPath;
         private $overview;
@@ -20,14 +19,6 @@
 
         public function setTitle($title){
             $this->title = $title;
-        }
-
-        public function getTagline(){
-            return $this->tagline;
-        }
-
-        public function setTagline($tagline){
-            $this->tagline = $tagline;
         }
 
         public function getReleaseDate(){
@@ -66,7 +57,7 @@
             return $this->genres;
         }
 
-        public function setGenres(Genre $genres){
+        public function setGenres($genres){
             $this->genres = $genres;
         }
 
