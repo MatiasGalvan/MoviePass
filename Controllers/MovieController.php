@@ -3,37 +3,29 @@
     namespace Controllers;
 
     use Models\Movie as Movie;
+    use Models\Genre as Genre;
     use DAO\MovieDAO as MovieDAO;
     use DAO\GenreDAO as GenreDAO;
-    use Models\Genre as Genre;
 
     class MovieController{
 
         private $genreDAO;
-        private $movieList = array();
         private $movieDAO; 
-
+        private $movieList = array();
 
         public function __construct(){
             $this->genreDAO = new GenreDAO();
             $this->movieDAO = new MovieDAO();
-
         }
-
-
 
         public function ShowMovies($message = "", $movieList = array()){
             if(empty($movieList)){
                 $this->RetrieveMovies();
-                    $movieList = $this->movieList;
+                $movieList = $this->movieList;
             }
-                 $genreList = $this->genreDAO->GetAll();
-                require_once(VIEWS_PATH."billboard.php");
+            $genreList = $this->genreDAO->GetAll();
+            require_once(VIEWS_PATH."billboard.php");
         }
-
-        # Funcion para actualizar peliculas levantandolas de la api
-
-        # Funcion para actualizar generos levantandolas de la api
 
         public function ReloadMovies(){
             $moviesToDecode = file_get_contents("https://api.themoviedb.org/3/movie/now_playing?" . TMDb_KEY);
@@ -52,13 +44,12 @@
             }
         }
 
-
         public function RetrieveMovies(){
-           $this->movieList = $this->movieDAO->GetAll();
-            }
+            $this->movieList = $this->movieDAO->GetAll();
+        }
         
         public function SaveGenres(){
-            $genreToDecode = file_get_contents("https://api.themoviedb.org/3/genre/movie/list?api_key=a2c8cc87dc896f37eb6ca3258529f6d5");
+            $genreToDecode = file_get_contents("https://api.themoviedb.org/3/genre/movie/list?" . TMDb_KEY);
             $result = json_decode($genreToDecode, true);
             $genres = $result['genres'];
             foreach ($genres as $value) {
@@ -67,26 +58,28 @@
                 $genre->setName($value['name']);
                 $this->genreDAO->Add($genre);
             }
-        }
-
-      
+        }      
         
         public function FilterMovies(){
-            $this->RetrieveMovies();
-            $filteredMovies = array();
-            $filterList = $_POST["genres"];
-            
-            foreach($this->movieList as $movie){
-                $result = array_intersect($filterList, $movie->getGenres());
-                if(count($result) == count($filterList)) array_push($filteredMovies, $movie);
+
+            if(isset($_POST['genres'])){
+                $this->RetrieveMovies();
+                $filteredMovies = array();
+                $filterList = $_POST['genres'];
+                $message = "";
+                
+                foreach($this->movieList as $movie){
+                    $result = array_intersect($filterList, $movie->getGenres());
+                    if(count($result) == count($filterList)) array_push($filteredMovies, $movie);
+                }
+
+                if(empty($filteredMovies)) $message = "There are no movies with the specified genres";
+
+                $this->ShowMovies($message, $filteredMovies);
             }
-            if(empty($filteredMovies)){
-             $message=("There are no movies with the specified genres");
-            }else{
-                $message="";
+            else{
+                $this->ShowMovies();
             }
-        
-            $this->ShowMovies($message,$filteredMovies);
         }
         
     }
