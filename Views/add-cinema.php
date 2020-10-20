@@ -26,6 +26,15 @@
                 value="<?php if(isset($data['ticketValue'])) echo $data['ticketValue']; ?>" required>
             </div>
             <button type="submit" class="btn mt-5 btn-lg btn-custom btn-block text-uppercase">Add Cinema</button>
+            <?php
+            if(isset($errors)){
+                echo "<ul>";
+                foreach ($errors as $error){
+                    echo "<li class=\"message\">" . $error . "</li>";
+                }
+                echo "</ul>";
+            }
+            ?>
         </form>
 
     </div>

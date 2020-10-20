@@ -1,8 +1,15 @@
 [
     {
-        "id": "1",
-        "name": "Cinema1",
+        "id": "5",
+        "name": "Cinemaster",
         "address": "Gazie 1009",
+        "capacity": "1000",
+        "ticketValue": "100"
+    },
+    {
+        "id": "1",
+        "name": "Cinema",
+        "address": "Ianio 1202",
         "capacity": "100",
         "ticketValue": "250"
     }
