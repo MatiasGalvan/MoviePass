@@ -10,7 +10,7 @@
     {
         "email": "matiasgalvan92@gmail.com",
         "password": "1234Asdf",
-        "role": "client",
+        "role": "admin",
         "dni": "41929109",
         "name": "Matias",
         "lastname": "Galvan"

@@ -17,29 +17,16 @@
             require_once(VIEWS_PATH."add-cinema.php");
         }
 
-        public function ShowRemoveCinemaView(){
-            require_once(VIEWS_PATH."remove-cinema.php");
-        }
-        public function ShowCinemas(){
+        public function ShowCinemas($message = ""){
             $cinemaList = $this->cinemaDAO->GetAll();
             require_once(VIEWS_PATH."cinema-list.php");
         }
 
-        public function ShowModifyCinemaView(){
-            require_once(VIEWS_PATH."modify-cinema.php");
-        }
-
         public function AddCinema($id, $name, $address, $capacity, $ticketValue){
 
-            $cinemaList = $this->cinemaDAO->GetAll();
-            $available = true;
-            foreach($cinemaList as $cinema){
-                if($cinema->getId() == $id){
-                    $available = false;
-                }
-            }
+            $available = $this->cinemaDAO->Exist($id);
 
-            if($available == true){
+            if(!$available){
                 $cinema = new Cinema();
                 $cinema->setId($id);
                 $cinema->setName($name);
@@ -49,16 +36,22 @@
     
                 $this->cinemaDAO->Add($cinema);
     
-                $this->ShowAddCinemaView("Cine agregado con exito");
+                $this->ShowAddCinemaView("Cinema added successfully");
             }
             else{
-                $this->ShowAddCinemaView("Id no disponible");
+                $this->ShowAddCinemaView("The ID is already taken");
             }
         }
 
         public function RemoveCinema($id){
-            $this->cinemaDAO->Remove($id);
-            $this->ShowRemoveCinemaView("Cine removido con exito");
+            $message = "The ID entered does not exist";
+
+            if($this->cinemaDAO->Exist($id)){
+                $this->cinemaDAO->Remove($id);
+                $message = "Cinema removed successfully";
+            }
+            
+            $this->ShowCinemas($message);
         }
 
         public function ModifyCinema($id){
@@ -80,8 +73,9 @@
                 $data['ticketValue'] = $ModifyCinema->getTicketValue();
                 $this->cinemaDAO->Remove($id);
                 $this->ShowAddCinemaView($data);
-            }else{
-                $this->ShowModifyCinemaView("Id no existente");
+            }
+            else{
+                $this->ShowCinemas("The ID entered does not exist");
             }
         }
     }

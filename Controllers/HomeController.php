@@ -7,6 +7,7 @@
     use Models\Role as Role;
     use DAO\UserDAO as UserDAO;
     use Controllers\MovieController as MovieController;
+    use Controllers\CinemaController as CinemaController;
 
     class HomeController{
 
@@ -32,14 +33,21 @@
                 if($user->getEmail() == $email){
                     if($user->getPassword() == $password){
                         $_SESSION["email"] = $email;
+                        $_SESSION["role"] = $user->getRole()->getDescription();
                         $flag = true;
                     }
                 }
             }
 
             if($flag){
-                $movies = new MovieController();
-                $movies->ShowMovies();
+                if($_SESSION["role"] == 'admin'){
+                    $cinema = new CinemaController();
+                    $cinema->ShowCinemas();
+                }
+                else{
+                    $movies = new MovieController();
+                    $movies->ShowMovies();
+                }
             }
             else{
                 $this->ShowLoginView("The email or password is incorrect", $email);

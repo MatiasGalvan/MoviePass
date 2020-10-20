@@ -1,9 +1,9 @@
 [
     {
         "id": "1",
-        "name": "cine1Modificado",
-        "address": "calle1Modificada",
-        "capacity": "150",
-        "ticketValue": "100"
+        "name": "Cinema1",
+        "address": "Gazie 1009",
+        "capacity": "100",
+        "ticketValue": "250"
     }
 ]

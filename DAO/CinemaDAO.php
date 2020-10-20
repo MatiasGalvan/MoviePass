@@ -14,6 +14,17 @@
             $this->fileName = dirname(__DIR__)."/Data/cinemas.json";
         }
 
+        public function Exist($id){
+            $response = false;
+            $this->RetrieveData();
+            foreach($this->cinemaList as $cinema){
+                if($cinema->getId() == $id){
+                    $response = true;
+                }
+            }
+            return $response;
+        }
+
         public function Add(Cinema $cinema){
             $this->RetrieveData();
             array_push($this->cinemaList, $cinema);
