@@ -6,6 +6,7 @@
     use Models\Genre as Genre;
     use DAO\MovieDAO as MovieDAO;
     use DAO\GenreDAO as GenreDAO;
+    use Contollers\CinemaController as CinemaController;
 
     class MovieController{
 
@@ -28,19 +29,23 @@
         }
 
         public function ReloadMovies(){
-            $moviesToDecode = file_get_contents("https://api.themoviedb.org/3/movie/now_playing?" . TMDb_KEY);
-            $result = json_decode($moviesToDecode, true);
-            $movies = $result['results'];
-            foreach($movies as $movie){
-                $m = new Movie();
-                $m->setTitle($movie['title']);
-                $m->setReleaseDate($movie['release_date']);
-                $m->setPosterPath($movie['poster_path']);
-                $m->setOverview($movie['overview']);
-                $m->setOriginalLanguage($movie['original_language']);
-                $genres = $movie['genre_ids'];
-                $m->setGenres($genres);
-                $this->movieDAO->Add($m);
+            if(isset($_SESSION['role']) && $_SESSION['role'] == 'admin'){
+                $moviesToDecode = file_get_contents("https://api.themoviedb.org/3/movie/now_playing?" . TMDb_KEY);
+                $result = json_decode($moviesToDecode, true);
+                $movies = $result['results'];
+                foreach($movies as $movie){
+                    $m = new Movie();
+                    $m->setTitle($movie['title']);
+                    $m->setReleaseDate($movie['release_date']);
+                    $m->setPosterPath($movie['poster_path']);
+                    $m->setOverview($movie['overview']);
+                    $m->setOriginalLanguage($movie['original_language']);
+                    $genres = $movie['genre_ids'];
+                    $m->setGenres($genres);
+                    $this->movieDAO->Add($m);
+                }
+                $cinema = new CinemaController();
+                $cinema->ShowCinemas();
             }
         }
 
@@ -49,14 +54,18 @@
         }
         
         public function SaveGenres(){
-            $genreToDecode = file_get_contents("https://api.themoviedb.org/3/genre/movie/list?" . TMDb_KEY);
-            $result = json_decode($genreToDecode, true);
-            $genres = $result['genres'];
-            foreach ($genres as $value) {
-                $genre = new Genre();
-                $genre->setId($value['id']);
-                $genre->setName($value['name']);
-                $this->genreDAO->Add($genre);
+            if(isset($_SESSION['role']) && $_SESSION['role'] == 'admin'){
+                $genreToDecode = file_get_contents("https://api.themoviedb.org/3/genre/movie/list?" . TMDb_KEY);
+                $result = json_decode($genreToDecode, true);
+                $genres = $result['genres'];
+                foreach ($genres as $value) {
+                    $genre = new Genre();
+                    $genre->setId($value['id']);
+                    $genre->setName($value['name']);
+                    $this->genreDAO->Add($genre);
+                }
+                $cinema = new CinemaController();
+                $cinema->ShowCinemas();
             }
         }      
         
