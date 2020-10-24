@@ -21,6 +21,12 @@
         <a class="nav-link" href="<?php echo FRONT_ROOT ?>Cinema/ShowCinemas">List</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="<?php echo FRONT_ROOT ?>Movie/ReloadMovies">ReloadMovies</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<?php echo FRONT_ROOT ?>Movie/SaveGenres">ReloadGenres</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="<?php echo FRONT_ROOT ?>Home/Logout">Logout</a>
       </li>
     </ul>

@@ -1,16 +1,30 @@
 [
     {
-        "id": "5",
-        "name": "Cinemaster",
-        "address": "Gazie 1009",
-        "capacity": "1000",
-        "ticketValue": "100"
-    },
-    {
         "id": "1",
-        "name": "Cinema",
+        "name": "Cinemacenter",
         "address": "Ianio 1202",
         "capacity": "100",
         "ticketValue": "250"
+    },
+    {
+        "id": "2",
+        "name": "Filmer",
+        "address": "Gazie 1009",
+        "capacity": "150",
+        "ticketValue": "225"
+    },
+    {
+        "id": "3",
+        "name": "Movieroom",
+        "address": "Beruti 3487",
+        "capacity": "85",
+        "ticketValue": "120"
+    },
+    {
+        "id": "4",
+        "name": "Tfilms",
+        "address": "Roca 1929",
+        "capacity": "175",
+        "ticketValue": "200"
     }
 ]
