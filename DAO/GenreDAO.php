@@ -1,79 +1,58 @@
 <?php
 
     namespace DAO;
-    //.
     
+    use \Exception as Exception;
+    use DAO\Connection as Connection;
     use DAO\IGenreDAO as IGenreDAO;
     use Models\Genre as Genre;
 
     class GenreDAO implements IGenreDAO{
 
-        private $genreList = array();
-        private $fileName;
-
-        public function __construct(){
-            $this->fileName = dirname(__DIR__)."/Data/genre.json";
-        }
-
-
+        private $connection;
+        private $tableName = "Genre";
 
         public function Add(Genre $genre){
-            $this->RetrieveData();
-            array_push($this->genreList, $genre);
-            $this->SaveData();
+            try{
+                $query = "INSERT INTO ".$this->tableName." (idApi, genreName) VALUES (:idApi, :genreName);";
+                
+                $parameters["idApi"] = $genre->getId();
+                $parameters["genreName"] = $genre->getName();
+
+                $this->connection = Connection::GetInstance();
+
+                $this->connection->ExecuteNonQuery($query, $parameters);
+            }
+            catch(Exception $ex){
+                throw $ex;
+            }
         }
 
         public function GetAll(){
-            $this->RetrieveData();
-            return $this->genreList;
-        }
+            try{
+                $genreList = array();
 
- 
-        public function Remove($id){
-            $this->retrieveData();
-            $newList = array();
-            foreach ($this->genreList  as $genre) {
-                if($genre->getId() != $id){
-                    array_push($newList, $genre);
-                }
-            }
-            $this->genreList = $newList;
-            $this->saveData();
-        }
+                $query = "SELECT * FROM ".$this->tableName;
 
-        private function SaveData(){
-            $arrayToEncode = array();
+                $this->connection = Connection::GetInstance();
 
-            foreach ($this->genreList as $genre) {
-                $valuesArray['id'] = $genre->getId();
-                $valuesArray['name'] = $genre->getName();
-                array_push($arrayToEncode,$valuesArray);
-            }
-
-            $jsonContent = json_encode($arrayToEncode, JSON_PRETTY_PRINT);
-
-            file_put_contents($this->fileName, $jsonContent);
-        }
-
-        private function RetrieveData(){
-            $this->genreList = array();
-
-            if(file_exists($this->fileName)){
-                $jsonContent = file_get_contents($this->fileName);
-
-                $arrayToDecode = ($jsonContent) ? json_decode($jsonContent, true) : array();
+                $resultSet = $this->connection->Execute($query);
                 
-                foreach($arrayToDecode as $valuesArray){
-                    $id = $valuesArray['id'];
-                    $name = $valuesArray['name'];
+                foreach ($resultSet as $row){                
                     $genre = new Genre();
-                    $genre->setId($id);
-                    $genre->setName($name);
+                    $genre->setId($row["idApi"]);
+                    $genre->setName($row["genreName"]);
 
-                    array_push($this->genreList, $genre);
+                    array_push($genreList, $genre);
                 }
+
+                return $genreList;
+            }
+            catch(Exception $ex){
+                throw $ex;
             }
         }
+
     }
 
 ?>

@@ -3,8 +3,12 @@
 ?>
 <main>
     <div class="d-flex justify-content-center align-items-center login-container">
-        <form action="<?php echo FRONT_ROOT ?>Cinema/AddCinema" method="POST" class="login-form text-center">
-            <h1 class="mb-5 font-weight-light text-uppercase">ADD CINEMA</h1>
+        <form action="<?php echo FRONT_ROOT ?>Cinema/ModifyCinema" method="POST" class="login-form text-center">
+            <h1 class="mb-5 font-weight-light text-uppercase">UPDATE CINEMA</h1>
+
+            <input type="hidden" name="id" class="form-control form-control-lg"
+            value="<?php if(isset($data['id'])) echo $data['id']; ?>" required>
+
             <div class="form-group">
                 <input type="text" name="name" class="form-control form-control-lg" placeholder="Name" 
                 value="<?php if(isset($data['name'])) echo $data['name']; ?>" required>
@@ -21,7 +25,7 @@
                 <input type="number" name="ticketValue" class="form-control form-control-lg" placeholder="Ticket value" 
                 value="<?php if(isset($data['ticketValue'])) echo $data['ticketValue']; ?>" required>
             </div>
-            <button type="submit" class="btn mt-5 btn-lg btn-custom btn-block text-uppercase">Add Cinema</button>
+            <button type="submit" class="btn mt-5 btn-lg btn-custom btn-block text-uppercase">Update Cinema</button>
             <?php
             if(isset($errors)){
                 echo "<ul>";

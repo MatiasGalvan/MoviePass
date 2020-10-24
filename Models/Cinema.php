@@ -11,7 +11,7 @@
         private $address;
         private $capacity; 
         private $ticketValue;
-        private MovieFunction $billboard = array();
+        private $billboard = array();
 
         public function getId(){
             return $this->id;

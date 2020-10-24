@@ -7,7 +7,6 @@
     interface IGenreDAO{
 
         function Add(Genre $genre);
-        function Remove($id);
         function GetAll();
 
     }

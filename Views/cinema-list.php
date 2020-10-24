@@ -32,12 +32,12 @@
                             <td><?php echo $cinema->getTicketValue() ?></td>
                             <td>
                                 <form action="<?php echo FRONT_ROOT ?>Cinema/RemoveCinema" method="POST">
-                                <input type="hidden" name="id" placeholder="ID" value="<?php echo $cinema->getId() ?>">
+                                    <input type="hidden" name="id" placeholder="ID" value="<?php echo $cinema->getId() ?>">
                                     <button type="submit" class="btn btn-sm btn-custom text-uppercase">Remove</button>
                                 </form>
                             </td>
                             <td>
-                                <form action="<?php echo FRONT_ROOT ?>Cinema/ModifyCinema" method="POST">
+                                <form action="<?php echo FRONT_ROOT ?>Cinema/UpdateCinema" method="POST">
                                     <input type="hidden" name="id" placeholder="ID" value="<?php echo $cinema->getId() ?>">
                                     <button type="submit" class="btn btn-sm btn-custom text-uppercase">Modify</button>
                                 </form>

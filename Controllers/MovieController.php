@@ -6,7 +6,7 @@
     use Models\Genre as Genre;
     use DAO\MovieDAO as MovieDAO;
     use DAO\GenreDAO as GenreDAO;
-    use Contollers\CinemaController as CinemaController;
+    use Controllers\CinemaController as CinemaController;
 
     class MovieController{
 
