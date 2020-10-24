@@ -65,6 +65,7 @@
                     $movie->setPosterPath($posterPath);
                     $movie->setOverview($overview);
                     $movie->setGenres($genres);
+                    $movie->setOriginalLanguage($original_language);
 
                     array_push($this->movieList, $movie);
                 }

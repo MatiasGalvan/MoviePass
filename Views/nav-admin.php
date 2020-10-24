@@ -15,16 +15,22 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="<?php echo FRONT_ROOT ?>Cinema/ShowAddCinemaView">Add</a>
+        <a class="nav-link" href="<?php echo FRONT_ROOT ?>Cinema/ShowAddCinemaView">Add Cinema</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="<?php echo FRONT_ROOT ?>Cinema/ShowCinemas">List</a>
+        <a class="nav-link" href="<?php echo FRONT_ROOT ?>Cinema/ShowCinemas">Cinema List</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="<?php echo FRONT_ROOT ?>Movie/ReloadMovies">ReloadMovies</a>
+        <a class="nav-link" href="<?php echo FRONT_ROOT ?>Function/ShowAddFunctionsView">Add Functions</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="<?php echo FRONT_ROOT ?>Movie/SaveGenres">ReloadGenres</a>
+        <a class="nav-link" href="<?php echo FRONT_ROOT ?>Function/ShowFunctions">Functions List</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<?php echo FRONT_ROOT ?>Movie/ReloadMovies">Reload Movies</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<?php echo FRONT_ROOT ?>Movie/SaveGenres">Reload Genres</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="<?php echo FRONT_ROOT ?>Home/Logout">Logout</a>
