@@ -28,25 +28,41 @@
             require_once(VIEWS_PATH."billboard.php");
         }
 
+        public function ShowUpdateMovies($message = ""){
+            $this->RetrieveMovies();
+            $movieList = $this->movieList;
+            require_once(VIEWS_PATH."update-movies.php");
+        }
+
+        public function ShowUpdateGenres($message = ""){
+            $this->RetrieveMovies();
+            $genreList = $this->genreDAO->getAll();
+            require_once(VIEWS_PATH."update-genres.php");
+        }
+
         public function ReloadMovies(){
             if(isset($_SESSION['role']) && $_SESSION['role'] == 'admin'){
                 $moviesToDecode = file_get_contents("https://api.themoviedb.org/3/movie/now_playing?" . TMDb_KEY);
                 $result = json_decode($moviesToDecode, true);
                 $movies = $result['results'];
+                $i = 0;
                 foreach($movies as $movie){
-                    $m = new Movie();
-                    $m->setId($movie['id']);
-                    $m->setTitle($movie['title']);
-                    $m->setReleaseDate($movie['release_date']);
-                    $m->setPosterPath($movie['poster_path']);
-                    $m->setOverview($movie['overview']);
-                    $m->setOriginalLanguage($movie['original_language']);
-                    $genres = $movie['genre_ids'];
-                    $m->setGenres($genres);
-                    $this->movieDAO->Add($m);
+                    if(!($this->movieDAO->Exist($movie['id']))){
+                        $m = new Movie();
+                        $m->setId($movie['id']);
+                        $m->setTitle($movie['title']);
+                        $m->setReleaseDate($movie['release_date']);
+                        $m->setPosterPath($movie['poster_path']);
+                        $m->setOverview($movie['overview']);
+                        $m->setOriginalLanguage($movie['original_language']);
+                        $genres = $movie['genre_ids'];
+                        $m->setGenres($genres);
+                        $this->movieDAO->Add($m);
+                        $i++;
+                    }
                 }
-                $cinema = new CinemaController();
-                $cinema->ShowCinemas();
+                ($i != 0) ? $message = $i . " movies have been added." : $message = "The movies are already updated.";
+                $this->ShowUpdateMovies($message);
             }
         }
 
@@ -59,14 +75,18 @@
                 $genreToDecode = file_get_contents("https://api.themoviedb.org/3/genre/movie/list?" . TMDb_KEY);
                 $result = json_decode($genreToDecode, true);
                 $genres = $result['genres'];
+                $i = 0;
                 foreach ($genres as $value) {
-                    $genre = new Genre();
-                    $genre->setId($value['id']);
-                    $genre->setName($value['name']);
-                    $this->genreDAO->Add($genre);
+                    if(!($this->genreDAO->Exist($value['id']))){
+                        $genre = new Genre();
+                        $genre->setId($value['id']);
+                        $genre->setName($value['name']);
+                        $this->genreDAO->Add($genre);
+                        $i++;
+                    }
                 }
-                $cinema = new CinemaController();
-                $cinema->ShowCinemas();
+                ($i != 0) ? $message = $i . " genres have been added." : $message = "The genres are already updated.";
+                $this->ShowUpdateGenres($message);
             }
         }      
         

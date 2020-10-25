@@ -117,6 +117,29 @@
             }
         }
 
+        public function Exist($idApi){
+            try{
+                $response = false;
+                $query = "SELECT idApi FROM ".$this->tableName." WHERE idApi = :idApi";
+                $param['idApi'] = $idApi;
+
+                $this->connection = Connection::GetInstance();
+
+                $resultSet = $this->connection->Execute($query, $param);
+
+                foreach ($resultSet as $row){   
+                    if($row['idApi'] != null){
+                        $response = true;
+                    }
+                }
+
+                return $response;
+            }
+            catch(Exception $ex){
+                throw $ex;
+            }
+        }
+
     }
 
 ?>

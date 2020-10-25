@@ -27,10 +27,10 @@
         <a class="nav-link" href="<?php echo FRONT_ROOT ?>Function/ShowFunctions">Functions List</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="<?php echo FRONT_ROOT ?>Movie/ReloadMovies">Reload Movies</a>
+        <a class="nav-link" href="<?php echo FRONT_ROOT ?>Movie/ShowUpdateMovies">Update Movies</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="<?php echo FRONT_ROOT ?>Movie/SaveGenres">Reload Genres</a>
+        <a class="nav-link" href="<?php echo FRONT_ROOT ?>Movie/ShowUpdateGenres">Update Genres</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="<?php echo FRONT_ROOT ?>Home/Logout">Logout</a>
