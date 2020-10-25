@@ -35,6 +35,7 @@
                 $movies = $result['results'];
                 foreach($movies as $movie){
                     $m = new Movie();
+                    $m->setId($movie['id']);
                     $m->setTitle($movie['title']);
                     $m->setReleaseDate($movie['release_date']);
                     $m->setPosterPath($movie['poster_path']);

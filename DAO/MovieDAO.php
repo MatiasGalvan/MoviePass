@@ -2,74 +2,121 @@
 
     namespace DAO;
 
+    use \Exception as Exception;
+    use DAO\Connection as Connection;
+    use DAO\GenreDAO as GenreDAO;
     use DAO\IMovieDAO as IMovieDAO;
     use Models\Movie as Movie;
 
     class MovieDAO implements IMovieDAO{
 
-        private $movieList = array();
-        private $fileName;
+        private $connection;
+        private $tableName = "Movie";
+        private $tableGenXMov = "MovieXGenre";
+        private $genreDAO;
 
         public function __construct(){
-            $this->fileName = dirname(__DIR__)."/Data/movies.json";
+            $this->genreDAO = new GenreDAO();
         }
 
         public function Add(Movie $movie){
-            $this->RetrieveData();
-            array_push($this->movieList, $movie);
-            $this->SaveData();
+            try{
+                $query = "INSERT INTO ".$this->tableName." (idApi, title, releaseDate, posterPath, overview, originalLanguage) VALUES (:idApi, :title, :releaseDate, :posterPath, :overview, :originalLanguage);";
+                
+                $parameters["idApi"] = $movie->getId();
+                $parameters["title"] = $movie->getTitle();
+                $parameters["releaseDate"] = $movie->getReleaseDate();
+                $parameters["posterPath"] = $movie->getPosterPath();
+                $parameters["overview"] = $movie->getOverview();
+                $parameters["originalLanguage"] = $movie->getOriginalLanguage();                
+
+                $this->connection = Connection::GetInstance();
+
+                $this->connection->ExecuteNonQuery($query, $parameters);
+
+                $genres = $movie->getGenres();
+
+                foreach($genres as $genre){
+                    $this->AddGenre($genre, $movie->getId());
+                }
+            }
+            catch(Exception $ex){
+                throw $ex;
+            }
+        }
+
+        public function AddGenre($idGenre, $idMovie){
+            try{
+                if($this->genreDAO->Exist($idGenre)){
+                    $query = "INSERT INTO ".$this->tableGenXMov." (idGenre, idMovie) VALUES (:idGenre, :idMovie);";
+                    
+                    $parameters["idGenre"] = $idGenre;
+                    $parameters["idMovie"] = $idMovie;
+                    
+                    $this->connection = Connection::GetInstance();
+
+                    $this->connection->ExecuteNonQuery($query, $parameters);
+                }
+            }
+            catch(Exception $ex){
+                throw $ex;
+            }
+        }
+
+        public function GetGenres($idMovie){
+            try{
+                $genreList = array();
+
+                $query = "SELECT idGenre FROM ".$this->tableGenXMov." WHERE idMovie = :idMovie GROUP BY idGenre";
+
+                $parameters["idMovie"] = $idMovie;
+                    
+                $this->connection = Connection::GetInstance();
+
+                $genres = $this->connection->Execute($query, $parameters);
+
+                foreach($genres as $genre){
+                    array_push($genreList, $genre['idGenre']);
+                }
+
+                return $genreList;
+            }
+            catch(Exception $ex){
+                throw $ex;
+            }
         }
 
         public function GetAll(){
-            $this->RetrieveData();
-            return $this->movieList;
-        }
+            try{
+                $movieList = array();
 
-        private function SaveData(){
-            $arrayToEncode = array();
+                $query = "SELECT * FROM ".$this->tableName;
 
-            foreach ($this->movieList as $movie) {
-                $valuesArray['title'] = $movie->getTitle();
-                $valuesArray['release_date'] = $movie->getReleaseDate();
-                $valuesArray['poster_path'] = $movie->getPosterPath();
-                $valuesArray['overview'] = $movie->getOverview();
-                $valuesArray['original_language'] = $movie->getOriginalLanguage();
-                $valuesArray['genre_ids'] = $movie->getGenres();
-                array_push($arrayToEncode, $valuesArray);
-            }
+                $this->connection = Connection::GetInstance();
 
-            $jsonContent = json_encode($arrayToEncode, JSON_PRETTY_PRINT);
-
-            file_put_contents($this->fileName, $jsonContent);
-        }
-
-        private function RetrieveData(){
-            $this->movieList = array();
-
-            if(file_exists($this->fileName)){
-                $jsonContent = file_get_contents($this->fileName);
-
-                $arrayToDecode = ($jsonContent) ? json_decode($jsonContent, true) : array();
-
-                foreach($arrayToDecode as $valuesArray){
-                    $title = $valuesArray['title'];
-                    $releaseDate = $valuesArray['release_date'];
-                    $posterPath = $valuesArray['poster_path'];
-                    $overview = $valuesArray['overview'];
-                    $original_language = $valuesArray['original_language'];
-                    $genres = $valuesArray['genre_ids'];
+                $resultSet = $this->connection->Execute($query);
+                
+                foreach ($resultSet as $row){                
 
                     $movie = new Movie();
-                    $movie->setTitle($title);
-                    $movie->setReleaseDate($releaseDate);
-                    $movie->setPosterPath($posterPath);
-                    $movie->setOverview($overview);
-                    $movie->setGenres($genres);
+                    $movie->setId($row["idApi"]);
+                    $movie->setTitle($row["title"]);
+                    $movie->setReleaseDate($row["releaseDate"]);
+                    $movie->setPosterPath($row["posterPath"]);
+                    $movie->setOverview($row["overview"]);
+                    $movie->setOriginalLanguage($row["originalLanguage"]);
+                    $movie->setGenres($this->GetGenres($row["idApi"]));
 
-                    array_push($this->movieList, $movie);
+                    array_push($movieList, $movie);
                 }
+
+                return $movieList;
+            }
+            catch(Exception $ex){
+                throw $ex;
             }
         }
+
     }
 
 ?>
