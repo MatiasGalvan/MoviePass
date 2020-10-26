@@ -55,7 +55,7 @@
             return $this->billboard;
         }
         
-        public function setBillboard(MovieFunction $billboard){
+        public function setBillboard($billboard){
             $this->billboard = $billboard;
         }
 
