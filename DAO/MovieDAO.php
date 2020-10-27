@@ -86,6 +86,36 @@
             }
         }
 
+        public function GetById($idMovie){
+            if($this->Exist($idMovie)){
+                try{
+                    $query = "SELECT * FROM " . $this->tableName . " WHERE idApi = :idApi";
+
+                    $parameters["idApi"] = $idMovie;
+    
+                    $this->connection = Connection::GetInstance();
+    
+                    $result = $this->connection->Execute($query, $parameters);      
+
+                    foreach ($result as $row){                
+                        $movie = new Movie();
+                        $movie->setId($row["idApi"]);
+                        $movie->setTitle($row["title"]);
+                        $movie->setReleaseDate($row["releaseDate"]);
+                        $movie->setPosterPath($row["posterPath"]);
+                        $movie->setOverview($row["overview"]);
+                        $movie->setOriginalLanguage($row["originalLanguage"]);
+                        $movie->setGenres($this->GetGenres($row["idApi"]));
+                    }
+    
+                    return $movie;
+                }
+                catch(Exception $ex){
+                    throw $ex;
+                }
+            }
+        }
+
         public function GetAll(){
             try{
                 $movieList = array();

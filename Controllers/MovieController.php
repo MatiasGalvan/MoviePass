@@ -28,6 +28,13 @@
             require_once(VIEWS_PATH."billboard.php");
         }
 
+        public function ShowMovieDetails($idMovie, $message = ""){
+            $movie = new Movie();
+            $movie = $this->movieDAO->GetById($idMovie);
+            $genreList = $this->genreDAO->GetAll();
+            require_once(VIEWS_PATH."movie-details.php");
+        }
+
         public function ShowUpdateMovies($message = ""){
             $this->RetrieveMovies();
             $movieList = $this->movieList;

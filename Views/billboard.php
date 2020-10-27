@@ -1,5 +1,4 @@
 <?php
-    $imgUrl = "https://image.tmdb.org/t/p/w300";
     require_once(VIEWS_PATH."nav-client.php")
 ?>
 
@@ -51,13 +50,11 @@
             <div class="d-flex flex-row bd-highlight mb-3">   
                 <div class="row justify-content-around flex-grow-1">
                     <?php foreach ($movieList as $movie) { ?>
-                        <div class="card" style="width: 220px;">
-                            <img src="<?php echo $imgUrl . $movie->getPosterPath() ?>" class="card-img-top">
-                            <div class="card-body">
-                                <h5 class="card-title"><?php echo $movie->getTitle() ?></h5>
-                                <p class="card-subtitle mb-2 text-muted"><?php echo $movie->getReleaseDate() ?></p>
+                        <a href="<?php echo FRONT_ROOT ?>Movie/ShowMovieDetails?idMovie=<?php echo $movie->getId(); ?>">
+                            <div class="card" style="width: 220px;">
+                                <img src="<?php echo IMG_URL_300 . $movie->getPosterPath() ?>" class="card-img-top" alt="Image not found">
                             </div>
-                        </div>
+                        </a>
                     <?php } ?>  
                 </div> 
             </div>
