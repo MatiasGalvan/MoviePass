@@ -2,7 +2,7 @@
     require_once(VIEWS_PATH."nav-admin.php")
 ?>
 <main>
-    <div class="d-flex justify-content-center align-items-center login-container">
+    <div class="mt-5">
         <form action="<?php echo FRONT_ROOT ?>Cinema/ModifyCinema" method="POST" class="login-form text-center">
             <h1 class="mb-5 font-weight-light text-uppercase">UPDATE CINEMA</h1>
 

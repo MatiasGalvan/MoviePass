@@ -38,7 +38,7 @@
                             </label>
                         </div>
                     <?php   }?>
-                    <button type="submit" class="btn mt-3 btn-sm btn-custom btn-block text-uppercase">Filter</button>
+                    <button type="submit" class="btn mt-3 btn-sm btn-custom btn-block text-uppercase">Filter <i class="fas fa-filter"></i></button>
                 </form>
                 <?php
                     if(isset($message)) echo "<p class=\"message mt-2\">" . $message . "</p>";    

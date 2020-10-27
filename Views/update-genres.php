@@ -4,7 +4,7 @@
 
 <div class="container">
     <form action="<?php echo FRONT_ROOT ?>Movie/SaveGenres" method="post">
-        <button id="submitBtn" type="submit" class="btn mt-4 mb-2 btn-lg btn-custom btn-block text-uppercase">Update</button>
+        <button id="submitBtn" type="submit" class="btn mt-4 mb-2 btn-lg btn-custom btn-block text-uppercase">Update <i class="fas fa-sync-alt"></i></button>
     </form>
     <?php
         if(isset($message)){

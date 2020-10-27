@@ -30,16 +30,20 @@
                             <td><?php echo $cinema->getAddress() ?></td>
                             <td><?php echo $cinema->getCapacity() ?></td>
                             <td><?php echo $cinema->getTicketValue() ?></td>
-                            <td>
-                                <form action="<?php echo FRONT_ROOT ?>Cinema/RemoveCinema" method="POST">
-                                    <input type="hidden" name="id" placeholder="ID" value="<?php echo $cinema->getId() ?>">
-                                    <button type="submit" class="btn btn-sm btn-custom text-uppercase">Remove</button>
-                                </form>
-                            </td>
-                            <td>
+                            <td style="text-align: center;">
                                 <form action="<?php echo FRONT_ROOT ?>Cinema/UpdateCinema" method="POST">
                                     <input type="hidden" name="id" placeholder="ID" value="<?php echo $cinema->getId() ?>">
-                                    <button type="submit" class="btn btn-sm btn-custom text-uppercase">Modify</button>
+                                    <button type="submit" class="btn btn-warning">
+                                        Modify <i class="far fa-edit"></i>
+                                    </button>
+                                </form>
+                            </td>
+                            <td style="text-align: center;">
+                                <form action="<?php echo FRONT_ROOT ?>Cinema/RemoveCinema" method="POST">
+                                    <input type="hidden" name="id" placeholder="ID" value="<?php echo $cinema->getId() ?>">
+                                    <button type="submit" class="btn btn-danger">
+                                        Remove <i class="far fa-trash-alt"></i>
+                                    </button>
                                 </form>
                             </td>
                         </tr>
