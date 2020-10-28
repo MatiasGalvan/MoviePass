@@ -12,6 +12,10 @@
         private $connection;
         private $tableName = "Cinema";
 
+
+        public function __construct(){
+        }
+
         public function Exist($address){
             try{
                 $response = false;

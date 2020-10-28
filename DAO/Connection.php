@@ -46,7 +46,7 @@
                 $this->BindParameters($parameters, $queryType);
                 $this->pdoStatement->execute();
 
-                return $this->pdoStatement->rowCount();
+                return $this->pdo->lastInsertId();
             }
             catch(Exception $ex){
                 throw $ex;
