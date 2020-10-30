@@ -7,6 +7,7 @@
         private $date;
         private $start;    
         private $idMovie;
+        private $idCinema;
 
         public function getDate(){
             return $this->date;
@@ -32,6 +33,13 @@
             $this->idMovie = $idMovie;
         }
 
+        public function getIdCinema(){
+            return $this->idCinema;
+        }
+
+        public function setIdCinema($idCinema){
+            $this->idCinema = $idCinema;
+        }
     }
     
 ?>

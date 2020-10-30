@@ -23,6 +23,7 @@
         }
         
         public function ShowFunctions(){
+            $functionList = $this->MovieFunctionDAO->GetAll();
             require_once(VIEWS_PATH."functions-list.php");
         }
 

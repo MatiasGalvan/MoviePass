@@ -12,7 +12,6 @@
 
         private $connection;
         private $tableName = "MovieFunction";
-        private $tablefunctionXCinema = "CinemaXFunction";
         private $cinemaDAO;
 
 
@@ -22,40 +21,22 @@
 
         public function Add(MovieFunction $movieFunction,$idCinema){
             try{
-                $query = "INSERT INTO ".$this->tableName."(functionDate, startTime, idMovie) VALUES (:functionDate, :startTime, :idMovie);";
+                $query = "INSERT INTO ".$this->tableName."(functionDate, startTime, idMovie, idCinema) VALUES (:functionDate, :startTime, :idMovie, :idCinema);";
 
                 $parameters["functionDate"] = $movieFunction->getDate();
                 $parameters["startTime"] = $movieFunction->getStart();
                 $parameters["idMovie"] = $movieFunction->getMovieId();
+                $parameters["idCinema"] = $idCinema;
 
                 $this->connection = Connection::GetInstance();
 
                 $idFunction = $this->connection->ExecuteNonQuery($query, $parameters);
-
-                $this->AddCinema($idFunction,$idCinema);
             }
             catch(Exception $ex){
                 throw $ex;
             }
         }
 
-        public function AddCinema($idFunction, $idCinema){
-            try{
-                if($this->cinemaDAO->ExistID($idCinema)){
-                    $query = "INSERT INTO ".$this->tablefunctionXCinema." (idCinema, idFunction) VALUES (:idCinema, :idFunction);";
-                    $parameters["idCinema"] = $idCinema;
-                    $parameters["idFunction"] = $idFunction;
-                    
-                    $this->connection = Connection::GetInstance();
-
-                    $this->connection->ExecuteNonQuery($query, $parameters);
-                    
-                }
-            }
-            catch(Exception $ex){
-                throw $ex;
-            }
-        }
 
         public function GetAll(){
             try{
@@ -72,6 +53,7 @@
                     $movieFunction->setDate($row["functionDate"]);
                     $movieFunction->setStart($row["startTime"]);
                     $movieFunction->setMovieId($row["idMovie"]);
+                    $movieFunction->setIdCinema($row["idCinema"]);
 
                     array_push($movieFunctionList, $movieFunction);
                 }
