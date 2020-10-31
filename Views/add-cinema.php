@@ -14,12 +14,12 @@
                 value="<?php if(isset($data['address'])) echo $data['address']; ?>" required>
             </div>
             <div class="form-group">
-                <input type="number" name="capacity" class="form-control form-control-lg" placeholder="Capacity" 
-                value="<?php if(isset($data['capacity'])) echo $data['capacity']; ?>" required>
+                <input type="number" name="capacity" class="form-control form-control-lg" placeholder="Capacity"
+                min="0" max="9999" value="<?php if(isset($data['capacity'])) echo $data['capacity']; ?>" required>
             </div>
             <div class="form-group">
                 <input type="number" name="ticketValue" class="form-control form-control-lg" placeholder="Ticket value" 
-                value="<?php if(isset($data['ticketValue'])) echo $data['ticketValue']; ?>" required>
+                min="0" max="9999" value="<?php if(isset($data['ticketValue'])) echo $data['ticketValue']; ?>" required>
             </div>
             <button type="submit" class="btn mt-5 btn-lg btn-custom btn-block text-uppercase">Add Cinema</button>
             <?php

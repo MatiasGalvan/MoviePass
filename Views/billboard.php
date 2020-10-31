@@ -2,24 +2,6 @@
     require_once(VIEWS_PATH."nav-client.php")
 ?>
 
-<style>
-    .card-body{
-        padding: 0.75rem 1rem;
-    }
-    .card{
-        margin: 5px 10px;
-    }
-    .card-title{
-        color: black;
-    }
-    .custom-control-inline {
-        margin-left: 1em;
-    }
-    .btn-custom {
-        min-height: 20px;
-    }
-</style>
-
 <div class="p-5">
     <h3 class="mb-4">Now Playing Movies</h3>
     
@@ -52,7 +34,7 @@
                     <?php foreach ($movieList as $movie) { ?>
                         <a href="<?php echo FRONT_ROOT ?>Movie/ShowMovieDetails?idMovie=<?php echo $movie->getId(); ?>">
                             <div class="card" style="width: 220px;">
-                                <img src="<?php echo IMG_URL_300 . $movie->getPosterPath() ?>" class="card-img-top" alt="Image not found">
+                                <img src="<?php echo IMG_URL_300 . $movie->getPosterPath() ?>" class="card-img-top zoom" alt="Image not found">
                             </div>
                         </a>
                     <?php } ?>  

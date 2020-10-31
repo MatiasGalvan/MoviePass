@@ -1,0 +1,34 @@
+.card-body{
+    padding: 0.75rem 1rem;
+}
+
+.card{
+    margin: 0.4em auto;
+}
+
+.card-title{
+    color: black;
+}
+
+.custom-control-inline {
+    margin-left: 1em;
+}
+
+.btn-custom {
+    min-height: 20px;
+}
+
+.zoom{
+    transition: 0.3s ease;
+     -moz-transition: 0.3s ease; /* Firefox */
+     -webkit-transition: 0.3s ease; /* Chrome - Safari */
+     -o-transition: 0.3s ease; /* Opera */
+}
+
+.zoom:hover{
+    transform : scale(1.02);
+    -moz-transform : scale(1.02); /* Firefox */
+    -webkit-transform : scale(1.02); /* Chrome - Safari */
+    -o-transform : scale(1.02); /* Opera */
+    -ms-transform : scale(1.02); /* IE9 */
+}
