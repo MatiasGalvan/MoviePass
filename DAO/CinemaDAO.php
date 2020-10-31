@@ -11,6 +11,11 @@
 
         private $connection;
         private $tableName = "Cinema";
+        private $tableCinemaXFunction= "CinemaXFunction";
+
+
+        public function __construct(){
+        }
 
         public function Exist($address){
             try{
@@ -70,6 +75,29 @@
                 $this->connection = Connection::GetInstance();
 
                 $this->connection->ExecuteNonQuery($query, $parameters);
+            }
+            catch(Exception $ex){
+                throw $ex;
+            }
+        }
+
+        public function GetFunctions($idCinema){
+            try{
+                $functionsList = array();
+
+                $query = "SELECT idFunction FROM ".$this->tableCinemaXFunction." WHERE idCinema = :idCinema GROUP BY idFunction";
+
+                $parameters["idCinema"] = $idCinema;
+                    
+                $this->connection = Connection::GetInstance();
+
+                $functions = $this->connection->Execute($query, $parameters);
+
+                foreach($functions as $function){
+                    array_push($functionsList, $function['idFunction']);
+                }
+
+                return $functionsList;
             }
             catch(Exception $ex){
                 throw $ex;

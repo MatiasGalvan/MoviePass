@@ -4,9 +4,10 @@
 
     class MovieFunction{
 
-        private $date = date("Y-m-d");
-        private $start = time("H:i:s");     
-        private $movieId;
+        private $date;
+        private $start;    
+        private $idMovie;
+        private $idCinema;
 
         public function getDate(){
             return $this->date;
@@ -25,13 +26,20 @@
         }
 
         public function getMovieId(){
-            return $this->movieId;
+            return $this->idMovie;
         }
 
-        public function setMovieId($movieId){
-            $this->movieId = $movieId;
+        public function setMovieId($idMovie){
+            $this->idMovie = $idMovie;
         }
 
+        public function getIdCinema(){
+            return $this->idCinema;
+        }
+
+        public function setIdCinema($idCinema){
+            $this->idCinema = $idCinema;
+        }
     }
     
 ?>
