@@ -30,7 +30,6 @@
           Functions
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="<?php echo FRONT_ROOT ?>Function/ShowAddFunctionsView">Add Functions</a>
           <a class="dropdown-item" href="<?php echo FRONT_ROOT ?>Function/ShowFunctions">Functions List</a>
         </div>
       </li>

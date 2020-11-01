@@ -19,7 +19,7 @@
             $this->cinemaDAO = new CinemaDAO();
         }
 
-        public function Add(MovieFunction $movieFunction,$idCinema){
+        public function Add(MovieFunction $movieFunction, $idCinema){
             try{
                 $query = "INSERT INTO ".$this->tableName."(functionDate, startTime, idMovie, idCinema) VALUES (:functionDate, :startTime, :idMovie, :idCinema);";
 
@@ -36,7 +36,6 @@
                 throw $ex;
             }
         }
-
 
         public function GetAll(){
             try{
@@ -97,9 +96,39 @@
                     $movieFunction->setDate($row["functionDate"]);
                     $movieFunction->setStart($row["startTime"]);
                     $movieFunction->setMovieId($row["idMovie"]);
+                    $movieFunction->setIdCinema($row["idCinema"]);
                 }
 
                 return $movieFunction;
+            }
+            catch(Exception $ex){
+                throw $ex;
+            }
+        }
+
+        public function GetByMovie($idMovie){
+            try{
+                $movieFunctionList = array();
+
+                $query = "SELECT * FROM ".$this->tableName." WHERE idMovie = :idMovie";
+
+                $parameters['idMovie'] = $idMovie;
+
+                $this->connection = Connection::GetInstance();
+
+                $resultSet = $this->connection->Execute($query, $parameters);
+                
+                foreach ($resultSet as $row){    
+                    $movieFunction = new MovieFunction();            
+                    $movieFunction->setDate($row["functionDate"]);
+                    $movieFunction->setStart($row["startTime"]);
+                    $movieFunction->setMovieId($row["idMovie"]);
+                    $movieFunction->setIdCinema($row["idCinema"]);
+
+                    array_push($movieFunctionList, $movieFunction);
+                }
+
+                return $movieFunctionList;
             }
             catch(Exception $ex){
                 throw $ex;

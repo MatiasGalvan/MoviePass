@@ -4,19 +4,26 @@
 
     use Models\Movie as Movie;
     use Models\Genre as Genre;
+    use Models\Cinema as Cinema;
     use DAO\MovieDAO as MovieDAO;
     use DAO\GenreDAO as GenreDAO;
+    use DAO\MovieFunctionDAO as MovieFunctionDAO;
+    use DAO\CinemaDAO as CinemaDAO;
     use Controllers\CinemaController as CinemaController;
 
     class MovieController{
 
         private $genreDAO;
         private $movieDAO; 
+        private $functionDAO;
+        private $cinemaDAO;
         private $movieList = array();
 
         public function __construct(){
             $this->genreDAO = new GenreDAO();
             $this->movieDAO = new MovieDAO();
+            $this->functionDAO = new MovieFunctionDAO();
+            $this->cinemaDAO = new CinemaDAO();
         }
 
         public function ShowMovies($message = "", $movieList = array()){
@@ -32,6 +39,18 @@
             $movie = new Movie();
             $movie = $this->movieDAO->GetById($idMovie);
             $genreList = $this->genreDAO->GetAll();
+            $functionList = $this->functionDAO->getByMovie($idMovie);
+        
+            $cinemaList = array();
+
+            if(!empty($functionList)){
+                foreach ($functionList as $func){
+                    $cinema = new Cinema();
+                    $cinema = $this->cinemaDAO->GetById($func->getIdCinema());
+                    array_push($cinemaList, $cinema);
+                }
+            }
+
             require_once(VIEWS_PATH."movie-details.php");
         }
 

@@ -17,7 +17,7 @@
             $this->MovieDAO = new MovieDAO();
         }
 
-        public function ShowAddFunctionView($idCinema="",$data = array(), $errors = array(), $message = ""){
+        public function ShowAddFunctionView($idCinema = "", $data = array(), $errors = array(), $message = ""){
             $movieList = $this->MovieDAO->GetAll();
             require_once(VIEWS_PATH."add-functions.php");
         }
@@ -27,14 +27,14 @@
             require_once(VIEWS_PATH."functions-list.php");
         }
 
-        public function AddFunction($date,$start,$idMovie,$idCinema){
+        public function AddFunction($date, $start, $idMovie, $idCinema){
 
                 $MovieFunction = new MovieFunction();
                 $MovieFunction->setDate($date);
                 $MovieFunction->setStart($start);
                 $MovieFunction->setMovieId($idMovie);
                 
-                $this->MovieFunctionDAO->Add($MovieFunction,$idCinema);
+                $this->MovieFunctionDAO->Add($MovieFunction, $idCinema);
     
                 $this->ShowAddFunctionView(array(), array(), "Function added successfully");
         }

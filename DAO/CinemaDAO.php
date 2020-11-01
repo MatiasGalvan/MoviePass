@@ -11,8 +11,7 @@
 
         private $connection;
         private $tableName = "Cinema";
-        private $tableCinemaXFunction= "CinemaXFunction";
-
+        private $tableFunctions = "MovieFunction";
 
         public function __construct(){
         }
@@ -85,7 +84,7 @@
             try{
                 $functionsList = array();
 
-                $query = "SELECT idFunction FROM ".$this->tableCinemaXFunction." WHERE idCinema = :idCinema GROUP BY idFunction";
+                $query = "SELECT idFunction FROM " . $this->tableFunctions . " WHERE idCinema = :idCinema";
 
                 $parameters["idCinema"] = $idCinema;
                     
@@ -122,6 +121,7 @@
                     $cinema->setAddress($row["address"]);
                     $cinema->setCapacity($row["capacity"]);
                     $cinema->setTicketValue($row["ticketValue"]);
+                    $cinema->setBillboard($this->GetFunctions($row["idCinema"]));
 
                     array_push($cinemaList, $cinema);
                 }
@@ -168,13 +168,13 @@
             }
         }
 
-        public function GetById($id){
+        public function GetById($idCinema){
             try{
                 $cinema = new Cinema();
 
                 $query = "SELECT * FROM ".$this->tableName." WHERE idCinema = :idCinema";
 
-                $parameters['idCinema'] = $id;
+                $parameters['idCinema'] = $idCinema;
 
                 $this->connection = Connection::GetInstance();
 
@@ -187,7 +187,8 @@
                     $cinema->setAddress($row["address"]);
                     $cinema->setCapacity($row["capacity"]);
                     $cinema->setTicketValue($row["ticketValue"]);
-
+                    #$cinema->setBillboard($this->GetFunctions($row["idCinema"]));
+                    
                 }
 
                 return $cinema;

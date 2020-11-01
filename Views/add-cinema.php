@@ -24,7 +24,7 @@
             <button type="submit" class="btn mt-5 btn-lg btn-custom btn-block text-uppercase">Add Cinema</button>
             <?php
             if(isset($errors)){
-                echo "<ul>";
+                echo "<ul class = \"mt-3\">";
                 foreach ($errors as $error){
                     echo "<li class=\"message\">" . $error . "</li>";
                 }
