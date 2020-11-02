@@ -22,6 +22,18 @@
             </div>
             <input type="hidden" name="id" placeholder="ID" value="<?php echo $idCinema ?>">
             <button type="submit" class="btn mt-5 btn-lg btn-custom btn-block text-uppercase">Add Function</button>
+            <?php
+            if(isset($errors)){
+                echo "<ul class = \"mt-3\">";
+                foreach ($errors as $error){
+                    echo "<li class=\"message\">" . $error . "</li>";
+                }
+                echo "</ul>";
+            }
+            if(isset($message)){
+                echo "<p class=\"message\">" . $message . "</p>";
+            }
+            ?>       
         </form>
 
     </div>

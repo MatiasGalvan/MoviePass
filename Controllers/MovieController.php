@@ -55,13 +55,11 @@
         }
 
         public function ShowUpdateMovies($message = ""){
-            $this->RetrieveMovies();
-            $movieList = $this->movieList;
+            $movieList = $this->movieDAO->GetAll();
             require_once(VIEWS_PATH."update-movies.php");
         }
 
         public function ShowUpdateGenres($message = ""){
-            $this->RetrieveMovies();
             $genreList = $this->genreDAO->getAll();
             require_once(VIEWS_PATH."update-genres.php");
         }
@@ -93,7 +91,14 @@
         }
 
         public function RetrieveMovies(){
-            $this->movieList = $this->movieDAO->GetAll();
+            $movieList = $this->movieDAO->GetAll();
+            $this->movieList = array();
+
+            foreach($movieList as $movie){
+                if($this->functionDAO->ExistsByMovie($movie->getId())){
+                    array_push($this->movieList, $movie);
+                }
+            }
         }
         
         public function SaveGenres(){
@@ -117,25 +122,47 @@
         }      
         
         public function FilterMovies(){
+            $message = "";
+            $filteredMovies = array();
 
             if(isset($_POST['genres'])){
                 $this->RetrieveMovies();
                 $filteredMovies = array();
                 $filterList = $_POST['genres'];
-                $message = "";
+                
                 
                 foreach($this->movieList as $movie){
                     $result = array_intersect($filterList, $movie->getGenres());
                     if(count($result) == count($filterList)) array_push($filteredMovies, $movie);
                 }
 
-                if(empty($filteredMovies)) $message = "There are no movies with the specified genres";
+                if(empty($filteredMovies)){
+                    $message = "There are no movies with the specified genres";
+                }
+            }
 
-                $this->ShowMovies($message, $filteredMovies);
+            if(isset($_POST['date']) && $_POST['date'] != ""){
+                if(empty($filteredMovies)){
+                    $this->RetrieveMovies();
+                    $filteredMovies = $this->movieList;
+                }
+                $filteredMovies = $this->FilterDate($filteredMovies, $_POST['date']);
+                if(empty($filteredMovies)){
+                    $message = "There are no movies in the specified date";
+                }
             }
-            else{
-                $this->ShowMovies();
+
+            $this->ShowMovies($message, $filteredMovies);
+        }
+
+        private function FilterDate($filteredMovies, $date){
+            $newFilter = array();
+            foreach($filteredMovies as $movie){
+                if($this->functionDAO->GetByDate($movie->getId(), $date)){
+                    array_push($newFilter, $movie);
+                }
             }
+            return $newFilter;
         }
         
     }

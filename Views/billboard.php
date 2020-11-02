@@ -8,23 +8,26 @@
     <div class="row">
 
         <div class="col-2">
-            <h5 class="mb-3">Genres List</h5>
-                <form action="<?php echo FRONT_ROOT ?>Movie/FilterMovies" METHOD="Post">
-                    <?php  foreach($genreList as $genre){
-                        $id = $genre->getId();
-                    ?>
-                        <div class="custom-control-inline custom-checkbox">
-                            <input type="checkbox" name="genres[]" class="custom-control-input" id="<?php echo $id; ?>" value="<?php echo $id; ?>">
-                            <label class="custom-control-label" for="<?php echo $id; ?>">
-                                <?php echo $genre->getName() ?>
-                            </label>
-                        </div>
-                    <?php   }?>
-                    <button type="submit" class="btn mt-3 btn-sm btn-custom btn-block text-uppercase">Filter <i class="fas fa-filter"></i></button>
-                </form>
-                <?php
-                    if(isset($message)) echo "<p class=\"message mt-2\">" . $message . "</p>";    
+            <h4 class="mb-3">Filter Movies</h4>
+            <form action="<?php echo FRONT_ROOT ?>Movie/FilterMovies" METHOD="Post">
+                <h6 class="mt-3 mb-3">Date</h6>
+                <input type="date" name="date" id="date" class="form-control form-control-sm">
+                <h6 class="mt-3 mb-3">Genres</h6>
+                <?php  foreach($genreList as $genre){
+                    $id = $genre->getId();
                 ?>
+                    <div class="custom-control-inline custom-checkbox">                        
+                        <input type="checkbox" name="genres[]" class="custom-control-input" id="<?php echo $id; ?>" value="<?php echo $id; ?>">
+                        <label class="custom-control-label" for="<?php echo $id; ?>">
+                            <?php echo $genre->getName() ?>
+                        </label>
+                    </div>
+                <?php   }?>
+                <button type="submit" class="btn mt-3 btn-sm btn-custom btn-block text-uppercase">Filter <i class="fas fa-filter"></i></button>
+            </form>
+            <?php
+                if(isset($message)) echo "<p class=\"message mt-2\">" . $message . "</p>";    
+            ?>
         </div>
 
         <div class="col-10">

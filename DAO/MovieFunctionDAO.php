@@ -135,6 +135,53 @@
             }
         }
 
+        public function GetByDate($idMovie, $date){
+            try{
+                $response = false;
+
+                $query = "SELECT * FROM ".$this->tableName." WHERE idMovie = :idMovie AND functionDate = :functionDate";
+
+                $parameters['idMovie'] = $idMovie;
+                $parameters['functionDate'] = $date;
+
+                $this->connection = Connection::GetInstance();
+
+                $resultSet = $this->connection->Execute($query, $parameters);
+                
+                foreach ($resultSet as $row){  
+                    $response = true;                 
+                }
+
+                return $response;
+            }
+            catch(Exception $ex){
+                throw $ex;
+            }
+        }
+
+        public function ExistsByMovie($idMovie){
+            try{
+                $response = false;
+                $query = "SELECT * FROM ".$this->tableName." WHERE idMovie = :idMovie";
+                $parameters['idMovie'] = $idMovie;
+
+                $this->connection = Connection::GetInstance();
+
+                $resultSet = $this->connection->Execute($query, $parameters);
+                
+                foreach ($resultSet as $row){    
+                    if($row["idMovie"] != null){
+                        $response = true;
+                    }
+                }
+
+                return $response;
+            }
+            catch(Exception $ex){
+                throw $ex;
+            }
+        }
+
     }
 
 ?>
