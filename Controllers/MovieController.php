@@ -124,7 +124,7 @@
         }
         
         public function SaveGenres(){
-            if(isset($_SESSION['role']) && $_SESSION['role'] == 'admin'){
+            if($this->utils->ValidateAdmin()){
                 $genreToDecode = file_get_contents("https://api.themoviedb.org/3/genre/movie/list?" . TMDb_KEY);
                 $result = json_decode($genreToDecode, true);
                 $genres = $result['genres'];
@@ -140,6 +140,10 @@
                 }
                 ($i != 0) ? $message = $i . " genres have been added." : $message = "The genres are already updated.";
                 $this->ShowUpdateGenres($message);
+            }
+            else{
+                $home = new HomeController();
+                $home->Logout("You are not allowed to see this page");
             }
         }      
         

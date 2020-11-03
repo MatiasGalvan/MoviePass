@@ -6,18 +6,21 @@
     use DAO\MovieFunctionDAO as MovieFunctionDAO;
     use DAO\MovieDAO as MovieDAO;
     use DAO\CinemaDAO as CinemaDAO;
-    use Controllers\CinemaController as CinemaController;    
+    use Controllers\CinemaController as CinemaController;   
+    use Utils\Utils as Utils; 
 
     class FunctionController{
 
         private $MovieFunctionDAO;
         private $MovieDAO;
         private $CinemaDAO;
+        private $utils;
 
         public function __construct(){
             $this->MovieFunctionDAO = new MovieFunctionDAO();
             $this->MovieDAO = new MovieDAO();
             $this->CinemaDAO = new CinemaDAO();
+            $this->utils = new Utils();
         }
 
         public function ShowAddFunctionView($idCinema = "", $data = array(), $errors = array(), $message = ""){
@@ -60,18 +63,8 @@
 
         private function checkData($date){
             $errors = array();
-            if (!$this->checkDate($date)) array_push($errors, "Date cannot be earlier than current.");
+            if (!$this->utils->checkDate($date)) array_push($errors, "Date cannot be earlier than current.");
             return $errors;
-        }
-
-        private function checkDate($date){
-            $response = true;
-            $time = time();
-            $currentDate = date("Y-m-d", $time);
-            
-            if($date < $currentDate) $response = false;
-
-            return $response;
         }
 
     }
