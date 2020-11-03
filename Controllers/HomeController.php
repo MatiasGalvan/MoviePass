@@ -91,9 +91,9 @@
             }
         }
 
-        public function Logout(){
+        public function Logout($message = ""){
             session_destroy();
-            $this->ShowLoginView();
+            $this->ShowLoginView($message);
         }
 
         private function checkData($name, $lastname, $dni, $email, $password){

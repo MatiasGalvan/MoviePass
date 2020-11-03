@@ -5,25 +5,34 @@
     use Models\MovieFunction as MovieFunction;
     use DAO\MovieFunctionDAO as MovieFunctionDAO;
     use DAO\MovieDAO as MovieDAO;
-    
+    use DAO\CinemaDAO as CinemaDAO;
+    use Controllers\CinemaController as CinemaController;    
 
     class FunctionController{
 
         private $MovieFunctionDAO;
         private $MovieDAO;
+        private $CinemaDAO;
 
         public function __construct(){
             $this->MovieFunctionDAO = new MovieFunctionDAO();
             $this->MovieDAO = new MovieDAO();
+            $this->CinemaDAO = new CinemaDAO();
         }
 
         public function ShowAddFunctionView($idCinema = "", $data = array(), $errors = array(), $message = ""){
-            $movieList = $this->MovieDAO->GetAll();
-            require_once(VIEWS_PATH."add-functions.php");
+            if($this->CinemaDAO->ExistID($idCinema)){
+                $movieList = $this->MovieDAO->GetAll();
+                require_once(VIEWS_PATH."add-functions.php");
+            }
+            else{
+                $cinemas = new CinemaController();
+                $cinemas->ShowCinemas("A valid ID was not sent");
+            }
         }
         
         public function ShowFunctions(){
-            $functionList = $this->MovieFunctionDAO->GetAll();
+            $cinemaList = $this->CinemaDAO->GetAll();
             require_once(VIEWS_PATH."functions-list.php");
         }
 

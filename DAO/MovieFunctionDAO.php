@@ -6,17 +6,14 @@
     use DAO\Connection as Connection;
     use DAO\IMovieFunctionDAO as IMovieFunctionDAO;
     use Models\MovieFunction as MovieFunction;
-    use DAO\CinemaDAO as CinemaDAO;
 
     class MovieFunctionDAO{
 
         private $connection;
         private $tableName = "MovieFunction";
-        private $cinemaDAO;
 
 
         public function __construct(){
-            $this->cinemaDAO = new CinemaDAO();
         }
 
         public function Add(MovieFunction $movieFunction, $idCinema){
@@ -176,6 +173,34 @@
                 }
 
                 return $response;
+            }
+            catch(Exception $ex){
+                throw $ex;
+            }
+        }
+
+        public function GetFunctions($idCinema){
+            try{
+                $functionsList = array();
+
+                $query = "SELECT * FROM " . $this->tableName . " WHERE idCinema = :idCinema";
+
+                $parameters["idCinema"] = $idCinema;
+                    
+                $this->connection = Connection::GetInstance();
+
+                $functions = $this->connection->Execute($query, $parameters);
+
+                foreach($functions as $function){
+                    $func = new MovieFunction();
+                    $func->setDate($function["functionDate"]);
+                    $func->setStart($function["startTime"]);
+                    $func->setMovieId($function["idMovie"]);
+                    $func->setIdCinema($function["idCinema"]);
+                    array_push($functionsList, $func);
+                }
+
+                return $functionsList;
             }
             catch(Exception $ex){
                 throw $ex;

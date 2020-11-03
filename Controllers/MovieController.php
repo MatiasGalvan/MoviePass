@@ -10,6 +10,8 @@
     use DAO\MovieFunctionDAO as MovieFunctionDAO;
     use DAO\CinemaDAO as CinemaDAO;
     use Controllers\CinemaController as CinemaController;
+    use Controllers\HomeController as HomeController;
+    use Utils\Utils as Utils;
 
     class MovieController{
 
@@ -17,6 +19,7 @@
         private $movieDAO; 
         private $functionDAO;
         private $cinemaDAO;
+        private $utils;
         private $movieList = array();
 
         public function __construct(){
@@ -24,6 +27,7 @@
             $this->movieDAO = new MovieDAO();
             $this->functionDAO = new MovieFunctionDAO();
             $this->cinemaDAO = new CinemaDAO();
+            $this->utils = new Utils();
         }
 
         public function ShowMovies($message = "", $movieList = array()){
@@ -36,20 +40,34 @@
         }
 
         public function ShowMovieDetails($idMovie, $message = ""){
+            $aux = array();
+
             $movie = new Movie();
             $movie = $this->movieDAO->GetById($idMovie);
-            $genreList = $this->genreDAO->GetAll();
-            $functionList = $this->functionDAO->getByMovie($idMovie);
-        
-            $cinemaList = array();
 
-            if(!empty($functionList)){
-                foreach ($functionList as $func){
-                    $cinema = new Cinema();
-                    $cinema = $this->cinemaDAO->GetById($func->getIdCinema());
-                    array_push($cinemaList, $cinema);
+            $cinemaList = $this->cinemaDAO->GetAll();
+            $genreList = $this->genreDAO->GetAll();
+
+            foreach($cinemaList as $cinema){
+                $functionList = array();
+                $flag = false;
+                if(!empty($cinema->getBillboard())){
+
+                    foreach($cinema->getBillboard() as $function){
+                        if($function->getMovieId() == $idMovie){
+                            array_push($functionList, $function);
+                            $flag = true;
+                        }
+                    }
+
+                    if($flag){
+                        $cinema->setBillboard($functionList);
+                        array_push($aux, $cinema);
+                    }
                 }
             }
+
+            $cinemaList = $aux;
 
             require_once(VIEWS_PATH."movie-details.php");
         }
@@ -64,8 +82,19 @@
             require_once(VIEWS_PATH."update-genres.php");
         }
 
+        public function RetrieveMovies(){
+            $movieList = $this->movieDAO->GetAll();
+            $this->movieList = array();
+
+            foreach($movieList as $movie){
+                if($this->functionDAO->ExistsByMovie($movie->getId())){
+                    array_push($this->movieList, $movie);
+                }
+            }
+        }
+
         public function ReloadMovies(){
-            if(isset($_SESSION['role']) && $_SESSION['role'] == 'admin'){
+            if($this->utils->ValidateAdmin()){
                 $moviesToDecode = file_get_contents("https://api.themoviedb.org/3/movie/now_playing?" . TMDb_KEY);
                 $result = json_decode($moviesToDecode, true);
                 $movies = $result['results'];
@@ -88,16 +117,9 @@
                 ($i != 0) ? $message = $i . " movies have been added." : $message = "The movies are already updated.";
                 $this->ShowUpdateMovies($message);
             }
-        }
-
-        public function RetrieveMovies(){
-            $movieList = $this->movieDAO->GetAll();
-            $this->movieList = array();
-
-            foreach($movieList as $movie){
-                if($this->functionDAO->ExistsByMovie($movie->getId())){
-                    array_push($this->movieList, $movie);
-                }
+            else{
+                $home = new HomeController();
+                $home->Logout("You are not allowed to see this page");
             }
         }
         
@@ -124,6 +146,7 @@
         public function FilterMovies(){
             $message = "";
             $filteredMovies = array();
+            $flag = false;
 
             if(isset($_POST['genres'])){
                 $this->RetrieveMovies();
@@ -138,10 +161,11 @@
 
                 if(empty($filteredMovies)){
                     $message = "There are no movies with the specified genres";
+                    $flag = true;
                 }
             }
 
-            if(isset($_POST['date']) && $_POST['date'] != ""){
+            if(isset($_POST['date']) && $_POST['date'] != "" && $flag == false){
                 if(empty($filteredMovies)){
                     $this->RetrieveMovies();
                     $filteredMovies = $this->movieList;

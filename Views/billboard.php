@@ -9,6 +9,9 @@
 
         <div class="col-2">
             <h4 class="mb-3">Filter Movies</h4>
+            <?php
+                if(isset($message)) echo "<p class=\"message mt-2\">" . $message . "</p>";    
+            ?>
             <form action="<?php echo FRONT_ROOT ?>Movie/FilterMovies" METHOD="Post">
                 <h6 class="mt-3 mb-3">Date</h6>
                 <input type="date" name="date" id="date" class="form-control form-control-sm">
@@ -25,9 +28,6 @@
                 <?php   }?>
                 <button type="submit" class="btn mt-3 btn-sm btn-custom btn-block text-uppercase">Filter <i class="fas fa-filter"></i></button>
             </form>
-            <?php
-                if(isset($message)) echo "<p class=\"message mt-2\">" . $message . "</p>";    
-            ?>
         </div>
 
         <div class="col-10">
