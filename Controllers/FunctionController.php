@@ -5,30 +5,45 @@
     use Models\MovieFunction as MovieFunction;
     use DAO\MovieFunctionDAO as MovieFunctionDAO;
     use DAO\MovieDAO as MovieDAO;
-    
+    use DAO\CinemaDAO as CinemaDAO;
+    use Controllers\CinemaController as CinemaController;   
+    use Utils\Utils as Utils; 
 
     class FunctionController{
 
         private $MovieFunctionDAO;
         private $MovieDAO;
+        private $CinemaDAO;
+        private $utils;
 
         public function __construct(){
             $this->MovieFunctionDAO = new MovieFunctionDAO();
             $this->MovieDAO = new MovieDAO();
+            $this->CinemaDAO = new CinemaDAO();
+            $this->utils = new Utils();
         }
 
         public function ShowAddFunctionView($idCinema = "", $data = array(), $errors = array(), $message = ""){
-            $movieList = $this->MovieDAO->GetAll();
-            require_once(VIEWS_PATH."add-functions.php");
+            if($this->CinemaDAO->ExistID($idCinema)){
+                $movieList = $this->MovieDAO->GetAll();
+                require_once(VIEWS_PATH."add-functions.php");
+            }
+            else{
+                $cinemas = new CinemaController();
+                $cinemas->ShowCinemas("A valid ID was not sent");
+            }
         }
         
         public function ShowFunctions(){
-            $functionList = $this->MovieFunctionDAO->GetAll();
+            $cinemaList = $this->CinemaDAO->GetAll();
             require_once(VIEWS_PATH."functions-list.php");
         }
 
         public function AddFunction($date, $start, $idMovie, $idCinema){
 
+            $errors = $this->checkData($date);
+
+            if(count($errors) == 0){
                 $MovieFunction = new MovieFunction();
                 $MovieFunction->setDate($date);
                 $MovieFunction->setStart($start);
@@ -36,22 +51,20 @@
                 
                 $this->MovieFunctionDAO->Add($MovieFunction, $idCinema);
     
-                $this->ShowAddFunctionView(array(), array(), "Function added successfully");
-        }
-
-        private function checkData($date, $start, $idMovie){
-            $errors = array();
-            if (!$this->checkNumber($idMovie)) array_push($errors, "Invalid format. Value must be between 1 to 4 digits.");
-            return $errors;
-        }
-
-        private function checkNumber($value){
-            $regularNumber = "/(^[0-9]{1,4}$)/";
-            $response = false;
-            if (preg_match($regularNumber, $value) && $value > 0){
-                $response = true;
+                $this->ShowAddFunctionView($idCinema, array(), array(), "Function added successfully");
             }
-            return $response; 
+            else{
+                $data['date'] = $date;
+                $data['start'] = $start;
+                $data['idMovie'] = $idMovie;
+                $this->ShowAddFunctionView($idCinema, $data, $errors);
+            }
+        }
+
+        private function checkData($date){
+            $errors = array();
+            if (!$this->utils->checkDate($date)) array_push($errors, "Date cannot be earlier than current.");
+            return $errors;
         }
 
     }

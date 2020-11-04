@@ -6,14 +6,16 @@
     use DAO\Connection as Connection;
     use DAO\ICinemaDAO as ICinemaDAO;
     use Models\Cinema as Cinema;
+    use DAO\MovieFunctionDAO as MovieFunctionDAO;
 
     class CinemaDAO implements ICinemaDAO{
 
         private $connection;
         private $tableName = "Cinema";
-        private $tableFunctions = "MovieFunction";
+        private $functions;
 
         public function __construct(){
+            $this->functions = new MovieFunctionDAO();
         }
 
         public function Exist($address){
@@ -80,29 +82,6 @@
             }
         }
 
-        public function GetFunctions($idCinema){
-            try{
-                $functionsList = array();
-
-                $query = "SELECT idFunction FROM " . $this->tableFunctions . " WHERE idCinema = :idCinema";
-
-                $parameters["idCinema"] = $idCinema;
-                    
-                $this->connection = Connection::GetInstance();
-
-                $functions = $this->connection->Execute($query, $parameters);
-
-                foreach($functions as $function){
-                    array_push($functionsList, $function['idFunction']);
-                }
-
-                return $functionsList;
-            }
-            catch(Exception $ex){
-                throw $ex;
-            }
-        }
-
         public function GetAll(){
             try{
                 $cinemaList = array();
@@ -121,7 +100,7 @@
                     $cinema->setAddress($row["address"]);
                     $cinema->setCapacity($row["capacity"]);
                     $cinema->setTicketValue($row["ticketValue"]);
-                    $cinema->setBillboard($this->GetFunctions($row["idCinema"]));
+                    $cinema->setBillboard($this->functions->GetFunctions($row["idCinema"]));
 
                     array_push($cinemaList, $cinema);
                 }
@@ -187,7 +166,7 @@
                     $cinema->setAddress($row["address"]);
                     $cinema->setCapacity($row["capacity"]);
                     $cinema->setTicketValue($row["ticketValue"]);
-                    #$cinema->setBillboard($this->GetFunctions($row["idCinema"]));
+                    $cinema->setBillboard($this->functions->GetFunctions($row["idCinema"]));
                     
                 }
 

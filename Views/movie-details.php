@@ -46,53 +46,47 @@
             </p>
 
             
-            <h5 class="mt-3 mb-3">Functions</h5>
-            <div class="justify-content-center">
-                <div class="table-responsive">
-                    <table class="table table-striped table-bordered table-hover">
-                            <thead>
-                                <th>Date</th>
-                                <th>Start time</th>
-                                <th>Cinema</th>
-                            </thead>
-                            <tbody >
-                                <?php foreach($functionList as $function){ ?>
-                                <tr>
-                                    <td class="align-middle"><?php echo $function->getDate() ?></td>
-                                    <td class="align-middle"><?php echo $function->getStart() ?></td>
-                                    <td class="align-middle">
-                                        <?php 
-                                            $i = 0;
-                                            $flag = false;
-                                            $response = "";
-                                            while($flag == false && $i < count($cinemaList)){
-                                                if($function->getIdCinema() == $cinemaList[$i]->getId()){
-                                                    $flag = true;
-                                                    $response =  $cinemaList[$i]->getName();
-                                                }
-                                                $i++;
-                                            }
-                                            echo $response;
-                                        ?>
-                                    </td>
-                                </tr>
-                                <?php } 
+            <h5 class="mt-3 mb-3">Cinemas</h5>
 
-                                    if(empty($functionList)){
-                                        $alt = 
-                                        "
+            <div class="row justify-content-center">
+                <div class="table-responsive">
+                    <div id="accordion">
+                        <?php foreach ($cinemaList as $cinema) { 
+                            $name = $cinema->getName();
+                        ?>
+
+                        <div class="card">
+                            <a class="card-link custom-anchor" data-toggle="collapse" href="#<?php echo $name ?>">        
+                                <div class="card-header flex">
+                                    <?php echo $name . " - " . $cinema->getAddress(); ?>
+                                </div>
+                            </a>
+                            
+                            <div id="<?php echo $name ?>" class="collapse" data-parent="#accordion">
+                                <div class="card-body">
+                 
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <th>Date</th>
+                                            <th>Start time</th>
+                                        </thead>
+                                        <tbody >
+                                            <?php foreach($cinema->getBillboard() as $function){ ?>
                                             <tr>
-                                                <td colspan=\"3\" style=\"text-align: center;\">No functions available.</td>
+                                                <td class="align-middle"><?php echo $function->getDate() ?></td>
+                                                <td class="align-middle"><?php echo $function->getStart() ?></td>
                                             </tr>
-                                        ";
-                                        echo $alt;
-                                    }
-                                ?>
-                            </tbody>
-                    </table>
+                                            <?php } ?>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                        <?php } ?>
+                    </div> 
                 </div>
             </div>
-
 
         </div>
 

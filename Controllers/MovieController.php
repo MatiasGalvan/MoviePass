@@ -10,6 +10,8 @@
     use DAO\MovieFunctionDAO as MovieFunctionDAO;
     use DAO\CinemaDAO as CinemaDAO;
     use Controllers\CinemaController as CinemaController;
+    use Controllers\HomeController as HomeController;
+    use Utils\Utils as Utils;
 
     class MovieController{
 
@@ -17,6 +19,7 @@
         private $movieDAO; 
         private $functionDAO;
         private $cinemaDAO;
+        private $utils;
         private $movieList = array();
 
         public function __construct(){
@@ -24,6 +27,7 @@
             $this->movieDAO = new MovieDAO();
             $this->functionDAO = new MovieFunctionDAO();
             $this->cinemaDAO = new CinemaDAO();
+            $this->utils = new Utils();
         }
 
         public function ShowMovies($message = "", $movieList = array()){
@@ -36,38 +40,61 @@
         }
 
         public function ShowMovieDetails($idMovie, $message = ""){
+            $aux = array();
+
             $movie = new Movie();
             $movie = $this->movieDAO->GetById($idMovie);
-            $genreList = $this->genreDAO->GetAll();
-            $functionList = $this->functionDAO->getByMovie($idMovie);
-        
-            $cinemaList = array();
 
-            if(!empty($functionList)){
-                foreach ($functionList as $func){
-                    $cinema = new Cinema();
-                    $cinema = $this->cinemaDAO->GetById($func->getIdCinema());
-                    array_push($cinemaList, $cinema);
+            $cinemaList = $this->cinemaDAO->GetAll();
+            $genreList = $this->genreDAO->GetAll();
+
+            foreach($cinemaList as $cinema){
+                $functionList = array();
+                $flag = false;
+                if(!empty($cinema->getBillboard())){
+
+                    foreach($cinema->getBillboard() as $function){
+                        if($function->getMovieId() == $idMovie){
+                            array_push($functionList, $function);
+                            $flag = true;
+                        }
+                    }
+
+                    if($flag){
+                        $cinema->setBillboard($functionList);
+                        array_push($aux, $cinema);
+                    }
                 }
             }
+
+            $cinemaList = $aux;
 
             require_once(VIEWS_PATH."movie-details.php");
         }
 
         public function ShowUpdateMovies($message = ""){
-            $this->RetrieveMovies();
-            $movieList = $this->movieList;
+            $movieList = $this->movieDAO->GetAll();
             require_once(VIEWS_PATH."update-movies.php");
         }
 
         public function ShowUpdateGenres($message = ""){
-            $this->RetrieveMovies();
             $genreList = $this->genreDAO->getAll();
             require_once(VIEWS_PATH."update-genres.php");
         }
 
+        public function RetrieveMovies(){
+            $movieList = $this->movieDAO->GetAll();
+            $this->movieList = array();
+
+            foreach($movieList as $movie){
+                if($this->functionDAO->ExistsByMovie($movie->getId())){
+                    array_push($this->movieList, $movie);
+                }
+            }
+        }
+
         public function ReloadMovies(){
-            if(isset($_SESSION['role']) && $_SESSION['role'] == 'admin'){
+            if($this->utils->ValidateAdmin()){
                 $moviesToDecode = file_get_contents("https://api.themoviedb.org/3/movie/now_playing?" . TMDb_KEY);
                 $result = json_decode($moviesToDecode, true);
                 $movies = $result['results'];
@@ -90,14 +117,14 @@
                 ($i != 0) ? $message = $i . " movies have been added." : $message = "The movies are already updated.";
                 $this->ShowUpdateMovies($message);
             }
-        }
-
-        public function RetrieveMovies(){
-            $this->movieList = $this->movieDAO->GetAll();
+            else{
+                $home = new HomeController();
+                $home->Logout("You are not allowed to see this page");
+            }
         }
         
         public function SaveGenres(){
-            if(isset($_SESSION['role']) && $_SESSION['role'] == 'admin'){
+            if($this->utils->ValidateAdmin()){
                 $genreToDecode = file_get_contents("https://api.themoviedb.org/3/genre/movie/list?" . TMDb_KEY);
                 $result = json_decode($genreToDecode, true);
                 $genres = $result['genres'];
@@ -114,50 +141,56 @@
                 ($i != 0) ? $message = $i . " genres have been added." : $message = "The genres are already updated.";
                 $this->ShowUpdateGenres($message);
             }
+            else{
+                $home = new HomeController();
+                $home->Logout("You are not allowed to see this page");
+            }
         }      
         
         public function FilterMovies(){
+            $message = "";
+            $filteredMovies = array();
+            $flag = false;
 
             if(isset($_POST['genres'])){
                 $this->RetrieveMovies();
                 $filteredMovies = array();
                 $filterList = $_POST['genres'];
-                $message = "";
+                
                 
                 foreach($this->movieList as $movie){
                     $result = array_intersect($filterList, $movie->getGenres());
                     if(count($result) == count($filterList)) array_push($filteredMovies, $movie);
                 }
 
-                if(empty($filteredMovies)) $message = "There are no movies with the specified genres";
+                if(empty($filteredMovies)){
+                    $message = "There are no movies with the specified genres";
+                    $flag = true;
+                }
+            }
 
-                $this->ShowMovies($message, $filteredMovies);
+            if(isset($_POST['date']) && $_POST['date'] != "" && $flag == false){
+                if(empty($filteredMovies)){
+                    $this->RetrieveMovies();
+                    $filteredMovies = $this->movieList;
+                }
+                $filteredMovies = $this->FilterDate($filteredMovies, $_POST['date']);
+                if(empty($filteredMovies)){
+                    $message = "There are no movies in the specified date";
+                }
             }
-            else{
-                $this->ShowMovies();
-            }
+
+            $this->ShowMovies($message, $filteredMovies);
         }
 
-        public function FilterMovies(){
-
-            if(isset($_POST['genres'])){
-                $this->RetrieveMovies();
-                $filteredMovies = array();
-                $filterList = $_POST['genres'];
-                $message = "";
-                
-                foreach($this->movieList as $movie){
-                    $result = array_intersect($filterList, $movie->getGenres());
-                    if(count($result) == count($filterList)) array_push($filteredMovies, $movie);
+        private function FilterDate($filteredMovies, $date){
+            $newFilter = array();
+            foreach($filteredMovies as $movie){
+                if($this->functionDAO->GetByDate($movie->getId(), $date)){
+                    array_push($newFilter, $movie);
                 }
-
-                if(empty($filteredMovies)) $message = "There are no movies with the specified genres";
-
-                $this->ShowMovies($message, $filteredMovies);
             }
-            else{
-                $this->ShowMovies();
-            }
+            return $newFilter;
         }
 
     }

@@ -6,17 +6,14 @@
     use DAO\Connection as Connection;
     use DAO\IMovieFunctionDAO as IMovieFunctionDAO;
     use Models\MovieFunction as MovieFunction;
-    use DAO\CinemaDAO as CinemaDAO;
 
     class MovieFunctionDAO{
 
         private $connection;
         private $tableName = "MovieFunction";
-        private $cinemaDAO;
 
 
         public function __construct(){
-            $this->cinemaDAO = new CinemaDAO();
         }
 
         public function Add(MovieFunction $movieFunction, $idCinema){
@@ -129,6 +126,81 @@
                 }
 
                 return $movieFunctionList;
+            }
+            catch(Exception $ex){
+                throw $ex;
+            }
+        }
+
+        public function GetByDate($idMovie, $date){
+            try{
+                $response = false;
+
+                $query = "SELECT * FROM ".$this->tableName." WHERE idMovie = :idMovie AND functionDate = :functionDate";
+
+                $parameters['idMovie'] = $idMovie;
+                $parameters['functionDate'] = $date;
+
+                $this->connection = Connection::GetInstance();
+
+                $resultSet = $this->connection->Execute($query, $parameters);
+                
+                foreach ($resultSet as $row){  
+                    $response = true;                 
+                }
+
+                return $response;
+            }
+            catch(Exception $ex){
+                throw $ex;
+            }
+        }
+
+        public function ExistsByMovie($idMovie){
+            try{
+                $response = false;
+                $query = "SELECT * FROM ".$this->tableName." WHERE idMovie = :idMovie";
+                $parameters['idMovie'] = $idMovie;
+
+                $this->connection = Connection::GetInstance();
+
+                $resultSet = $this->connection->Execute($query, $parameters);
+                
+                foreach ($resultSet as $row){    
+                    if($row["idMovie"] != null){
+                        $response = true;
+                    }
+                }
+
+                return $response;
+            }
+            catch(Exception $ex){
+                throw $ex;
+            }
+        }
+
+        public function GetFunctions($idCinema){
+            try{
+                $functionsList = array();
+
+                $query = "SELECT * FROM " . $this->tableName . " WHERE idCinema = :idCinema";
+
+                $parameters["idCinema"] = $idCinema;
+                    
+                $this->connection = Connection::GetInstance();
+
+                $functions = $this->connection->Execute($query, $parameters);
+
+                foreach($functions as $function){
+                    $func = new MovieFunction();
+                    $func->setDate($function["functionDate"]);
+                    $func->setStart($function["startTime"]);
+                    $func->setMovieId($function["idMovie"]);
+                    $func->setIdCinema($function["idCinema"]);
+                    array_push($functionsList, $func);
+                }
+
+                return $functionsList;
             }
             catch(Exception $ex){
                 throw $ex;

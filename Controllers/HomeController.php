@@ -8,13 +8,16 @@
     use DAO\UserDAO as UserDAO;
     use Controllers\MovieController as MovieController;
     use Controllers\CinemaController as CinemaController;
+    use Utils\Utils as Utils;
 
     class HomeController{
 
         private $userDAO;
+        private $utils;
 
         public function __construct(){
             $this->userDAO = new UserDAO();
+            $this->utils = new Utils();
         }
 
         public function ShowLoginView($message = "", $email = ""){
@@ -91,65 +94,21 @@
             }
         }
 
-        public function Logout(){
+        public function Logout($message = ""){
             session_destroy();
-            $this->ShowLoginView();
+            $this->ShowLoginView($message);
         }
 
         private function checkData($name, $lastname, $dni, $email, $password){
             $errors = array();
-            if (!$this->checkString($name)) array_push($errors, "Invalid format. Name must be between 3 and 20 characters. And start with uppercase.");
-            if (!$this->checkString($lastname)) array_push($errors, "Invalid format. Lastname must be between 3 and 20 characters. And start with uppercase.");
-            if (!$this->checkDNI($dni)) array_push($errors, "Invalid format. DNI must have 8 numbers without spaces, periods or characters.");
-            if (!$this->checkEmail($email)) array_push($errors, "Invalid format. Example: 'example@domain.com'");
-            if (!$this->checkPassword($password)) array_push($errors, "Password must be at least 8 characters long with 1 uppercase 1 lowercase and 1 numeric character");
+            if (!$this->utils->checkString($name)) array_push($errors, "Invalid format. Name must be between 3 and 20 characters. And start with uppercase.");
+            if (!$this->utils->checkString($lastname)) array_push($errors, "Invalid format. Lastname must be between 3 and 20 characters. And start with uppercase.");
+            if (!$this->utils->checkDNI($dni)) array_push($errors, "Invalid format. DNI must have 8 numbers without spaces, periods or characters.");
+            if (!$this->utils->checkEmail($email)) array_push($errors, "Invalid format. Example: 'example@domain.com'");
+            if (!$this->utils->checkPassword($password)) array_push($errors, "Password must be at least 8 characters long with 1 uppercase 1 lowercase and 1 numeric character");
 
             return $errors;
-        }
-
-        private function checkEmail($value){
-            $response = false;
-            if(filter_var($value, FILTER_VALIDATE_EMAIL)){
-                $response = true;
-            }
-            return $response;
-        }
-    
-        private function checkString($value){
-            $regularString = "/(^(?=.{3,20}$)[A-ZÁÉÍÓÚ]{1}([a-zñáéíóú]+){2,})$/";
-            $response = false;
-            if (preg_match($regularString, $value)){
-                $response = true;
-            }
-            return $response;
-        }
-    
-        private function checkDNI($value){
-            $regularDNI = "/^[0-9]{8}$/";
-            $response = false;
-            if (preg_match($regularDNI, $value)){
-                $response = true;
-            }
-            return $response; 
-        }
-    
-    
-        private function checkPassword($value){
-            /*
-            Minimo 8 caracteres
-            Maximo 15
-            Al menos una letra mayúscula
-            Al menos una letra minucula
-            Al menos un dígito
-            No espacios en blanco
-            */
-            $regularPass = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)([A-Za-z\d]|[^ ]){8,15}$/";
-            $response = false;
-            if (preg_match($regularPass, $value)){
-                $response = true;
-            }
-            return $response; 
-        }
+        }      
         
     }
 
