@@ -12,6 +12,7 @@
         private $capacity; 
         private $ticketValue;
         private $billboard = array();
+        private $rooms = array();
 
         public function getId(){
             return $this->id;
@@ -57,6 +58,14 @@
         
         public function setBillboard($billboard){
             $this->billboard = $billboard;
+        }
+
+        public function getRooms(){
+            return $this->rooms;
+        }
+        
+        public function setRooms($rooms){
+            $this->rooms = $rooms;
         }
 
         public function addFunction(MovieFunction $function){
