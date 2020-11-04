@@ -137,7 +137,29 @@
                 $this->ShowMovies();
             }
         }
-        
+
+        public function FilterMovies(){
+
+            if(isset($_POST['genres'])){
+                $this->RetrieveMovies();
+                $filteredMovies = array();
+                $filterList = $_POST['genres'];
+                $message = "";
+                
+                foreach($this->movieList as $movie){
+                    $result = array_intersect($filterList, $movie->getGenres());
+                    if(count($result) == count($filterList)) array_push($filteredMovies, $movie);
+                }
+
+                if(empty($filteredMovies)) $message = "There are no movies with the specified genres";
+
+                $this->ShowMovies($message, $filteredMovies);
+            }
+            else{
+                $this->ShowMovies();
+            }
+        }
+
     }
 
 ?>
