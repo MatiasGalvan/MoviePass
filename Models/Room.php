@@ -8,6 +8,7 @@
         private $idCinema;
         private $roomName;
         private $capacity;
+        private $functions = array();
 
         public function getIdRoom(){
             return $this->idRoom;
@@ -41,6 +42,13 @@
             $this->capacity = $capacity;
         }
 
+        public function getFunctions(){
+            return $this->functions;
+        } 
+        public function setFunctions($functions){
+            $this->functions = $functions;
+
+        }
     }
     
 ?>

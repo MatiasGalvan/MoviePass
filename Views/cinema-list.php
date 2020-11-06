@@ -47,7 +47,7 @@
                             <td style="text-align: center;">
                                 <form action="<?php echo FRONT_ROOT ?>Cinema/RemoveCinema" method="POST">
                                     <input type="hidden" name="id" placeholder="ID" value="<?php echo $cinema->getId() ?>">
-                                    <button type="submit" class="btn btn-danger" <?php if(!empty($cinema->getBillboard())) echo "disabled=\"true\""; ?>>
+                                    <button type="submit" class="btn btn-danger" <?php if(!empty($cinema->existFunction())) echo "disabled=\"true\""; ?>>
                                         Remove <i class="far fa-trash-alt"></i>
                                     </button>
                                 </form>

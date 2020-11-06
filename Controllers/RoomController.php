@@ -4,25 +4,28 @@
 
     use Models\Room as Room;
     use DAO\RoomDAO as RoomDAO;
+    use DAO\CinemaDAO as CinemaDAO;
     use Utils\Utils as Utils; 
 
     class RoomController{
 
         private $roomDAO;
+        private $CinemaDAO;
         private $utils;
 
         public function __construct(){
             $this->roomDAO = new RoomDAO();
+            $this->CinemaDAO = new CinemaDAO();
             $this->utils = new Utils();
         }
         
         public function ShowAddRoomView($idCinema = "",$data = array(), $errors = array(), $message = ""){
-            require_once(VIEWS_PATH."add-room.php");#CAMBIAR ESTO
+            require_once(VIEWS_PATH."add-room.php");
         }
 
         public function ShowRooms($message = ""){
-            $roomList = $this->roomDAO->GetAll();
-            require_once(VIEWS_PATH."cinema-list.php");#CAMBIAR ESTO
+            $cinemaList = $this->CinemaDAO->GetAll();
+            require_once(VIEWS_PATH."rooms-list.php");
         }
 
         public function AddRoom($idCinema, $roomName, $capacity){

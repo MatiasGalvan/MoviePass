@@ -11,7 +11,6 @@
         private $address;
         private $capacity; 
         private $ticketValue;
-        private $billboard = array();
         private $rooms = array();
 
         public function getId(){
@@ -52,14 +51,6 @@
             $this->ticketValue = $ticketValue;
         }
 
-        public function getBillboard(){
-            return $this->billboard;
-        }
-        
-        public function setBillboard($billboard){
-            $this->billboard = $billboard;
-        }
-
         public function getRooms(){
             return $this->rooms;
         }
@@ -68,8 +59,18 @@
             $this->rooms = $rooms;
         }
 
-        public function addFunction(MovieFunction $function){
-            array_push($this->billboard, $function);
+        public function existFunction(){
+            $response = false;
+            foreach($this->rooms as $room){
+                if(!empty($room->getFunctions())){
+                    $response = true;
+                } 
+            } 
+            return $response;
+        }
+
+        public function addRoom($room){
+            array_push($this->rooms,$room);
         }
     }
     
