@@ -49,19 +49,28 @@
             $genreList = $this->genreDAO->GetAll();
 
             foreach($cinemaList as $cinema){
-                $functionList = array();
-                $flag = false;
-                if(!empty($cinema->getBillboard())){
-
-                    foreach($cinema->getBillboard() as $function){
-                        if($function->getMovieId() == $idMovie){
-                            array_push($functionList, $function);
-                            $flag = true;
+                $flag2 = false;
+                $roomList = array();
+                if(!empty($cinema->existFunction())){
+                    
+                    foreach($cinema->getRooms() as $room){
+                        $flag = false;
+                        $functionList = array();
+                        foreach($room->getFunctions() as $function){
+                            if($function->getMovieId() == $idMovie){
+                                array_push($functionList, $function);
+                                $flag = true;
+                            }
+                        }
+                        if($flag){
+                            $room->setFunctions($functionList);
+                            array_push($roomList,$room);
+                            
+                            $flag2 = true;
                         }
                     }
-
-                    if($flag){
-                        $cinema->setBillboard($functionList);
+                    if($flag2){
+                        $cinema->setRooms($roomList);
                         array_push($aux, $cinema);
                     }
                 }
@@ -192,7 +201,7 @@
             }
             return $newFilter;
         }
-        
+
     }
 
 ?>

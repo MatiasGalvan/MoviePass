@@ -47,16 +47,15 @@
                             <td style="text-align: center;">
                                 <form action="<?php echo FRONT_ROOT ?>Cinema/RemoveCinema" method="POST">
                                     <input type="hidden" name="id" placeholder="ID" value="<?php echo $cinema->getId() ?>">
-                                    <button type="submit" class="btn btn-danger" <?php if(!empty($cinema->getBillboard())) echo "disabled=\"true\""; ?>>
+                                    <button type="submit" class="btn btn-danger" <?php if(!empty($cinema->existFunction())) echo "disabled=\"true\""; ?>>
                                         Remove <i class="far fa-trash-alt"></i>
                                     </button>
                                 </form>
                             </td>
                             <td style="text-align: center;">
-                                <form action="<?php echo FRONT_ROOT ?>Function/ShowAddFunctionView" method="POST">
+                                <form action="<?php echo FRONT_ROOT ?>Room/ShowAddRoomView" method="POST">
                                     <input type="hidden" name="id" placeholder="ID" value="<?php echo $cinema->getId() ?>">
-                                    <button type="submit" class="btn btn-success">
-                                        Add Function <i class="fas fa-plus"></i>
+                                    <button type="submit" class="btn btn-success">Add Room <i class="fas fa-plus"></i>
                                     </button>
                                 </form>
                             </td>

@@ -7,15 +7,18 @@
     use DAO\ICinemaDAO as ICinemaDAO;
     use Models\Cinema as Cinema;
     use DAO\MovieFunctionDAO as MovieFunctionDAO;
+    use DAO\RoomDAO as RoomDAO;
 
     class CinemaDAO implements ICinemaDAO{
 
         private $connection;
         private $tableName = "Cinema";
         private $functions;
+        private $rooms;
 
         public function __construct(){
             $this->functions = new MovieFunctionDAO();
+            $this->rooms = new RoomDAO();
         }
 
         public function Exist($address){
@@ -100,11 +103,10 @@
                     $cinema->setAddress($row["address"]);
                     $cinema->setCapacity($row["capacity"]);
                     $cinema->setTicketValue($row["ticketValue"]);
-                    $cinema->setBillboard($this->functions->GetFunctions($row["idCinema"]));
+                    $cinema->setRooms($this->rooms->GetRooms($row["idCinema"]));
 
                     array_push($cinemaList, $cinema);
                 }
-
                 return $cinemaList;
             }
             catch(Exception $ex){

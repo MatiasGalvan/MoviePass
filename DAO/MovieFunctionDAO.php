@@ -16,14 +16,14 @@
         public function __construct(){
         }
 
-        public function Add(MovieFunction $movieFunction, $idCinema){
+        public function Add(MovieFunction $movieFunction, $idRoom){
             try{
-                $query = "INSERT INTO ".$this->tableName."(functionDate, startTime, idMovie, idCinema) VALUES (:functionDate, :startTime, :idMovie, :idCinema);";
+                $query = "INSERT INTO ".$this->tableName."(functionDate, startTime, idMovie, idRoom) VALUES (:functionDate, :startTime, :idMovie, :idRoom);";
 
                 $parameters["functionDate"] = $movieFunction->getDate();
                 $parameters["startTime"] = $movieFunction->getStart();
                 $parameters["idMovie"] = $movieFunction->getMovieId();
-                $parameters["idCinema"] = $idCinema;
+                $parameters["idRoom"] = $idRoom;
 
                 $this->connection = Connection::GetInstance();
 
@@ -49,7 +49,7 @@
                     $movieFunction->setDate($row["functionDate"]);
                     $movieFunction->setStart($row["startTime"]);
                     $movieFunction->setMovieId($row["idMovie"]);
-                    $movieFunction->setIdCinema($row["idCinema"]);
+                    $movieFunction->setIdRoom($row["idRoom"]);
 
                     array_push($movieFunctionList, $movieFunction);
                 }
@@ -93,7 +93,7 @@
                     $movieFunction->setDate($row["functionDate"]);
                     $movieFunction->setStart($row["startTime"]);
                     $movieFunction->setMovieId($row["idMovie"]);
-                    $movieFunction->setIdCinema($row["idCinema"]);
+                    $movieFunction->setIdRoom($row["idRoom"]);
                 }
 
                 return $movieFunction;
@@ -120,7 +120,7 @@
                     $movieFunction->setDate($row["functionDate"]);
                     $movieFunction->setStart($row["startTime"]);
                     $movieFunction->setMovieId($row["idMovie"]);
-                    $movieFunction->setIdCinema($row["idCinema"]);
+                    $movieFunction->setIdRoom($row["idRoom"]);
 
                     array_push($movieFunctionList, $movieFunction);
                 }
@@ -183,8 +183,7 @@
             try{
                 $functionsList = array();
 
-                $query = "SELECT * FROM " . $this->tableName . " WHERE idCinema = :idCinema";
-
+                $query = "SELECT mf.* FROM Room r INNER JOIN movieFunction mf ON r.idRoom = mf.IdRoom INNER JOIN Cinema c ON r.idCinema = c.idCinema WHERE c.idCinema = :idCinema";
                 $parameters["idCinema"] = $idCinema;
                     
                 $this->connection = Connection::GetInstance();
@@ -196,7 +195,8 @@
                     $func->setDate($function["functionDate"]);
                     $func->setStart($function["startTime"]);
                     $func->setMovieId($function["idMovie"]);
-                    $func->setIdCinema($function["idCinema"]);
+                    $func->setIdRoom($function["idRoom"]);
+                    $func->setIdFunction($function["idFunction"]);
                     array_push($functionsList, $func);
                 }
 

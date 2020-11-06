@@ -71,12 +71,13 @@
                                             <th>Start time</th>
                                         </thead>
                                         <tbody >
-                                            <?php foreach($cinema->getBillboard() as $function){ ?>
+                                            <?php foreach($cinema->getRooms() as $room){
+                                                    foreach($room->getFunctions() as $function) {?>
                                             <tr>
                                                 <td class="align-middle"><?php echo $function->getDate() ?></td>
                                                 <td class="align-middle"><?php echo $function->getStart() ?></td>
                                             </tr>
-                                            <?php } ?>
+                                            <?php }} ?>
                                         </tbody>
                                     </table>
 

@@ -20,7 +20,8 @@
                     <?php } ?>
                 </select> 
             </div>
-            <input type="hidden" name="id" placeholder="ID" value="<?php echo $idCinema ?>">
+            <input type="hidden" name="idRoom" placeholder="ID" value="<?php echo $idRoom ?>">
+            <input type="hidden" name="idCinema" placeholder="ID" value="<?php echo $idCinema ?>">
             <button type="submit" class="btn mt-5 btn-lg btn-custom btn-block text-uppercase">Add Function</button>
             <?php
             if(isset($errors)){
