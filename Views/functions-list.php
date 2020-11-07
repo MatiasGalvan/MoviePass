@@ -37,7 +37,21 @@
                                 <tr>         
                                     <td class="align-middle"><?php echo $function->getDate() ?></td>
                                     <td class="align-middle"><?php echo $function->getStart() ?></td>
-                                    <td class="align-middle"><?php echo $function->getMovieId() ?></td>
+                                    <td class="align-middle">
+                                        <?php
+                                            $i = 0;
+                                            $flag = false;
+                                            $movie = "";
+                                            while($i < count($movieList) && $flag == false){
+                                                if($movieList[$i]->getId() == $function->getMovieId()){
+                                                    $movie = $movieList[$i]->getTitle();
+                                                    $flag = true;
+                                                }
+                                                $i++;
+                                            }
+                                            echo $movie;
+                                        ?>
+                                    </td>
                                     <td style="text-align: center;">
                                         <form action="<?php echo FRONT_ROOT ?>Movie/ShowMovieDetails" method="POST">
                                             <input type="hidden" name="idMovie" placeholder="ID" value="<?php echo $function->getMovieId() ?>">
@@ -48,16 +62,21 @@
                                     </td>
                                 </tr>                               
                                 <?php }} ?>
-                                
                             </tbody>
                         </table>
-
 
                         </div>
                     </div>
                 </div>
                 <?php } } ?>
             </div> 
+
+            <?php
+                if(isset($message) && $message != ""){
+                    $content = "<table class=\"table table-striped table-dark table-bordered table-hover\"><thead><th colspan=\"4\" style=\"text-align: center;\">" . $message . "</th></thead></table>";
+                    echo $content;
+                }
+            ?>
 
         </div>
     </div>

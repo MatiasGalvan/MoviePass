@@ -57,7 +57,7 @@
                         $flag = false;
                         $functionList = array();
                         foreach($room->getFunctions() as $function){
-                            if($function->getMovieId() == $idMovie){
+                            if($function->getMovieId() == $idMovie && $this->utils->checkDate($function->getDate())){
                                 array_push($functionList, $function);
                                 $flag = true;
                             }
@@ -91,40 +91,34 @@
             require_once(VIEWS_PATH."update-genres.php");
         }
 
-        public function RetrieveMovies(){
-            $movieList = $this->movieDAO->GetAll();
-            $this->movieList = array();
-
-            foreach($movieList as $movie){
-                if($this->functionDAO->ExistsByMovie($movie->getId())){
-                    array_push($this->movieList, $movie);
-                }
-            }
-        }
-
         public function ReloadMovies(){
             if($this->utils->ValidateAdmin()){
-                $moviesToDecode = file_get_contents("https://api.themoviedb.org/3/movie/now_playing?" . TMDb_KEY);
-                $result = json_decode($moviesToDecode, true);
-                $movies = $result['results'];
-                $i = 0;
-                foreach($movies as $movie){
-                    if(!($this->movieDAO->Exist($movie['id']))){
-                        $m = new Movie();
-                        $m->setId($movie['id']);
-                        $m->setTitle($movie['title']);
-                        $m->setReleaseDate($movie['release_date']);
-                        $m->setPosterPath($movie['poster_path']);
-                        $m->setOverview($movie['overview']);
-                        $m->setOriginalLanguage($movie['original_language']);
-                        $genres = $movie['genre_ids'];
-                        $m->setGenres($genres);
-                        $this->movieDAO->Add($m);
-                        $i++;
+                if(!empty($this->genreDAO->GetAll())){
+                    $moviesToDecode = file_get_contents("https://api.themoviedb.org/3/movie/now_playing?" . TMDb_KEY);
+                    $result = json_decode($moviesToDecode, true);
+                    $movies = $result['results'];
+                    $i = 0;
+                    foreach($movies as $movie){
+                        if(!($this->movieDAO->Exist($movie['id']))){
+                            $m = new Movie();
+                            $m->setId($movie['id']);
+                            $m->setTitle($movie['title']);
+                            $m->setReleaseDate($movie['release_date']);
+                            $m->setPosterPath($movie['poster_path']);
+                            $m->setOverview($movie['overview']);
+                            $m->setOriginalLanguage($movie['original_language']);
+                            $genres = $movie['genre_ids'];
+                            $m->setGenres($genres);
+                            $this->movieDAO->Add($m);
+                            $i++;
+                        }
                     }
+                    ($i != 0) ? $message = $i . " movies have been added." : $message = "The movies are already updated.";
+                    $this->ShowUpdateMovies($message);
                 }
-                ($i != 0) ? $message = $i . " movies have been added." : $message = "The movies are already updated.";
-                $this->ShowUpdateMovies($message);
+                else{
+                    $this->ShowUpdateMovies("There are no genres loaded in the database");
+                }
             }
             else{
                 $home = new HomeController();
@@ -179,13 +173,18 @@
             }
 
             if(isset($_POST['date']) && $_POST['date'] != "" && $flag == false){
-                if(empty($filteredMovies)){
-                    $this->RetrieveMovies();
-                    $filteredMovies = $this->movieList;
+                if($this->utils->checkDate($_POST['date'])){
+                    if(empty($filteredMovies)){
+                        $this->RetrieveMovies();
+                        $filteredMovies = $this->movieList;
+                    }
+                    $filteredMovies = $this->FilterDate($filteredMovies, $_POST['date']);
+                    if(empty($filteredMovies)){
+                        $message = "There are no movies in the specified date";
+                    }
                 }
-                $filteredMovies = $this->FilterDate($filteredMovies, $_POST['date']);
-                if(empty($filteredMovies)){
-                    $message = "There are no movies in the specified date";
+                else{
+                    $message = "The date cannot be earlier than the current one";
                 }
             }
 
@@ -200,6 +199,17 @@
                 }
             }
             return $newFilter;
+        }
+
+        private function RetrieveMovies(){
+            $movieList = $this->movieDAO->GetAll();
+            $this->movieList = array();
+
+            foreach($movieList as $movie){
+                if($this->functionDAO->ExistsByMovie($movie->getId())){
+                    array_push($this->movieList, $movie);
+                }
+            }
         }
 
     }

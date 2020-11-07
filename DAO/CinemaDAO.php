@@ -73,7 +73,7 @@
 
                 $parameters["cinemaName"] = $cinema->getName();
                 $parameters["address"] = $cinema->getAddress();
-                $parameters["capacity"] = $cinema->getCapacity();
+                $parameters["capacity"] = 0;
                 $parameters["ticketValue"] = $cinema->getTicketValue();
 
                 $this->connection = Connection::GetInstance();
@@ -131,13 +131,29 @@
 
         public function Update(Cinema $cinema){
             try{                
-                $query = "UPDATE ".$this->tableName." SET cinemaName = :cinemaName, address = :address, capacity = :capacity, ticketValue = :ticketValue WHERE idCinema = :idCinema;";
+                $query = "UPDATE ".$this->tableName." SET cinemaName = :cinemaName, address = :address, ticketValue = :ticketValue WHERE idCinema = :idCinema;";
                 
                 $parameters['idCinema'] = $cinema->getId();
                 $parameters["cinemaName"] = $cinema->getName();
                 $parameters["address"] = $cinema->getAddress();
-                $parameters["capacity"] = $cinema->getCapacity();
                 $parameters["ticketValue"] = $cinema->getTicketValue();
+
+                $this->connection = Connection::GetInstance();
+
+                $this->connection->ExecuteNonQuery($query, $parameters);
+
+            }
+            catch(Exception $ex){
+                throw $ex;
+            }
+        }
+
+        public function UpdateCapacity($idCinema, $capacity){
+            try{                
+                $query = "UPDATE ".$this->tableName." SET capacity = :capacity WHERE idCinema = :idCinema;";
+                
+                $parameters['idCinema'] = $idCinema;
+                $parameters["capacity"] = $capacity;
 
                 $this->connection = Connection::GetInstance();
 
@@ -168,7 +184,7 @@
                     $cinema->setAddress($row["address"]);
                     $cinema->setCapacity($row["capacity"]);
                     $cinema->setTicketValue($row["ticketValue"]);
-                    $cinema->setBillboard($this->functions->GetFunctions($row["idCinema"]));
+                    $cinema->setRooms($this->rooms->GetRooms($row["idCinema"]));
                     
                 }
 
