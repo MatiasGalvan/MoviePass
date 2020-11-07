@@ -7,7 +7,8 @@
         private $date;
         private $start;    
         private $idMovie;
-        private $idCinema;
+        private $idRoom;
+        private $idFunction;
 
         public function getDate(){
             return $this->date;
@@ -33,12 +34,20 @@
             $this->idMovie = $idMovie;
         }
 
-        public function getIdCinema(){
-            return $this->idCinema;
+        public function getIdRoom(){
+            return $this->idRoom;
         }
 
-        public function setIdCinema($idCinema){
-            $this->idCinema = $idCinema;
+        public function setIdRoom($idRoom){
+            $this->idRoom = $idRoom;
+        }
+
+        public function getIdFunction(){
+            return $this->idFunction;
+        }
+ 
+        public function setIdFunction($idFunction){
+            $this->idFunction = $idFunction;
         }
     }
     

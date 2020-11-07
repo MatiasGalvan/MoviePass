@@ -10,6 +10,13 @@
 
 <div class="container">
     <h3 class="mb-4 mt-4">Cinemas List</h3>
+    
+    <?php
+        if(isset($message)){
+            echo "<p class=\"message\">" . $message . "</p>";
+        }
+    ?>
+
     <div class="row justify-content-center">
         <div class="table-responsive">
             <table class="table table-striped table-dark table-bordered table-hover">
@@ -40,16 +47,15 @@
                             <td style="text-align: center;">
                                 <form action="<?php echo FRONT_ROOT ?>Cinema/RemoveCinema" method="POST">
                                     <input type="hidden" name="id" placeholder="ID" value="<?php echo $cinema->getId() ?>">
-                                    <button type="submit" class="btn btn-danger">
+                                    <button type="submit" class="btn btn-danger" <?php if(!empty($cinema->existFunction())) echo "disabled=\"true\""; ?>>
                                         Remove <i class="far fa-trash-alt"></i>
                                     </button>
                                 </form>
                             </td>
                             <td style="text-align: center;">
-                                <form action="<?php echo FRONT_ROOT ?>Function/ShowAddFunctionView" method="POST">
+                                <form action="<?php echo FRONT_ROOT ?>Room/ShowAddRoomView" method="POST">
                                     <input type="hidden" name="id" placeholder="ID" value="<?php echo $cinema->getId() ?>">
-                                    <button type="submit" class="btn btn-success">
-                                        Add Function <i class="fas fa-plus"></i>
+                                    <button type="submit" class="btn btn-success">Add Room <i class="fas fa-plus"></i>
                                     </button>
                                 </form>
                             </td>
@@ -59,4 +65,5 @@
             </table>
         </div>
     </div>
+
 </div>   
