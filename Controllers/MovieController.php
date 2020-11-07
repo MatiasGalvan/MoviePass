@@ -57,7 +57,7 @@
                         $flag = false;
                         $functionList = array();
                         foreach($room->getFunctions() as $function){
-                            if($function->getMovieId() == $idMovie){
+                            if($function->getMovieId() == $idMovie && $this->utils->checkDate($function->getDate())){
                                 array_push($functionList, $function);
                                 $flag = true;
                             }
@@ -173,13 +173,18 @@
             }
 
             if(isset($_POST['date']) && $_POST['date'] != "" && $flag == false){
-                if(empty($filteredMovies)){
-                    $this->RetrieveMovies();
-                    $filteredMovies = $this->movieList;
+                if($this->utils->checkDate($_POST['date'])){
+                    if(empty($filteredMovies)){
+                        $this->RetrieveMovies();
+                        $filteredMovies = $this->movieList;
+                    }
+                    $filteredMovies = $this->FilterDate($filteredMovies, $_POST['date']);
+                    if(empty($filteredMovies)){
+                        $message = "There are no movies in the specified date";
+                    }
                 }
-                $filteredMovies = $this->FilterDate($filteredMovies, $_POST['date']);
-                if(empty($filteredMovies)){
-                    $message = "There are no movies in the specified date";
+                else{
+                    $message = "The date cannot be earlier than the current one";
                 }
             }
 
