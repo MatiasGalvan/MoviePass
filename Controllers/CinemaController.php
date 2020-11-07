@@ -26,17 +26,17 @@
 
         public function ShowCinemas($message = ""){
             $cinemaList = $this->cinemaDAO->GetAll();
+            if(empty($cinemaList)) $empty = "No cinemas available";
             require_once(VIEWS_PATH."cinema-list.php");
         }
 
-        public function AddCinema($name, $address, $capacity, $ticketValue){
-            $errors = $this->checkData($name, $address, $capacity, $ticketValue);
+        public function AddCinema($name, $address, $ticketValue){
+            $errors = $this->checkData($name, $address, $ticketValue);
 
             if(count($errors) == 0){
                 $cinema = new Cinema();
                 $cinema->setName($name);
                 $cinema->setAddress($address);
-                $cinema->setCapacity($capacity);
                 $cinema->setTicketValue($ticketValue);
     
                 $this->cinemaDAO->Add($cinema);
@@ -46,18 +46,16 @@
             else{
                 $data['name'] = $name;
                 $data['address'] = $address;
-                $data['capacity'] = $capacity;
                 $data['ticketValue'] = $ticketValue;
                 $this->ShowAddCinemaView($data, $errors);
             }
         }
 
-        private function checkData($name, $address, $capacity, $ticketValue, $update = -1){
+        private function checkData($name, $address, $ticketValue, $update = -1){
             $errors = array();
 
             if (!$this->utils->checkString($name)) array_push($errors, "Invalid format. Name must be between 3 and 20 characters. And start with uppercase.");
             if (!$this->utils->checkAddress($address)) array_push($errors, "Invalid format. Start with uppercase. Address must be between 3 and 20 characters. Followed by number");
-            if (!$this->utils->checkNumber($capacity)) array_push($errors, "Invalid format. Value must be between 1 to 4 digits.");
             if (!$this->utils->checkNumber($ticketValue)) array_push($errors, "Invalid format. Value must be between 1 to 5 digits. Numbers with commas can be included");
             if($update == -1){
                 if ($this->cinemaDAO->Exist($address)) array_push($errors, "The address is already taken.");
@@ -96,7 +94,6 @@
                 $data['id'] = $ModifyCinema->getId();
                 $data['name'] = $ModifyCinema->getName();
                 $data['address'] = $ModifyCinema->getAddress();
-                $data['capacity'] = $ModifyCinema->getCapacity();
                 $data['ticketValue'] = $ModifyCinema->getTicketValue();
                 $this->ShowUpdateCinemaView($data);
             }
@@ -105,16 +102,15 @@
             }
         }
 
-        public function ModifyCinema($id, $name, $address, $capacity, $ticketValue){
+        public function ModifyCinema($id, $name, $address, $ticketValue){
 
-            $errors = $this->checkData($name, $address, $capacity, $ticketValue, $id);
+            $errors = $this->checkData($name, $address, $ticketValue, $id);
 
             if(count($errors) == 0 && $this->cinemaDAO->ExistID($id)){
                 $cinema = new Cinema();
                 $cinema->setId($id);
                 $cinema->setName($name);
                 $cinema->setAddress($address);
-                $cinema->setCapacity($capacity);
                 $cinema->setTicketValue($ticketValue);
     
                 $this->cinemaDAO->Update($cinema);
@@ -124,7 +120,6 @@
             else{
                 $data['name'] = $name;
                 $data['address'] = $address;
-                $data['capacity'] = $capacity;
                 $data['ticketValue'] = $ticketValue;
                 $this->ShowUpdateCinemaView($data, $errors);
             }

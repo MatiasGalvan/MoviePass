@@ -61,6 +61,12 @@
                             </td>
                         </tr>
                         <?php } ?>
+                        <?php
+                            if(isset($empty)){
+                                $content = "<tr><td colspan=\"6\" style=\"text-align: center;\">" . $empty . "</td></tr>";
+                                echo $content;
+                            }
+                        ?>
                     </tbody>
             </table>
         </div>

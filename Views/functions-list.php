@@ -48,16 +48,21 @@
                                     </td>
                                 </tr>                               
                                 <?php }} ?>
-                                
                             </tbody>
                         </table>
-
 
                         </div>
                     </div>
                 </div>
                 <?php } } ?>
             </div> 
+
+            <?php
+                if(isset($message) && $message != ""){
+                    $content = "<table class=\"table table-striped table-dark table-bordered table-hover\"><thead><th colspan=\"4\" style=\"text-align: center;\">" . $message . "</th></thead></table>";
+                    echo $content;
+                }
+            ?>
 
         </div>
     </div>

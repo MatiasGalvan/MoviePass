@@ -14,10 +14,6 @@
                 value="<?php if(isset($data['address'])) echo $data['address']; ?>" required>
             </div>
             <div class="form-group">
-                <input type="number" name="capacity" class="form-control form-control-lg" placeholder="Capacity"
-                min="0" max="9999" value="<?php if(isset($data['capacity'])) echo $data['capacity']; ?>" required>
-            </div>
-            <div class="form-group">
                 <input type="number" name="ticketValue" class="form-control form-control-lg" placeholder="Ticket value" 
                 min="0" max="9999" value="<?php if(isset($data['ticketValue'])) echo $data['ticketValue']; ?>" required>
             </div>

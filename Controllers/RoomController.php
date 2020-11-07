@@ -25,19 +25,24 @@
 
         public function ShowRooms($message = ""){
             $cinemaList = $this->CinemaDAO->GetAll();
+            if(empty($cinemaList)) $message = "No rooms available";
             require_once(VIEWS_PATH."rooms-list.php");
         }
 
         public function AddRoom($idCinema, $roomName, $capacity){
             #$errors = $this->checkData($idRoom, $idCinema, $roomName, $capacity);
+                $cinema = $this->CinemaDAO->GetById($idCinema);
+
                 $room = new Room();
                 $room->setIdCinema($idCinema);
                 $room->setRoomName($roomName);
                 $room->setCapacity($capacity);
     
                 $this->roomDAO->Add($room);
+                $cap = $cinema->getCapacity() + $capacity;
+                $this->CinemaDAO->UpdateCapacity($cinema->getId(), $cap);
     
-                $this->ShowAddRoomView(array(), array(), "Room added successfully");
+                $this->ShowAddRoomView("", array(), array(), "Room added successfully");
  
         }
 

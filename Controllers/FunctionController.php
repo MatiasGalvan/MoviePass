@@ -37,8 +37,9 @@
             }
         }
         
-        public function ShowFunctions(){
+        public function ShowFunctions($message = ""){
             $cinemaList = $this->CinemaDAO->GetAll();
+            if(empty($cinemaList)) $message = "No functions available";
             require_once(VIEWS_PATH."functions-list.php");
         }
 

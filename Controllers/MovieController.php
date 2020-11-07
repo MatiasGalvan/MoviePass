@@ -104,27 +104,32 @@
 
         public function ReloadMovies(){
             if($this->utils->ValidateAdmin()){
-                $moviesToDecode = file_get_contents("https://api.themoviedb.org/3/movie/now_playing?" . TMDb_KEY);
-                $result = json_decode($moviesToDecode, true);
-                $movies = $result['results'];
-                $i = 0;
-                foreach($movies as $movie){
-                    if(!($this->movieDAO->Exist($movie['id']))){
-                        $m = new Movie();
-                        $m->setId($movie['id']);
-                        $m->setTitle($movie['title']);
-                        $m->setReleaseDate($movie['release_date']);
-                        $m->setPosterPath($movie['poster_path']);
-                        $m->setOverview($movie['overview']);
-                        $m->setOriginalLanguage($movie['original_language']);
-                        $genres = $movie['genre_ids'];
-                        $m->setGenres($genres);
-                        $this->movieDAO->Add($m);
-                        $i++;
+                if(!empty($this->genreDAO->GetAll())){
+                    $moviesToDecode = file_get_contents("https://api.themoviedb.org/3/movie/now_playing?" . TMDb_KEY);
+                    $result = json_decode($moviesToDecode, true);
+                    $movies = $result['results'];
+                    $i = 0;
+                    foreach($movies as $movie){
+                        if(!($this->movieDAO->Exist($movie['id']))){
+                            $m = new Movie();
+                            $m->setId($movie['id']);
+                            $m->setTitle($movie['title']);
+                            $m->setReleaseDate($movie['release_date']);
+                            $m->setPosterPath($movie['poster_path']);
+                            $m->setOverview($movie['overview']);
+                            $m->setOriginalLanguage($movie['original_language']);
+                            $genres = $movie['genre_ids'];
+                            $m->setGenres($genres);
+                            $this->movieDAO->Add($m);
+                            $i++;
+                        }
                     }
+                    ($i != 0) ? $message = $i . " movies have been added." : $message = "The movies are already updated.";
+                    $this->ShowUpdateMovies($message);
                 }
-                ($i != 0) ? $message = $i . " movies have been added." : $message = "The movies are already updated.";
-                $this->ShowUpdateMovies($message);
+                else{
+                    $this->ShowUpdateMovies("There are no genres loaded in the database");
+                }
             }
             else{
                 $home = new HomeController();

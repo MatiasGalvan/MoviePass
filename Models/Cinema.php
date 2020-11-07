@@ -9,7 +9,7 @@
         private $id;
         private $name;
         private $address;
-        private $capacity; 
+        private $capacity = 0; 
         private $ticketValue;
         private $rooms = array();
 
@@ -69,9 +69,6 @@
             return $response;
         }
 
-        public function addRoom($room){
-            array_push($this->rooms,$room);
-        }
     }
     
 ?>

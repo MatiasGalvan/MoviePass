@@ -15,6 +15,18 @@
                 value="<?php if(isset($data['capacity'])) echo $data['capacity']; ?>" required>
             </div>       
             <button type="submit" class="btn mt-5 btn-lg btn-custom btn-block text-uppercase">Add Room</button>     
+            <?php
+            if(isset($errors)){
+                echo "<ul class = \"mt-3\">";
+                foreach ($errors as $error){
+                    echo "<li class=\"message\">" . $error . "</li>";
+                }
+                echo "</ul>";
+            }
+            if(isset($message)){
+                echo "<p class=\"message\">" . $message . "</p>";
+            }
+            ?>  
         </form>
 
     </div>

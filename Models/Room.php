@@ -45,10 +45,11 @@
         public function getFunctions(){
             return $this->functions;
         } 
+
         public function setFunctions($functions){
             $this->functions = $functions;
-
         }
+        
     }
     
 ?>
