@@ -91,17 +91,6 @@
             require_once(VIEWS_PATH."update-genres.php");
         }
 
-        public function RetrieveMovies(){
-            $movieList = $this->movieDAO->GetAll();
-            $this->movieList = array();
-
-            foreach($movieList as $movie){
-                if($this->functionDAO->ExistsByMovie($movie->getId())){
-                    array_push($this->movieList, $movie);
-                }
-            }
-        }
-
         public function ReloadMovies(){
             if($this->utils->ValidateAdmin()){
                 if(!empty($this->genreDAO->GetAll())){
@@ -205,6 +194,17 @@
                 }
             }
             return $newFilter;
+        }
+
+        private function RetrieveMovies(){
+            $movieList = $this->movieDAO->GetAll();
+            $this->movieList = array();
+
+            foreach($movieList as $movie){
+                if($this->functionDAO->ExistsByMovie($movie->getId())){
+                    array_push($this->movieList, $movie);
+                }
+            }
         }
 
     }

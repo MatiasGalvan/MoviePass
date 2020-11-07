@@ -69,6 +69,14 @@
             return $response;
         }
 
+        public function existRoom(){
+            $response = false;
+            foreach($this->rooms as $room){
+                $response = true;
+            } 
+            return $response;
+        }
+
     }
     
 ?>

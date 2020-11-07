@@ -4,6 +4,7 @@
 
     use Models\Cinema as Cinema;
     use DAO\CinemaDAO as CinemaDAO;
+    use Controllers\HomeController as HomeController;
     use Utils\Utils as Utils; 
 
     class CinemaController{
@@ -31,23 +32,29 @@
         }
 
         public function AddCinema($name, $address, $ticketValue){
-            $errors = $this->checkData($name, $address, $ticketValue);
+            if($this->utils->ValidateAdmin()){
+                $errors = $this->checkData($name, $address, $ticketValue);
 
-            if(count($errors) == 0){
-                $cinema = new Cinema();
-                $cinema->setName($name);
-                $cinema->setAddress($address);
-                $cinema->setTicketValue($ticketValue);
-    
-                $this->cinemaDAO->Add($cinema);
-    
-                $this->ShowAddCinemaView(array(), array(), "Cinema added successfully");
+                if(count($errors) == 0){
+                    $cinema = new Cinema();
+                    $cinema->setName($name);
+                    $cinema->setAddress($address);
+                    $cinema->setTicketValue($ticketValue);
+        
+                    $this->cinemaDAO->Add($cinema);
+        
+                    $this->ShowAddCinemaView(array(), array(), "Cinema added successfully");
+                }
+                else{
+                    $data['name'] = $name;
+                    $data['address'] = $address;
+                    $data['ticketValue'] = $ticketValue;
+                    $this->ShowAddCinemaView($data, $errors);
+                }
             }
             else{
-                $data['name'] = $name;
-                $data['address'] = $address;
-                $data['ticketValue'] = $ticketValue;
-                $this->ShowAddCinemaView($data, $errors);
+                $home = new HomeController();
+                $home->Logout("You are not allowed to see this page");
             }
         }
 
@@ -71,14 +78,20 @@
         }
 
         public function RemoveCinema($id){
-            $message = "The ID entered does not exist";
+            if($this->utils->ValidateAdmin()){
+                $message = "The ID entered does not exist";
 
-            if($this->cinemaDAO->ExistID($id)){
-                $this->cinemaDAO->Remove($id);
-                $message = "Cinema removed successfully";
+                if($this->cinemaDAO->ExistID($id)){
+                    $this->cinemaDAO->Remove($id);
+                    $message = "Cinema removed successfully";
+                }
+                
+                $this->ShowCinemas($message);
             }
-            
-            $this->ShowCinemas($message);
+            else{
+                $home = new HomeController();
+                $home->Logout("You are not allowed to see this page");
+            }
         }
 
         public function UpdateCinema($id){
@@ -103,25 +116,30 @@
         }
 
         public function ModifyCinema($id, $name, $address, $ticketValue){
+            if($this->utils->ValidateAdmin()){
+                $errors = $this->checkData($name, $address, $ticketValue, $id);
 
-            $errors = $this->checkData($name, $address, $ticketValue, $id);
-
-            if(count($errors) == 0 && $this->cinemaDAO->ExistID($id)){
-                $cinema = new Cinema();
-                $cinema->setId($id);
-                $cinema->setName($name);
-                $cinema->setAddress($address);
-                $cinema->setTicketValue($ticketValue);
-    
-                $this->cinemaDAO->Update($cinema);
-    
-                $this->ShowUpdateCinemaView(array(), array(), "Cinema updated successfully");
+                if(count($errors) == 0 && $this->cinemaDAO->ExistID($id)){
+                    $cinema = new Cinema();
+                    $cinema->setId($id);
+                    $cinema->setName($name);
+                    $cinema->setAddress($address);
+                    $cinema->setTicketValue($ticketValue);
+        
+                    $this->cinemaDAO->Update($cinema);
+        
+                    $this->ShowUpdateCinemaView(array(), array(), "Cinema updated successfully");
+                }
+                else{
+                    $data['name'] = $name;
+                    $data['address'] = $address;
+                    $data['ticketValue'] = $ticketValue;
+                    $this->ShowUpdateCinemaView($data, $errors);
+                }
             }
             else{
-                $data['name'] = $name;
-                $data['address'] = $address;
-                $data['ticketValue'] = $ticketValue;
-                $this->ShowUpdateCinemaView($data, $errors);
+                $home = new HomeController();
+                $home->Logout("You are not allowed to see this page");
             }
         }
 
