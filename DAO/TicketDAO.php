@@ -7,7 +7,7 @@
     use DAO\ITicketDAO as ITicketDAO;
     use Models\Ticket as Ticket;
 
-    class TicketDAO implements ITicketDAO{
+    class TicketDAO{
 
         private $connection;
         private $tableName = "Ticket";
@@ -38,36 +38,16 @@
             }
         }
 
-        public function ExistID($idTicket){
+        public function Add(Ticket $ticket, $idUser){
             try{
-                $response = false;
-                $query = "SELECT idTicket FROM ".$this->tableName." WHERE idTicket = :idTicket";
-                $param['idTicket'] = $idTicket;
+                $query = "INSERT INTO ".$this->tableName." (cinemaName, idFunction, functionDate, functionStart, finalValue, idUser) VALUES (:cinemaName, :idFunction, :functionDate, :functionStart, :finalValue, :idUser);";
 
-                $this->connection = Connection::GetInstance();
-
-                $resultSet = $this->connection->Execute($query, $param);
-
-                foreach ($resultSet as $row){   
-                    if($row['idTicket'] != null){
-                        $response = true;
-                    }
-                }
-
-                return $response;
-            }
-            catch(Exception $ex){
-                throw $ex;
-            }
-        }
-
-        public function Add(Ticket $ticket){
-            try{
-                $query = "INSERT INTO ".$this->tableName." (idCinema, idFunction, movieStart) VALUES (:idCinema, :idFunction, :movieStart);";
-
-                $parameters["idCinema"] = $ticket->getIdCinema();
+                $parameters["cinemaName"] = $ticket->getCinemaName();
                 $parameters["idFunction"] = $ticket->getIdFunction();
-                $parameters["movieStart"] = $ticket->getMovieStart();
+                $parameters["functionDate"] = $ticket->getFunctionDate();
+                $parameters["functionStart"] = $ticket->getFunctionStart();
+                $parameters["finalValue"] = $ticket->getFinalValue();
+                $parameters["idUser"] = $idUser;
 
                 $this->connection = Connection::GetInstance();
 
@@ -91,10 +71,12 @@
                 foreach ($resultSet as $row){                
 
                     $ticket = new Ticket();
-                    $ticket->setIdCinema($row["idCinema"]);
+                    $ticket->setCinemaName($row["cinemaName"]);
                     $ticket->setIdFunction($row["idFunction"]);
-                    $ticket->setMovieStart($row["movieStart"]);
-
+                    $ticket->setFunctionDate($row["functionDate"]);
+                    $ticket->setFunctionStart($row["functionStart"]);
+                    $ticket->setFinalValue($row["finalValue"]);
+                    $ticket->setIdUser($row["idUser"]);
                     array_push($ticketList, $ticket);
                 }
 
@@ -114,6 +96,36 @@
 
                 $this->connection->ExecuteNonQuery($query, $param);
 
+            }
+            catch(Exception $ex){
+                throw $ex;
+            }
+        }
+
+        public function GetTickets($idUser){
+            try{
+                $ticketsList = array();
+
+                $query = "SELECT * FROM " . $this->tableName . " WHERE idUser = :idUser";
+
+                $parameters["idUser"] = $idUser;
+                    
+                $this->connection = Connection::GetInstance();
+
+                $tickets = $this->connection->Execute($query, $parameters);
+
+                foreach($tickets as $ticket){
+                    $tk = new Ticket();
+                    $ticket->setCinemaName($row["cinemaName"]);
+                    $ticket->setIdFunction($row["idFunction"]);
+                    $ticket->setFunctionDate($row["functionDate"]);
+                    $ticket->setFunctionStart($row["functionStart"]);
+                    $ticket->setFinalValue($row["finalValue"]);
+                    $ticket->setIdUser($row["idUser"]); 
+                    array_push($ticketsList, $tk);
+                }
+
+                return $ticketsList;
             }
             catch(Exception $ex){
                 throw $ex;

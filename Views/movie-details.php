@@ -69,6 +69,7 @@
                                         <thead>
                                             <th>Date</th>
                                             <th>Start time</th>
+                                            <th>Action</th>
                                         </thead>
                                         <tbody >
                                             <?php foreach($cinema->getRooms() as $room){
@@ -76,6 +77,16 @@
                                             <tr>
                                                 <td class="align-middle"><?php echo $function->getDate() ?></td>
                                                 <td class="align-middle"><?php echo $function->getStart() ?></td>
+                                                <td>
+                                                    <form action="<?php echo FRONT_ROOT ?>Ticket/ShowTicketPurchaseView" method="POST">
+                                                        <input type="hidden" name="cinemaName" value="<?php echo $cinema->getName() ?>">
+                                                        <input type="hidden" name="idFunction" value="<?php echo $function->getIdFunction() ?>">
+                                                        <input type="hidden" name="functionDate" value="<?php echo $function->getDate() ?>">
+                                                        <input type="hidden" name="functionStart" value="<?php echo $function->getStart() ?>">
+                                                        
+                                                        <button type="submit" class="btn btn-success">Buy Ticket <i class="fas fa-dollar-sign"></i></button>
+                                                    </form>
+                                                </td>
                                             </tr>
                                             <?php }} ?>
                                         </tbody>

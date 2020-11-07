@@ -5,9 +5,12 @@
     class Ticket{
 
         private $idTicket;
-        private $idCinema;
+        private $cinemaName;
         private $idFunction;
-        private $movieStart;
+        private $functionDate;
+        private $functionStart;
+        private $finalValue;
+        private $idUser;
 
         public function getIdTicket()
         {
@@ -19,14 +22,14 @@
             $this->idTicket = $idTicket;
         }
 
-        public function getIdCinema()
+        public function getCinemaName()
         {
-            return $this->idCinema;
+            return $this->cinemaName;
         }
 
-        public function setIdCinema($idCinema)
+        public function setCinemaName($cinemaName)
         {
-            $this->idCinema = $idCinema;
+            $this->cinemaName = $cinemaName;
         }
 
         public function getIdFunction()
@@ -39,14 +42,44 @@
             $this->idFunction = $idFunction;
         }
 
-        public function getMovieStart()
+        public function getFunctionDate()
         {
-            return $this->movieStart;
+            return $this->functionDate;
         }
 
-        public function setMovieStart($movieStart)
+        public function setFunctionDate($functionDate)
         {
-            $this->movieStart = $movieStart;
+            $this->functionDate = $functionDate;
+        }
+
+        public function getFunctionStart()
+        {
+            return $this->functionStart;
+        }
+
+        public function setFunctionStart($functionStart)
+        {
+            $this->functionStart = $functionStart;
+        }
+
+        public function getFinalValue()
+        {
+            return $this->finalValue;
+        }
+
+        public function setFinalValue($finalValue)
+        {
+            $this->finalValue = $finalValue;
+        }
+
+        public function getIdUser()
+        {
+            return $this->idUser;
+        }
+
+        public function setIdUser($idUser)
+        {
+            $this->idUser = $idUser;
         }
     }
 

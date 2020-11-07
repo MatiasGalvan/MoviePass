@@ -23,24 +23,28 @@
             require_once(VIEWS_PATH."ticket-list.php");
         }
 
-        public function AddTicket($idCinema, $idFunction, $movieStart){
+        public function AddTicket($cinemaName, $idFunction, $functionDate, $functionStart, $finalValue){
 
             $errors = array();
 
             if(count($errors) == 0){
                 $ticket = new Ticket();
-                $ticket->setIdCinema($idCinema);
+                $ticket->setCinemaName($cinemaName);
                 $ticket->setIdFunction($idFunction);
-                $ticket->setMovieStart($movieStart);
+                $ticket->setFunctionDate($functionDate);
+                $ticket->setFunctionStart($functionStart);
+                $ticket->setFinalValue($finalValue);
 
                 $this->ticketDAO->Add($ticket);
 
                 $this->ShowTicketPurchaseView(array(), array(), "Ticket added successfully");
             }
             else{
-                $data['idCinema'] = $idCinema;
+                $data['cinemaName'] = $cinemaName;
                 $data['idFunction'] = $idFunction;
-                $data['movieStart'] = $movieStart;
+                $data['functionDate'] = $functionDate;
+                $data['functionStart'] = $functionStart;
+                $data['finalValue'] = $finalValue;
                 $this->ShowTicketPurchaseView($data, $errors);
             }
         }

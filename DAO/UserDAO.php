@@ -8,11 +8,17 @@
     use Models\User as User;
     use Models\UserProfile as UserProfile;
     use Models\Role as Role;
+    use Models\Ticket as Ticket;
 
     class UserDAO implements IUserDAO{
 
         private $connection;
         private $tableName = "User";
+        private $tickets;
+
+        public function __construct(){
+            $this->tickets = new TicketDAO();
+        }
 
         public function Add(User $user){
             try{
@@ -64,6 +70,8 @@
 
                     $user->setProfile($profile);
                     $user->setRole($role);
+
+                    $user->setTickets($this->tickets->GetTickets($row["idUser"]));
 
                     array_push($userList, $user);
                 }

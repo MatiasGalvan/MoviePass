@@ -12,6 +12,7 @@
         private $password;
         private UserProfile $profile; 
         private Role $role;
+        private $tickets = array();
 
         public function getId(){
             return $this->id;
@@ -51,6 +52,14 @@
 
         public function setRole(Role $role){
             $this->role = $role;
+        }
+
+        public function getTickets(){
+            return $this->tickets;
+        }
+        
+        public function setTickets($tickets){
+            $this->tickets = $tickets;
         }
 
     }
