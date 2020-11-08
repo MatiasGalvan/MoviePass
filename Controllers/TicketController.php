@@ -7,6 +7,8 @@
     use DAO\UserDAO as UserDAO;
     use DAO\MovieDAO as MovieDAO;
     use DAO\MovieFunctionDAO as MovieFunctionDAO;
+    use Controllers\HomeController as HomeController;
+    use Utils\Utils as Utils; 
 
     class TicketController{
 
@@ -14,12 +16,14 @@
         private $userDAO;
         private $movieDAO;
         private $functionDAO;
+        private $utils;
 
         public function __construct(){
             $this->ticketDAO = new TicketDAO();
             $this->userDAO = new UserDAO();
             $this->movieDAO = new MovieDAO();
             $this->functionDAO = new MovieFunctionDAO();
+            $this->utils = new Utils();
         }
 
         public function ShowTicketPurchaseView($cinemaName, $idFunction, $functionDate, $functionStart,$ticketValue,$data = array(), $errors = array(), $message = ""){
@@ -54,42 +58,37 @@
         }
 
         public function AddTicket($cinemaName, $idFunction, $functionDate, $functionStart, $ticketValue, $quantity){
-            $errors = array();
+            if($this->utils->ValidateAdmin()){
+                $errors = array();
+                
+                if(count($errors) == 0){
+                    $ticket = new Ticket();
+                    $ticket->setCinemaName($cinemaName);
+                    $ticket->setIdFunction($idFunction);
+                    $ticket->setFunctionDate($functionDate);
+                    $ticket->setFunctionStart($functionStart);
+                    $ticket->setFinalValue($ticketValue * $quantity);
+                    $ticket->setQuantity($quantity);
+                    $ticket->setIdUser($this->userDAO->GetByEmail($_SESSION["email"]));
 
-            if(count($errors) == 0){
-                $ticket = new Ticket();
-                $ticket->setCinemaName($cinemaName);
-                $ticket->setIdFunction($idFunction);
-                $ticket->setFunctionDate($functionDate);
-                $ticket->setFunctionStart($functionStart);
-                $ticket->setFinalValue($ticketValue * $quantity);
-                $ticket->setQuantity($quantity);
-                $ticket->setIdUser($this->userDAO->GetByEmail($_SESSION["email"]));
+                    $this->ticketDAO->Add($ticket);
 
-                $this->ticketDAO->Add($ticket);
-
-                $this->ShowTicketPurchaseView($cinemaName, $idFunction, $functionDate, $functionStart, $ticketValue, array(), array(), "Ticket added successfully");
+                    $this->ShowTicketPurchaseView($cinemaName, $idFunction, $functionDate, $functionStart, $ticketValue, array(), array(), "Ticket added successfully");
+                }
+                else{
+                    $data['cinemaName'] = $cinemaName;
+                    $data['idFunction'] = $idFunction;
+                    $data['functionDate'] = $functionDate;
+                    $data['functionStart'] = $functionStart;
+                    $data['finalValue'] = $finalValue;
+                    $data['quantity'] = $quantity;
+                    $this->ShowTicketPurchaseView($data, $errors);
+                }
             }
             else{
-                $data['cinemaName'] = $cinemaName;
-                $data['idFunction'] = $idFunction;
-                $data['functionDate'] = $functionDate;
-                $data['functionStart'] = $functionStart;
-                $data['finalValue'] = $finalValue;
-                $data['quantity'] = $quantity;
-                $this->ShowTicketPurchaseView($data, $errors);
+                $home = new HomeController();
+                $home->Logout("You are not allowed to see this page");
             }
-        }
-
-        public function RemoveTicket($idTicket){
-            $message = "The ID entered does not exist";
-
-            if($this->ticketDAO->ExistID($idTicket)){
-                $this->ticketDAO->Remove($idTicket);
-                $message = "Ticket removed successfully";
-            }
-
-            $this->ShowTicketPurchaseView($data,$errors);
         }
 
     }
