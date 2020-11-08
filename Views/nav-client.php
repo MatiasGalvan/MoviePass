@@ -18,6 +18,9 @@
         <a class="nav-link" href="<?php echo FRONT_ROOT ?>Movie/ShowMovies">Home</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="<?php echo FRONT_ROOT ?>Ticket/ShowTickets">Ticket List</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="<?php echo FRONT_ROOT ?>Home/Logout">Logout <i class="fas fa-sign-out-alt"></i></a>
       </li>
     </ul>

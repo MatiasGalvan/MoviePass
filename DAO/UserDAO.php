@@ -120,6 +120,28 @@
             }
         }
 
+        public function GetByEmail($email){
+            try{
+                $query = "SELECT idUser FROM ".$this->tableName." WHERE email = :email";
+                $param['email'] = $email;
+
+                $this->connection = Connection::GetInstance();
+
+                $resultSet = $this->connection->Execute($query, $param);
+ 
+                foreach ($resultSet as $row){                
+
+                    $id = $row["idUser"];
+                 }
+                return $id;
+            }
+            catch(Exception $ex){
+                throw $ex;
+            }
+        }
+
+
+
     }
 
 ?>

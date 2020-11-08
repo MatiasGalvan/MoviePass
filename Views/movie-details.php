@@ -83,6 +83,7 @@
                                                         <input type="hidden" name="idFunction" value="<?php echo $function->getIdFunction() ?>">
                                                         <input type="hidden" name="functionDate" value="<?php echo $function->getDate() ?>">
                                                         <input type="hidden" name="functionStart" value="<?php echo $function->getStart() ?>">
+                                                        <input type="hidden" name="ticketValue" value="<?php echo $cinema->getTicketValue() ?>">
                                                         
                                                         <button type="submit" class="btn btn-success">Buy Ticket <i class="fas fa-dollar-sign"></i></button>
                                                     </form>

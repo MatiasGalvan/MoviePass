@@ -4,20 +4,17 @@
 <main>
     <div class="mt-5">
         <form action="<?php echo FRONT_ROOT ?>Ticket/AddTicket" method="POST" class="login-form text-center">
-            <h1 class="mb-5 font-weight-light text-uppercase">ADD TICKET</h1>
-            <div class="form-group">
-                <input type="number" name="ticketQuantity" class="form-control form-control-lg" placeholder="ticketQuantity" 
-                value="<?php if(isset($data['ticketQuantity'])) echo $data['ticketQuantity']; ?>" required>
+            <h1 class="mb-5 font-weight-light text-uppercase">BUY TICKET</h1>
+            <input type="hidden" name="cinemaName" value="<?php echo $cinemaName ?>">
+            <input type="hidden" name="idFunction" value="<?php echo $idFunction ?>">
+            <input type="hidden" name="functionDate" value="<?php echo $functionDate ?>">
+            <input type="hidden" name="functionStart" value="<?php echo $functionStart ?>">
+            <input type="hidden" name="ticketValue" value="<?php echo $ticketValue ?>">
+            <div class="form-group col-md-6">
+                    <input type="number" name="quantity" class="form-control form-control-lg" placeholder="Quantity" 
+                    value="<?php if(isset($data['quantity'])) echo $data['quantity']; ?>" required min=0 max=10>
             </div>
-            <div class="form-group">
-                <input type="text" name="address" class="form-control form-control-lg" placeholder="Address" 
-                value="<?php if(isset($data['address'])) echo $data['address']; ?>" required>
-            </div>
-            <div class="form-group">
-                <input type="number" name="ticketValue" class="form-control form-control-lg" placeholder="Ticket value" 
-                min="0" max="9999" value="<?php if(isset($data['ticketValue'])) echo $data['ticketValue']; ?>" required>
-            </div>
-            <button type="submit" class="btn mt-5 btn-lg btn-custom btn-block text-uppercase">Add Cinema</button>
+            <button type="submit" class="btn mt-5 btn-lg btn-custom btn-block text-uppercase" >Buy Ticket</button>
             <?php
             if(isset($errors)){
                 echo "<ul class = \"mt-3\">";

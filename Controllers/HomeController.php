@@ -37,6 +37,7 @@
                     if($user->getPassword() == $password){
                         $_SESSION["email"] = $email;
                         $_SESSION["role"] = $user->getRole()->getDescription();
+                        $_SESSION["idUser"] = $user->getId();
                         $flag = true;
                     }
                 }

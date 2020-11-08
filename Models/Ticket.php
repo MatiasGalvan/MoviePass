@@ -11,6 +11,7 @@
         private $functionStart;
         private $finalValue;
         private $idUser;
+        private $quantity;
 
         public function getIdTicket()
         {
@@ -37,7 +38,7 @@
             return $this->idFunction;
         }
 
-        public function setIdFuncton($idFunction)
+        public function setIdFunction($idFunction)
         {
             $this->idFunction = $idFunction;
         }
@@ -80,6 +81,16 @@
         public function setIdUser($idUser)
         {
             $this->idUser = $idUser;
+        }
+
+        public function getQuantity()
+        {
+            return $this->quantity;
+        }
+
+        public function setQuantity($quantity)
+        {
+            $this->quantity = $quantity;
         }
     }
 

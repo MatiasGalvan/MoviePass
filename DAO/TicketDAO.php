@@ -38,16 +38,17 @@
             }
         }
 
-        public function Add(Ticket $ticket, $idUser){
+        public function Add(Ticket $ticket){
             try{
-                $query = "INSERT INTO ".$this->tableName." (cinemaName, idFunction, functionDate, functionStart, finalValue, idUser) VALUES (:cinemaName, :idFunction, :functionDate, :functionStart, :finalValue, :idUser);";
+                $query = "INSERT INTO ".$this->tableName." (cinemaName, idFunction, functionDate, functionStart, finalValue, idUser,quantity) VALUES (:cinemaName, :idFunction, :functionDate, :functionStart, :finalValue, :idUser, :quantity);";
 
                 $parameters["cinemaName"] = $ticket->getCinemaName();
                 $parameters["idFunction"] = $ticket->getIdFunction();
                 $parameters["functionDate"] = $ticket->getFunctionDate();
                 $parameters["functionStart"] = $ticket->getFunctionStart();
                 $parameters["finalValue"] = $ticket->getFinalValue();
-                $parameters["idUser"] = $idUser;
+                $parameters["idUser"] = $ticket->getIdUser();
+                $parameters["quantity"] = $ticket->getQuantity();
 
                 $this->connection = Connection::GetInstance();
 
@@ -77,6 +78,7 @@
                     $ticket->setFunctionStart($row["functionStart"]);
                     $ticket->setFinalValue($row["finalValue"]);
                     $ticket->setIdUser($row["idUser"]);
+                    $ticket->setQuantity($row["quantity"]);
                     array_push($ticketList, $ticket);
                 }
 
@@ -116,12 +118,13 @@
 
                 foreach($tickets as $ticket){
                     $tk = new Ticket();
-                    $ticket->setCinemaName($row["cinemaName"]);
-                    $ticket->setIdFunction($row["idFunction"]);
-                    $ticket->setFunctionDate($row["functionDate"]);
-                    $ticket->setFunctionStart($row["functionStart"]);
-                    $ticket->setFinalValue($row["finalValue"]);
-                    $ticket->setIdUser($row["idUser"]); 
+                    $tk->setCinemaName($ticket["cinemaName"]);
+                    $tk->setIdFunction($ticket["idFunction"]);
+                    $tk->setFunctionDate($ticket["functionDate"]);
+                    $tk->setFunctionStart($ticket["functionStart"]);
+                    $tk->setFinalValue($ticket["finalValue"]);
+                    $tk->setIdUser($ticket["idUser"]); 
+                    $tk->setQuantity($ticket["quantity"]); 
                     array_push($ticketsList, $tk);
                 }
 

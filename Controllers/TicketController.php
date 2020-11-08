@@ -4,27 +4,32 @@
 
     use Models\Ticket as Ticket;
     use DAO\TicketDAO as TicketDAO;
+    use DAO\UserDAO as UserDAO;
 
     class TicketController{
 
         private $ticketDAO;
+        private $userDAO;
 
         public function __construct(){
             $this->ticketDAO = new TicketDAO();
+            $this->userDAO = new UserDAO();
         }
 
-        public function ShowTicketPurchaseView($data = array(), $errors = array(), $message = ""){
+        public function ShowTicketPurchaseView($cinemaName, $idFunction, $functionDate, $functionStart,$ticketValue,$data = array(), $errors = array(), $message = ""){
             require_once(VIEWS_PATH."add-ticket.php");
         }
 
 
         public function ShowTickets($message = ""){
-            $ticketList = $this->ticketDAO->GetAll();
-            require_once(VIEWS_PATH."ticket-list.php");
+            $ticketList = $this->ticketDAO->GetTickets($_SESSION["idUser"]);
+            if(empty($ticketList)){
+                $empty = "No tickets available";
+            }
+            require_once(VIEWS_PATH."tickets-list.php");
         }
 
-        public function AddTicket($cinemaName, $idFunction, $functionDate, $functionStart, $finalValue){
-
+        public function AddTicket($cinemaName, $idFunction, $functionDate, $functionStart, $finalValue, $quantity){
             $errors = array();
 
             if(count($errors) == 0){
@@ -34,10 +39,12 @@
                 $ticket->setFunctionDate($functionDate);
                 $ticket->setFunctionStart($functionStart);
                 $ticket->setFinalValue($finalValue);
+                $ticket->setQuantity($quantity);
+                $ticket->setIdUser($this->userDAO->GetByEmail($_SESSION["email"]));
 
                 $this->ticketDAO->Add($ticket);
 
-                $this->ShowTicketPurchaseView(array(), array(), "Ticket added successfully");
+                $this->ShowTicketPurchaseView("","","","","",array(), array(), "Ticket added successfully");
             }
             else{
                 $data['cinemaName'] = $cinemaName;
@@ -45,6 +52,7 @@
                 $data['functionDate'] = $functionDate;
                 $data['functionStart'] = $functionStart;
                 $data['finalValue'] = $finalValue;
+                $data['quantity'] = $quantity;
                 $this->ShowTicketPurchaseView($data, $errors);
             }
         }
