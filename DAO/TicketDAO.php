@@ -72,6 +72,7 @@
                 foreach ($resultSet as $row){                
 
                     $ticket = new Ticket();
+                    $ticket->setIdTicket($row["idTicket"]);
                     $ticket->setCinemaName($row["cinemaName"]);
                     $ticket->setIdFunction($row["idFunction"]);
                     $ticket->setFunctionDate($row["functionDate"]);
@@ -118,6 +119,7 @@
 
                 foreach($tickets as $ticket){
                     $tk = new Ticket();
+                    $tk->setIdTicket($ticket["idTicket"]);
                     $tk->setCinemaName($ticket["cinemaName"]);
                     $tk->setIdFunction($ticket["idFunction"]);
                     $tk->setFunctionDate($ticket["functionDate"]);

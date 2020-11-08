@@ -54,9 +54,6 @@
                 if(!empty($cinema->existFunction())){
                     
                     foreach($cinema->getRooms() as $room){
-                        echo "<pre>";
-                        var_dump($room);
-                        echo "</pre>";
                         $flag = false;
                         $functionList = array();
                         foreach($room->getFunctions() as $function){
@@ -78,10 +75,6 @@
                     }
                 }
             }
-            echo "<pre>";
-            var_dump($aux);
-            echo "</pre>";
-            exit();
 
             $cinemaList = $aux;
 

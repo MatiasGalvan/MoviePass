@@ -103,7 +103,8 @@
                     $cinema->setAddress($row["address"]);
                     $cinema->setCapacity($row["capacity"]);
                     $cinema->setTicketValue($row["ticketValue"]);
-                    $cinema->setRooms($this->rooms->GetRooms($row["idCinema"]));
+                    $rooms = $this->rooms->GetRooms($row["idCinema"]);
+                    $cinema->setRooms($rooms);
 
                     array_push($cinemaList, $cinema);
                 }
@@ -184,7 +185,8 @@
                     $cinema->setAddress($row["address"]);
                     $cinema->setCapacity($row["capacity"]);
                     $cinema->setTicketValue($row["ticketValue"]);
-                    $cinema->setRooms($this->rooms->GetRooms($row["idCinema"]));
+                    $rooms = $this->rooms->GetRooms($row["idCinema"]);
+                    $cinema->setRooms($rooms);
                     
                 }
 

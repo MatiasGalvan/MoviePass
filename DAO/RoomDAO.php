@@ -140,13 +140,22 @@
 
                 $rooms = $this->connection->Execute($query, $parameters);
 
+                $functions = $this->functions->GetFunctions($idCinema);
+
                 foreach($rooms as $room){
                     $rm = new Room();
                     $rm->setIdRoom($room["idRoom"]);
                     $rm->setIdCinema($room["idCinema"]);
                     $rm->setRoomName($room["roomName"]);
                     $rm->setCapacity($room["capacity"]); 
-                    $rm->setFunctions($this->functions->GetFunctions($room["idCinema"]));  
+                    $functionList = array();
+                    foreach ($functions as $f) {
+                        if($f->getIdRoom() == $room["idRoom"]){
+                                array_push($functionList, $f);
+                        }
+                    }
+                    $rm->setFunctions($functionList);  
+                
                     array_push($roomsList, $rm);
                 }
 

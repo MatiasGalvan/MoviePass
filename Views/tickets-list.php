@@ -22,19 +22,33 @@
             <table class="table table-striped table-dark table-bordered table-hover">
                     <thead>
                          <th>ID</th>
-                         <th>Cinema Name</th>
-                         <th>ID Function</th>
-                         <th>Function Date</th>
-                         <th>Function Start</th>
+                         <th>Cinema</th>
+                         <th>Movie</th>
+                         <th>Date</th>
+                         <th>Start</th>
                          <th>Quantity</th>
-                         <th>Final Value</th>
+                         <th>Value</th>
                     </thead>
                     <tbody >
                         <?php foreach($ticketList as $ticket){ ?>
                         <tr>
                             <td class="align-middle"><?php echo $ticket->getIdTicket() ?></td>
                             <td class="align-middle"><?php echo $ticket->getCinemaName() ?></td>
-                            <td class="align-middle"><?php echo $ticket->getIdFunction() ?></td>
+                            <td class="align-middle">
+                                <?php 
+                                    $i = 0;
+                                    $flag = false;
+                                    $movie = "";
+                                    while($i < count($data) && $flag == false){
+                                        if($data[$i][0] == $ticket->getIdFunction()){
+                                            $movie = $data[$i][1];
+                                            $flag = true;
+                                        }
+                                        $i++;
+                                    }
+                                    echo $movie; 
+                                ?>
+                            </td>
                             <td class="align-middle"><?php echo $ticket->getFunctionDate() ?></td>
                             <td class="align-middle"><?php echo $ticket->getFunctionStart() ?></td>
                             <td class="align-middle"><?php echo $ticket->getQuantity() ?></td>
