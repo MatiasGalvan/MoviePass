@@ -1,5 +1,17 @@
+<?php
+    $url = "";
+    $flag = false;
+
+    if(!isset($_SESSION['email']) || empty($_SESSION['email'])){
+        $url = "nav-unknown.php";
+        $flag = true;
+    }
+
+    if($url != "") require_once(VIEWS_PATH.$url);
+?>
+
 <main>
-    <div class="d-flex justify-content-center align-items-center login-container">
+    <div class="d-flex justify-content-center align-items-center <?php if($flag) echo "mt-5"; else echo "login-container"; ?>">
         <form action="<?php echo FRONT_ROOT ?>Home/Register" method="POST" class="login-form text-center">
             <h1 id="signUp" class="mb-4 font-weight-light text-uppercase">Sign Up</h1>
             <div class="form-row">

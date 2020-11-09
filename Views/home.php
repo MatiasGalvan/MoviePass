@@ -1,4 +1,16 @@
-<div class="d-flex justify-content-center align-items-center login-container">
+<?php
+    $url = "";
+    $flag = false;
+
+    if(!isset($_SESSION['email']) || empty($_SESSION['email'])){
+        $url = "nav-unknown.php";
+        $flag = true;
+    }
+
+    if($url != "") require_once(VIEWS_PATH.$url);
+?>
+
+<div class="d-flex justify-content-center align-items-center <?php if($flag) echo "mt-5"; else echo "login-container"; ?>">
 
     <form action="<?php echo FRONT_ROOT ?>Home/Login" method="POST" class="login-form text-center">
 

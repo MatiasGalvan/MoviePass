@@ -1,5 +1,9 @@
 <?php
-    require_once(VIEWS_PATH."nav-client.php")
+    $url;
+
+    (!empty($_SESSION['email'])) ? $url = "nav-client.php" : $url = "nav-unknown.php";
+
+    require_once(VIEWS_PATH.$url);
 ?>
 
 <div class="p-5">

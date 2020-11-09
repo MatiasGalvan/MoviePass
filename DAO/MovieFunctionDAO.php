@@ -158,7 +158,7 @@
 
         public function ExistsByMovie($idMovie){
             try{
-                $response = false;
+                $response = array();
                 $query = "SELECT * FROM ".$this->tableName." WHERE idMovie = :idMovie";
                 $parameters['idMovie'] = $idMovie;
 
@@ -168,12 +168,18 @@
                 
                 foreach ($resultSet as $row){    
                     if($row["idMovie"] != null){
-                        $response = true;
+                        $func = new MovieFunction();
+                        $func->setDate($row["functionDate"]);
+                        $func->setStart($row["startTime"]);
+                        $func->setMovieId($row["idMovie"]);
+                        $func->setIdRoom($row["idRoom"]);
+                        $func->setIdFunction($row["idFunction"]);
+                        array_push($response, $func);
                     }
                 }
 
-                return $response;
-            }
+                return $response; 
+            }    
             catch(Exception $ex){
                 throw $ex;
             }

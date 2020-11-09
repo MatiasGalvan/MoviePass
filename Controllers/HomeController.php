@@ -96,6 +96,7 @@
         }
 
         public function Logout($message = ""){
+            $_SESSION = array();
             session_destroy();
             $this->ShowLoginView($message);
         }

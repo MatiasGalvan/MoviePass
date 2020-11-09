@@ -1,5 +1,9 @@
 <?php
-    require_once(VIEWS_PATH."nav-client.php")
+    $url;
+
+    (!empty($_SESSION['email'])) ? $url = "nav-client.php" : $url = "nav-unknown.php";
+
+    require_once(VIEWS_PATH.$url);
 ?>
 
 <div class="container">
@@ -9,9 +13,12 @@
     </div>
 
     <?php 
-        if($_SESSION['role'] == 'admin'){
+        if(isset($_SESSION['role']) && $_SESSION['role'] == 'admin'){
             $content = "<a href=\"" . FRONT_ROOT . "Function/ShowFunctions\" class=\"custom-anchor mt-3\"><i class=\"far fa-arrow-alt-circle-left\"></i> Go Back to admin view</a>";
             echo $content;
+        }
+        if(isset($message)){
+            echo "<p class=\"message mt-2\">" . $message . "</p>";
         }
     ?>
 
@@ -78,15 +85,37 @@
                                                 <td class="align-middle"><?php echo $function->getDate() ?></td>
                                                 <td class="align-middle"><?php echo $function->getStart() ?></td>
                                                 <td>
-                                                    <form action="<?php echo FRONT_ROOT ?>Ticket/ShowTicketPurchaseView" method="POST">
-                                                        <input type="hidden" name="cinemaName" value="<?php echo $cinema->getName() ?>">
-                                                        <input type="hidden" name="idFunction" value="<?php echo $function->getIdFunction() ?>">
-                                                        <input type="hidden" name="functionDate" value="<?php echo $function->getDate() ?>">
-                                                        <input type="hidden" name="functionStart" value="<?php echo $function->getStart() ?>">
-                                                        <input type="hidden" name="ticketValue" value="<?php echo $cinema->getTicketValue() ?>">
-                                                        
-                                                        <button type="submit" class="btn btn-success">Buy Ticket <i class="fas fa-dollar-sign"></i></button>
-                                                    </form>
+                                                    <?php
+                                                        $url;
+                                                        if(isset(($_SESSION['email'])) && !empty($_SESSION['email'])){
+                                                            $url = 
+                                                            "
+                                                            <form action=\"" . FRONT_ROOT . "Ticket/ShowTicketPurchaseView\" method=\"POST\">
+                                                                <input type=\"hidden\" name=\"cinemaName\" value=\"" . $cinema->getName() . "\">
+                                                                <input type=\"hidden\" name=\"idFunction\" value=\"" . $function->getIdFunction() . "\">
+                                                                <input type=\"hidden\" name=\"functionDate\" value=\"" . $function->getDate() . "\">
+                                                                <input type=\"hidden\" name=\"functionStart\" value=\"" . $function->getStart() . "\">
+                                                                <input type=\"hidden\" name=\"ticketValue\" value=\"" . $cinema->getTicketValue() . "\">
+                                                                
+                                                                <button type=\"submit\" class=\"btn btn-success\">Buy Ticket <i class=\"fas fa-dollar-sign\" ></i></button>
+                                                            </form>
+                                                            ";
+                                                        }
+                                                        else{
+                                                            $url = 
+                                                            "
+                                                            <form action=\"" . FRONT_ROOT . "Movie/ShowMovieDetails\" method=\"POST\">
+                                                                <input type=\"hidden\" name=\"idMovie\" value=\"" . $movie->getId() . "\">
+                                                                <input type=\"hidden\" name=\"message\" value=\"You need to login to complete this action\">
+
+                                                                <button type=\"submit\" class=\"btn btn-success\">Buy Ticket <i class=\"fas fa-dollar-sign\" ></i></button>
+                                                            </form>
+                                                            ";    
+                                                        }
+
+                                                        echo $url;
+
+                                                    ?> 
                                                 </td>
                                             </tr>
                                             <?php }} ?>
