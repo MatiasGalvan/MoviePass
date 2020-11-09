@@ -58,36 +58,30 @@
         }
 
         public function AddTicket($cinemaName, $idFunction, $functionDate, $functionStart, $ticketValue, $quantity){
-            if($this->utils->ValidateAdmin()){
-                $errors = array();
+            $errors = array();
                 
-                if(count($errors) == 0){
-                    $ticket = new Ticket();
-                    $ticket->setCinemaName($cinemaName);
-                    $ticket->setIdFunction($idFunction);
-                    $ticket->setFunctionDate($functionDate);
-                    $ticket->setFunctionStart($functionStart);
-                    $ticket->setFinalValue($ticketValue * $quantity);
-                    $ticket->setQuantity($quantity);
-                    $ticket->setIdUser($this->userDAO->GetByEmail($_SESSION["email"]));
+            if(count($errors) == 0){
+                $ticket = new Ticket();
+                $ticket->setCinemaName($cinemaName);
+                $ticket->setIdFunction($idFunction);
+                $ticket->setFunctionDate($functionDate);
+                $ticket->setFunctionStart($functionStart);
+                $ticket->setFinalValue($ticketValue * $quantity);
+                $ticket->setQuantity($quantity);
+                $ticket->setIdUser($this->userDAO->GetByEmail($_SESSION["email"]));
 
-                    $this->ticketDAO->Add($ticket);
+                $this->ticketDAO->Add($ticket);
 
-                    $this->ShowTicketPurchaseView($cinemaName, $idFunction, $functionDate, $functionStart, $ticketValue, array(), array(), "Ticket added successfully");
-                }
-                else{
-                    $data['cinemaName'] = $cinemaName;
-                    $data['idFunction'] = $idFunction;
-                    $data['functionDate'] = $functionDate;
-                    $data['functionStart'] = $functionStart;
-                    $data['finalValue'] = $finalValue;
-                    $data['quantity'] = $quantity;
-                    $this->ShowTicketPurchaseView($data, $errors);
-                }
+                $this->ShowTicketPurchaseView($cinemaName, $idFunction, $functionDate, $functionStart, $ticketValue, array(), array(), "Ticket added successfully");
             }
             else{
-                $home = new HomeController();
-                $home->Logout("You are not allowed to see this page");
+                $data['cinemaName'] = $cinemaName;
+                $data['idFunction'] = $idFunction;
+                $data['functionDate'] = $functionDate;
+                $data['functionStart'] = $functionStart;
+                $data['finalValue'] = $finalValue;
+                $data['quantity'] = $quantity;
+                $this->ShowTicketPurchaseView($data, $errors);
             }
         }
 
