@@ -47,7 +47,7 @@
 
         public function AddFunction($date, $start, $idMovie, $idRoom){
             if($this->utils->ValidateAdmin()){
-                $errors = $this->checkData($date);
+                $errors = $this->checkData($date,$start);
 
                 if(count($errors) == 0){
                     $MovieFunction = new MovieFunction();
@@ -72,9 +72,12 @@
             }
         }
 
-        private function checkData($date){
+        private function checkData($date,$start){
             $errors = array();
             if (!$this->utils->checkDate($date)) array_push($errors, "Date cannot be earlier than current.");
+            if($date == date("Y-m-d", time())){
+                if (!$this->utils->checkTime($start)) array_push($errors,"Time cannot be earlier than current.");
+            }
             return $errors;
         }
 
