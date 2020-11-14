@@ -69,6 +69,14 @@
         public function setGenres($genres){
             $this->genres = $genres;
         }
+        
+        public function getRuntime(){
+                return $this->runtime;
+        }
+
+        public function setRuntime($runtime){
+                $this->runtime = $runtime;
+        }
 
     }
     

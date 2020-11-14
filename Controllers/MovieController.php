@@ -107,6 +107,7 @@
                             $m->setPosterPath($movie['poster_path']);
                             $m->setOverview($movie['overview']);
                             $m->setOriginalLanguage($movie['original_language']);
+                            $m->setRuntime($this->RetrieveRuntime($movie['id']));
                             $genres = $movie['genre_ids'];
                             $m->setGenres($genres);
                             $this->movieDAO->Add($m);
@@ -125,6 +126,21 @@
                 $home->Logout("You are not allowed to see this page");
             }
         }
+
+        private function RetrieveRuntime($idMovie){
+            if($this->utils->ValidateAdmin()){
+                    $moviesToDecode = file_get_contents("https://api.themoviedb.org/3/movie/%22.$idMovie.%22?" . TMDb_KEY);
+                    $result = json_decode($moviesToDecode, true);
+                    $runtime = $result['runtime'];
+
+                return $runtime;
+            }
+            else{
+                $home = new HomeController();
+                $home->Logout("You are not allowed to see this page");
+            }
+        }
+
         
         public function SaveGenres(){
             if($this->utils->ValidateAdmin()){

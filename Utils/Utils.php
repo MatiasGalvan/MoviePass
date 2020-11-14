@@ -90,6 +90,13 @@
             }
             return $response;
         }
+        
+        public static function AddMinutes($time, $minutes){ 
+            $secondsTime = strtotime($time);
+            $seconds = $minutes * 60;
+            $newTime = date("H:i:s", $secondsTime + $seconds);
+            return $newTime;
+        }
 
     }
 

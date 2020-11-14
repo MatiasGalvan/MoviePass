@@ -135,13 +135,21 @@
                 $this->connection = Connection::GetInstance();
 
                 $resultSet = $this->connection->Execute($query, $parameters);
-                
-                foreach ($resultSet as $row){                
+
+                foreach ($resultSet as $row){
 
                     $room->setIdRoom($row["idRoom"]);
                     $room->setIdCinema($row["idCinema"]);
                     $room->setRoomName($row["roomName"]);
-                    $room->setCapacity($row["capacity"]);                 
+                    $room->setCapacity($row["capacity"]);
+                    $functions = $this->functions->GetFunctions($row["idCinema"]); 
+                    $functionList = array();
+                    foreach ($functions as $f) {
+                        if($f->getIdRoom() == $row["idRoom"]){
+                                array_push($functionList, $f);
+                        }
+                    }
+                    $room->setFunctions($functionList);
                 }
 
                 return $room;

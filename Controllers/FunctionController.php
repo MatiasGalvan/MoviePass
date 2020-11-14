@@ -47,7 +47,7 @@
 
         public function AddFunction($date, $start, $idMovie, $idRoom){
             if($this->utils->ValidateAdmin()){
-                $errors = $this->checkData($date,$start);
+                $errors = $this->checkData($date,$start,$idRoom,$idMovie);
 
                 if(count($errors) == 0){
                     $MovieFunction = new MovieFunction();
@@ -72,12 +72,30 @@
             }
         }
 
-        private function checkData($date,$start){
+        private function checkData($date,$start,$idRoom,$idMovie){
             $errors = array();
             if (!$this->utils->checkDate($date)) array_push($errors, "Date cannot be earlier than current.");
-            if($date == date("Y-m-d", time())){
-                if (!$this->utils->checkTime($start)) array_push($errors,"Time cannot be earlier than current.");
+
+            $room = $this->RoomDAO->GetById($idRoom);
+            $functions = $room->getFunctions();
+            $flag = true;
+            $i = 0;
+
+            while($flag == true && $i < count($functions) ){
+                $movie = $this->MovieDAO->GetById($functions[$i]->getMovieId());
+                $time = $this->utils->AddMinutes($functions[$i]->getStart(), $movie->getRuntime());
+                $time = $this->utils->AddMinutes($time, 15);
+
+                $movie = $this->MovieDAO->GetById($idMovie);
+                $end = $this->utils->AddMinutes($start, $movie->getRuntime());
+
+                if( ($start >= $functions[$i]->getStart() && $start <= $time) || ( $end >= $functions[$i]->getStart() && $end <= $time) ){
+                    $flag = false;
+                }
+                $i++;
             }
+            if (!$flag) array_push($errors, "The schedule is not available.");
+
             return $errors;
         }
 

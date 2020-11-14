@@ -21,14 +21,15 @@
 
         public function Add(Movie $movie){
             try{
-                $query = "INSERT INTO ".$this->tableName." (idApi, title, releaseDate, posterPath, overview, originalLanguage) VALUES (:idApi, :title, :releaseDate, :posterPath, :overview, :originalLanguage);";
-                
+                $query = "INSERT INTO ".$this->tableName." (idApi, title, releaseDate, posterPath, overview, originalLanguage, runtime) VALUES (:idApi, :title, :releaseDate, :posterPath, :overview, :originalLanguage, :runtime);";
+
                 $parameters["idApi"] = $movie->getId();
                 $parameters["title"] = $movie->getTitle();
                 $parameters["releaseDate"] = $movie->getReleaseDate();
                 $parameters["posterPath"] = $movie->getPosterPath();
                 $parameters["overview"] = $movie->getOverview();
-                $parameters["originalLanguage"] = $movie->getOriginalLanguage();                
+                $parameters["originalLanguage"] = $movie->getOriginalLanguage();
+                $parameters["runtime"] = $movie->getRuntime();
 
                 $this->connection = Connection::GetInstance();
 
@@ -44,6 +45,7 @@
                 throw $ex;
             }
         }
+
 
         public function AddGenre($idGenre, $idMovie){
             try{
@@ -92,12 +94,12 @@
                     $query = "SELECT * FROM " . $this->tableName . " WHERE idApi = :idApi";
 
                     $parameters["idApi"] = $idMovie;
-    
-                    $this->connection = Connection::GetInstance();
-    
-                    $result = $this->connection->Execute($query, $parameters);      
 
-                    foreach ($result as $row){                
+                    $this->connection = Connection::GetInstance();
+
+                    $result = $this->connection->Execute($query, $parameters);
+
+                    foreach ($result as $row){
                         $movie = new Movie();
                         $movie->setId($row["idApi"]);
                         $movie->setTitle($row["title"]);
@@ -105,9 +107,10 @@
                         $movie->setPosterPath($row["posterPath"]);
                         $movie->setOverview($row["overview"]);
                         $movie->setOriginalLanguage($row["originalLanguage"]);
+                        $movie->setRuntime($row["runtime"]);
                         $movie->setGenres($this->GetGenres($row["idApi"]));
                     }
-    
+
                     return $movie;
                 }
                 catch(Exception $ex){
@@ -125,8 +128,8 @@
                 $this->connection = Connection::GetInstance();
 
                 $resultSet = $this->connection->Execute($query);
-                
-                foreach ($resultSet as $row){                
+
+                foreach ($resultSet as $row){
 
                     $movie = new Movie();
                     $movie->setId($row["idApi"]);
@@ -135,6 +138,7 @@
                     $movie->setPosterPath($row["posterPath"]);
                     $movie->setOverview($row["overview"]);
                     $movie->setOriginalLanguage($row["originalLanguage"]);
+                    $movie->setRuntime($row["runtime"]);
                     $movie->setGenres($this->GetGenres($row["idApi"]));
 
                     array_push($movieList, $movie);
