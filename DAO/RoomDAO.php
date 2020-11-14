@@ -42,6 +42,29 @@
             }
         }
 
+        public function ExistName($roomName, $idCinema){
+            try{
+                $response = false;
+                $query = "SELECT roomName FROM ".$this->tableName." WHERE roomName = :roomName AND idCinema = :idCinema";
+                $param['roomName'] = $roomName;
+                $param['idCinema'] = $idCinema;
+                $this->connection = Connection::GetInstance();
+
+                $resultSet = $this->connection->Execute($query, $param);
+
+                foreach ($resultSet as $row){
+                    if($row['roomName'] != null){
+                        $response = true;
+                    }
+                }
+
+                return $response;
+            }
+            catch(Exception $ex){
+                throw $ex;
+            }
+        }
+
         public function Add(Room $room){
             try{
                 $query = "INSERT INTO ".$this->tableName." (idCinema,roomName,capacity) VALUES (:idCinema,:roomName,:capacity);";

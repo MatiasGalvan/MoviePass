@@ -44,6 +44,29 @@
             }
         }
 
+        public function ExistName($cinemaName){
+            try{
+                $response = false;
+                $query = "SELECT cinemaName FROM ".$this->tableName." WHERE cinemaName = :cinemaName";
+                $param['cinemaName'] = $cinemaName;
+
+                $this->connection = Connection::GetInstance();
+
+                $resultSet = $this->connection->Execute($query, $param);
+
+                foreach ($resultSet as $row){
+                    if($row['cinemaName'] != null){
+                        $response = true;
+                    }
+                }
+
+                return $response;
+            }
+            catch(Exception $ex){
+                throw $ex;
+            }
+        }
+
         public function ExistID($idCinema){
             try{
                 $response = false;
