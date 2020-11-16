@@ -129,7 +129,7 @@
 
         private function RetrieveRuntime($idMovie){
             if($this->utils->ValidateAdmin()){
-                    $moviesToDecode = file_get_contents("https://api.themoviedb.org/3/movie/%22.$idMovie.%22?" . TMDb_KEY);
+                    $moviesToDecode = file_get_contents("https://api.themoviedb.org/3/movie/" . $idMovie . "?" . TMDb_KEY);
                     $result = json_decode($moviesToDecode, true);
                     $runtime = $result['runtime'];
 
