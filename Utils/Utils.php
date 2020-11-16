@@ -69,6 +69,15 @@
             return $response;
         }
 
+        public static function checkTime($time){
+            $response = true;
+            $currentTime = date("H:i", time());
+
+            if($time < $currentTime) $response = false;
+
+            return $response;
+        }
+
         public static function checkNumber($value){
             $regularNumber = "/(^[0-9]{1,4}$)/";
             $response = false;
@@ -86,6 +95,13 @@
                 $response = true;
             }
             return $response;
+        }
+        
+        public static function AddMinutes($time, $minutes){ 
+            $secondsTime = strtotime($time);
+            $seconds = $minutes * 60;
+            $newTime = date("H:i:s", $secondsTime + $seconds);
+            return $newTime;
         }
 
     }

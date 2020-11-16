@@ -67,7 +67,8 @@
             if (!$this->CinemaDAO->ExistID($idCinema)) array_push($errors, "The ID entered does not exist");
             if (!$this->utils->checkString($roomName)) array_push($errors, "Invalid format. Name must be between 3 and 20 characters. And start with uppercase.");
             if (!$this->utils->checkNumber($capacity)) array_push($errors, "Invalid format. Value must be between 1 to 4 digits.");
-            
+            if ($this->roomDAO->ExistName($roomName,$idCinema)) array_push($errors, "The name entered is already taken");
+
             return $errors;
         }
 

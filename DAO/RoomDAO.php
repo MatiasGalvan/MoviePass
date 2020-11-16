@@ -42,6 +42,29 @@
             }
         }
 
+        public function ExistName($roomName, $idCinema){
+            try{
+                $response = false;
+                $query = "SELECT roomName FROM ".$this->tableName." WHERE roomName = :roomName AND idCinema = :idCinema";
+                $param['roomName'] = $roomName;
+                $param['idCinema'] = $idCinema;
+                $this->connection = Connection::GetInstance();
+
+                $resultSet = $this->connection->Execute($query, $param);
+
+                foreach ($resultSet as $row){
+                    if($row['roomName'] != null){
+                        $response = true;
+                    }
+                }
+
+                return $response;
+            }
+            catch(Exception $ex){
+                throw $ex;
+            }
+        }
+
         public function Add(Room $room){
             try{
                 $query = "INSERT INTO ".$this->tableName." (idCinema,roomName,capacity) VALUES (:idCinema,:roomName,:capacity);";
@@ -112,13 +135,21 @@
                 $this->connection = Connection::GetInstance();
 
                 $resultSet = $this->connection->Execute($query, $parameters);
-                
-                foreach ($resultSet as $row){                
+
+                foreach ($resultSet as $row){
 
                     $room->setIdRoom($row["idRoom"]);
                     $room->setIdCinema($row["idCinema"]);
                     $room->setRoomName($row["roomName"]);
-                    $room->setCapacity($row["capacity"]);                 
+                    $room->setCapacity($row["capacity"]);
+                    $functions = $this->functions->GetFunctions($row["idCinema"]); 
+                    $functionList = array();
+                    foreach ($functions as $f) {
+                        if($f->getIdRoom() == $row["idRoom"]){
+                                array_push($functionList, $f);
+                        }
+                    }
+                    $room->setFunctions($functionList);
                 }
 
                 return $room;

@@ -66,11 +66,15 @@
             if (!$this->utils->checkNumber($ticketValue)) array_push($errors, "Invalid format. Value must be between 1 to 5 digits. Numbers with commas can be included");
             if($update == -1){
                 if ($this->cinemaDAO->Exist($address)) array_push($errors, "The address is already taken.");
+                if ($this->cinemaDAO->ExistName($name)) array_push($errors, "The name is already taken.");
             }
             else{
                 $modifyCinema = $this->cinemaDAO->GetById($update);
                 if($modifyCinema->getAddress() != $address){
                     if ($this->cinemaDAO->Exist($address)) array_push($errors, "The address is already taken.");
+                }
+                if($modifyCinema->getName() != $name){
+                    if ($this->cinemaDAO->ExistName($name)) array_push($errors, "The name is already taken.");
                 }
             }
 
@@ -131,6 +135,8 @@
                     $this->ShowUpdateCinemaView(array(), array(), "Cinema updated successfully");
                 }
                 else{
+                    
+                    $data['id'] = $id;
                     $data['name'] = $name;
                     $data['address'] = $address;
                     $data['ticketValue'] = $ticketValue;
