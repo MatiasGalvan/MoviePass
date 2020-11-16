@@ -7,7 +7,7 @@
     use DAO\ITicketDAO as ITicketDAO;
     use Models\Ticket as Ticket;
 
-    class TicketDAO{
+    class TicketDAO implements ITicketDAO{
 
         private $connection;
         private $tableName = "Ticket";
@@ -18,7 +18,7 @@
         public function Exist($idTicket){
             try{
                 $response = false;
-                $query = "SELECT address FROM ".$this->tableName." WHERE idTicket = :idTicket";
+                $query = "SELECT * FROM ".$this->tableName." WHERE idTicket = :idTicket";
                 $param['idTicket'] = $idTicket;
 
                 $this->connection = Connection::GetInstance();
@@ -130,6 +130,34 @@
                 throw $ex;
             }
         }
+
+        public function GetById($idTicket){
+            try{
+                $ticket = new Ticket();
+                $query = "SELECT * FROM ".$this->tableName." WHERE idTicket = :idTicket";
+
+                $parameters['idTicket'] = $idTicket;
+
+                $this->connection = Connection::GetInstance();
+
+                $resultSet = $this->connection->Execute($query, $parameters);
+                
+                foreach ($resultSet as $row){     
+                    $ticket->setIdTicket($row["idTicket"]);
+                    $ticket->setIdCinema($row["idCinema"]);
+                    $ticket->setIdFunction($row["idFunction"]);
+                    $ticket->setIdUser($row["idUser"]);
+                    $ticket->setFinalValue($row["finalValue"]);
+                    $ticket->setQuantity($row["quantity"]);
+                }
+
+                return $ticket;
+            }
+            catch(Exception $ex){
+                throw $ex;
+            }
+        }
+
     }
 
 ?>

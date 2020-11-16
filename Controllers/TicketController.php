@@ -8,6 +8,7 @@
     use DAO\MovieDAO as MovieDAO;
     use DAO\MovieFunctionDAO as MovieFunctionDAO;
     use DAO\CinemaDAO as CinemaDAO;
+    use DAO\RoomDAO as RoomDAO;
     use Controllers\HomeController as HomeController;
     use Utils\Utils as Utils; 
 
@@ -18,6 +19,7 @@
         private $MovieDAO;
         private $FunctionDAO;
         private $CinemaDAO;
+        private $RoomDAO;
         private $utils;
 
         public function __construct(){
@@ -26,6 +28,7 @@
             $this->MovieDAO = new MovieDAO();
             $this->FunctionDAO = new MovieFunctionDAO();
             $this->CinemaDAO = new CinemaDAO();
+            $this->RoomDAO = new RoomDAO();
             $this->utils = new Utils();
         }
 
@@ -82,6 +85,38 @@
             else{
                 $home = new HomeController();
                 $home->Logout("You are not allowed to see this page");
+            }
+        }
+
+        public function ShowTicketDetails($idTicket, $message = ""){
+            if($this->TicketDAO->Exist($idTicket)){
+                $movieList = $this->MovieDAO->GetAll();
+                $data = array();
+
+                $ticket = $this->TicketDAO->GetById($idTicket);
+                $function = $this->FunctionDAO->GetById($ticket->getIdFunction());
+                $cinema = $this->CinemaDAO->GetById($ticket->getIdCinema());
+                $room = $this->RoomDAO->GetById($function->getIdRoom());
+
+                $data["idTicket"] = $ticket->getIdTicket();
+                $data["cinemaName"] = $cinema->getName();
+                $data["date"] = $function->getDate();
+                $data["time"] = $function->getStart();
+                $data["quantity"] = $ticket->getQuantity();
+                $data["total"] = $ticket->getFinalValue();
+                $data["room"] = $room->getRoomName();
+                
+                foreach($movieList as $movie){
+                    if($movie->getId() == $function->getMovieId()){
+                        $data["movie"] = $movie->getTitle();
+                    }
+                }
+
+                require_once(VIEWS_PATH."ticket-details.php");
+            }
+            else{
+                $home = new HomeController();
+                $home->Logout("The ID entered does not exist.");
             }
         }
 
