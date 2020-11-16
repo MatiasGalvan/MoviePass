@@ -30,29 +30,15 @@
                          <th>Value</th>
                     </thead>
                     <tbody >
-                        <?php foreach($ticketList as $ticket){ ?>
+                        <?php foreach($data as $ticket){ ?>
                         <tr>
-                            <td class="align-middle"><?php echo $ticket->getIdTicket() ?></td>
-                            <td class="align-middle"><?php echo $ticket->getCinemaName() ?></td>
-                            <td class="align-middle">
-                                <?php 
-                                    $i = 0;
-                                    $flag = false;
-                                    $movie = "";
-                                    while($i < count($data) && $flag == false){
-                                        if($data[$i][0] == $ticket->getIdFunction()){
-                                            $movie = $data[$i][1];
-                                            $flag = true;
-                                        }
-                                        $i++;
-                                    }
-                                    echo $movie; 
-                                ?>
-                            </td>
-                            <td class="align-middle"><?php echo $ticket->getFunctionDate() ?></td>
-                            <td class="align-middle"><?php echo $ticket->getFunctionStart() ?></td>
-                            <td class="align-middle"><?php echo $ticket->getQuantity() ?></td>
-                            <td class="align-middle"><?php echo $ticket->getFinalValue() ?></td>
+                            <td class="align-middle"><?php echo $ticket["idTicket"] ?></td>
+                            <td class="align-middle"><?php echo $ticket["cinemaName"] ?></td>
+                            <td class="align-middle"><?php echo $ticket["movie"] ?></td>
+                            <td class="align-middle"><?php echo $ticket["date"] ?></td>
+                            <td class="align-middle"><?php echo $ticket["time"] ?></td>
+                            <td class="align-middle"><?php echo $ticket["quantity"] ?></td>
+                            <td class="align-middle"><?php echo $ticket["total"] ?></td>
                         </tr>
                         <?php } ?>
                         <?php

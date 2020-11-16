@@ -27,6 +27,7 @@
                                 <th>Date</th>
                                 <th>Start</th>
                                 <th>ID Movie</th>
+                                <th>Available Tickets</th>
                                 <th>Actions</th>
                             </thead>
                             <tbody >
@@ -52,6 +53,7 @@
                                             echo $movie;
                                         ?>
                                     </td>
+                                    <td class="align-middle"><?php echo $function->getTickets() ?></td>
                                     <td style="text-align: center;">
                                         <form action="<?php echo FRONT_ROOT ?>Movie/ShowMovieDetails" method="POST">
                                             <input type="hidden" name="idMovie" placeholder="ID" value="<?php echo $function->getMovieId() ?>">

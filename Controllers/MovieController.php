@@ -129,7 +129,7 @@
 
         private function RetrieveRuntime($idMovie){
             if($this->utils->ValidateAdmin()){
-                    $moviesToDecode = file_get_contents("https://api.themoviedb.org/3/movie/%22.$idMovie.%22?" . TMDb_KEY);
+                    $moviesToDecode = file_get_contents("https://api.themoviedb.org/3/movie/" . $idMovie . "?" . TMDb_KEY);
                     $result = json_decode($moviesToDecode, true);
                     $runtime = $result['runtime'];
 
@@ -222,13 +222,14 @@
             $this->movieList = array();
 
             foreach($movieList as $movie){
-                $func = $this->functionDAO->ExistsByMovie($movie->getId());
+                $func = $this->functionDAO->GetByMovie($movie->getId());
                 if(!empty($func)){
                     $i = 0;
                     $flag = false;
                     while($i < count($func) && $flag == false){
-                        if($this->utils->checkDate($func[$i]->getDate())){
+                        if($this->utils->checkDate($func[$i]->getDate()) && $func[$i]->getTickets() > 0){
                             array_push($this->movieList, $movie);
+                            $flag = true;
                         }
                         $i++;
                     }

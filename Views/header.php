@@ -1,4 +1,4 @@
-<?php date_default_timezone_set('America/Argentina/Buenos_Aires'); #Seteamos horario porque tomaba el horario de Berlin ?>
+<?php date_default_timezone_set('America/Argentina/Buenos_Aires'); ?>
 <!doctype html>
 <html lang="en">
 <head>

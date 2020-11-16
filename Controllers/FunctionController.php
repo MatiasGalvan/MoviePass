@@ -54,8 +54,13 @@
                     $MovieFunction->setDate($date);
                     $MovieFunction->setStart($start);
                     $MovieFunction->setMovieId($idMovie);
+                    $MovieFunction->setIdRoom($idRoom);
+
+                    $room = $this->RoomDAO->GetById($idRoom);
+
+                    $MovieFunction->setTickets($room->getCapacity());
                     
-                    $this->MovieFunctionDAO->Add($MovieFunction, $idRoom);
+                    $this->MovieFunctionDAO->Add($MovieFunction);
         
                     $this->ShowAddFunctionView($idRoom, array(), array(), "Function added successfully");
                 }
@@ -63,6 +68,7 @@
                     $data['date'] = $date;
                     $data['start'] = $start;
                     $data['idMovie'] = $idMovie;
+                    $data['idRoom'] = $idRoom;
                     $this->ShowAddFunctionView($idRoom, $data, $errors);
                 }
             }
@@ -75,26 +81,31 @@
         private function checkData($date,$start,$idRoom,$idMovie){
             $errors = array();
             if (!$this->utils->checkDate($date)) array_push($errors, "Date cannot be earlier than current.");
-
-            $room = $this->RoomDAO->GetById($idRoom);
-            $functions = $room->getFunctions();
-            $flag = true;
-            $i = 0;
-
-            while($flag == true && $i < count($functions) ){
-                $movie = $this->MovieDAO->GetById($functions[$i]->getMovieId());
-                $time = $this->utils->AddMinutes($functions[$i]->getStart(), $movie->getRuntime());
-                $time = $this->utils->AddMinutes($time, 15);
-
-                $movie = $this->MovieDAO->GetById($idMovie);
-                $end = $this->utils->AddMinutes($start, $movie->getRuntime());
-
-                if( ($start >= $functions[$i]->getStart() && $start <= $time) || ( $end >= $functions[$i]->getStart() && $end <= $time) ){
-                    $flag = false;
-                }
-                $i++;
+            
+            if (!$this->RoomDAO->ExistID($idRoom)){
+                array_push($errors, "The ID Room entered does not exist.");
             }
-            if (!$flag) array_push($errors, "The schedule is not available.");
+            else{
+                $room = $this->RoomDAO->GetById($idRoom);
+                $functions = $room->getFunctions();
+                $flag = true;
+                $i = 0;
+
+                while($flag == true && $i < count($functions) ){
+                    $movie = $this->MovieDAO->GetById($functions[$i]->getMovieId());
+                    $time = $this->utils->AddMinutes($functions[$i]->getStart(), $movie->getRuntime());
+                    $time = $this->utils->AddMinutes($time, 15);
+
+                    $movie = $this->MovieDAO->GetById($idMovie);
+                    $end = $this->utils->AddMinutes($start, $movie->getRuntime());
+
+                    if( ($start >= $functions[$i]->getStart() && $start <= $time) || ( $end >= $functions[$i]->getStart() && $end <= $time) ){
+                        $flag = false;
+                    }
+                    $i++;
+                }
+                if (!$flag) array_push($errors, "The schedule is not available.");
+            }
 
             return $errors;
         }

@@ -12,6 +12,7 @@
         private $posterPath;
         private $overview;
         private $originalLanguage;
+        private $runtime;
         private $genres = array();
 
         public function getId(){
@@ -71,11 +72,11 @@
         }
         
         public function getRuntime(){
-                return $this->runtime;
+            return $this->runtime;
         }
 
         public function setRuntime($runtime){
-                $this->runtime = $runtime;
+            $this->runtime = $runtime;
         }
 
     }

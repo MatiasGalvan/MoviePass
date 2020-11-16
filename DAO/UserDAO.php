@@ -130,9 +130,8 @@
                 $resultSet = $this->connection->Execute($query, $param);
  
                 foreach ($resultSet as $row){                
-
                     $id = $row["idUser"];
-                 }
+                }
                 return $id;
             }
             catch(Exception $ex){
