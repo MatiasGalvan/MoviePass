@@ -9,6 +9,8 @@
         private $idMovie;
         private $idRoom;
         private $idFunction;
+        private $maxTickets;
+        private $tickets;
 
         public function getDate(){
             return $this->date;
@@ -48,6 +50,14 @@
  
         public function setIdFunction($idFunction){
             $this->idFunction = $idFunction;
+        }
+
+        public function getTickets(){
+            return $this->tickets;
+        }
+ 
+        public function setTickets($tickets){
+            $this->tickets = $tickets;
         }
     }
     

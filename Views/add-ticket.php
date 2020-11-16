@@ -18,13 +18,9 @@
     <div class="mt-3">
         <form action="<?php echo FRONT_ROOT ?>Ticket/AddTicket" method="POST" class="login-form text-center">
             <h1 class="mb-3 font-weight-light text-uppercase">BUY TICKET</h1>
-            <input type="hidden" name="cinemaName" value="<?php echo $cinemaName ?>">
+            <input type="hidden" name="idCinema" value="<?php echo $idCinema ?>">
             <input type="hidden" name="idFunction" value="<?php echo $idFunction ?>">
-            <input type="hidden" name="functionDate" value="<?php echo $functionDate ?>">
-            <input type="hidden" name="functionStart" value="<?php echo $functionStart ?>">
-            <input type="hidden" name="ticketValue" value="<?php echo $ticketValue ?>">
-
-
+     
      
             <div class="form-group">
                 <input type="number" id="quantity" name="quantity" class="form-control form-control-lg" placeholder="Quantity" 
@@ -76,7 +72,7 @@
                     value="" disabled>
                 </div>
                 <div class="form-group col-md-6">
-                    <input type="button" onclick="calculateSubtotal(<?php echo $ticketValue ?>)" class="btn btn-success" value="Calculate subtotal" style="margin-top: 5px;">
+                    <input type="button" onclick="calculateSubtotal(<?php echo $cinema->getTicketValue() ?>)" class="btn btn-success" value="Calculate subtotal" style="margin-top: 5px;">
                 </div>
             </div>
 

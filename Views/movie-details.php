@@ -91,11 +91,8 @@
                                                             $url = 
                                                             "
                                                             <form action=\"" . FRONT_ROOT . "Ticket/ShowTicketPurchaseView\" method=\"POST\">
-                                                                <input type=\"hidden\" name=\"cinemaName\" value=\"" . $cinema->getName() . "\">
+                                                                <input type=\"hidden\" name=\"idCinema\" value=\"" . $cinema->getId() . "\">
                                                                 <input type=\"hidden\" name=\"idFunction\" value=\"" . $function->getIdFunction() . "\">
-                                                                <input type=\"hidden\" name=\"functionDate\" value=\"" . $function->getDate() . "\">
-                                                                <input type=\"hidden\" name=\"functionStart\" value=\"" . $function->getStart() . "\">
-                                                                <input type=\"hidden\" name=\"ticketValue\" value=\"" . $cinema->getTicketValue() . "\">
                                                                 
                                                                 <button type=\"submit\" class=\"btn btn-success\">Buy Ticket <i class=\"fas fa-dollar-sign\" ></i></button>
                                                             </form>
@@ -108,7 +105,7 @@
                                                                 <input type=\"hidden\" name=\"idMovie\" value=\"" . $movie->getId() . "\">
                                                                 <input type=\"hidden\" name=\"message\" value=\"You need to login to complete this action\">
 
-                                                                <button type=\"submit\" class=\"btn btn-success\">Buy Ticket <i class=\"fas fa-dollar-sign\" ></i></button>
+                                                                <button type=\"submit\" class=\"btn btn-success\" disabled>Buy Ticket <i class=\"fas fa-dollar-sign\" ></i></button>
                                                             </form>
                                                             ";    
                                                         }

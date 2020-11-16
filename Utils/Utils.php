@@ -10,6 +10,12 @@
             return $flag;
         }
 
+        public static function ValidateUser(){
+            $flag = false;
+            if(isset($_SESSION['email']) && !empty($_SESSION['email'])) $flag = true;
+            return $flag;
+        }
+
         public static function checkEmail($value){
             $response = false;
             if(filter_var($value, FILTER_VALIDATE_EMAIL)){

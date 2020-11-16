@@ -206,13 +206,14 @@
             $this->movieList = array();
 
             foreach($movieList as $movie){
-                $func = $this->functionDAO->ExistsByMovie($movie->getId());
+                $func = $this->functionDAO->GetByMovie($movie->getId());
                 if(!empty($func)){
                     $i = 0;
                     $flag = false;
                     while($i < count($func) && $flag == false){
                         if($this->utils->checkDate($func[$i]->getDate())){
                             array_push($this->movieList, $movie);
+                            $flag = true;
                         }
                         $i++;
                     }

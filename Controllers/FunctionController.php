@@ -47,15 +47,20 @@
 
         public function AddFunction($date, $start, $idMovie, $idRoom){
             if($this->utils->ValidateAdmin()){
-                $errors = $this->checkData($date);
+                $errors = $this->checkData($date, $idRoom);
 
                 if(count($errors) == 0){
                     $MovieFunction = new MovieFunction();
                     $MovieFunction->setDate($date);
                     $MovieFunction->setStart($start);
                     $MovieFunction->setMovieId($idMovie);
+                    $MovieFunction->setIdRoom($idRoom);
+
+                    $room = $this->RoomDAO->GetById($idRoom);
+
+                    $MovieFunction->setTickets($room->getCapacity());
                     
-                    $this->MovieFunctionDAO->Add($MovieFunction, $idRoom);
+                    $this->MovieFunctionDAO->Add($MovieFunction);
         
                     $this->ShowAddFunctionView($idRoom, array(), array(), "Function added successfully");
                 }
@@ -63,6 +68,7 @@
                     $data['date'] = $date;
                     $data['start'] = $start;
                     $data['idMovie'] = $idMovie;
+                    $data['idRoom'] = $idRoom;
                     $this->ShowAddFunctionView($idRoom, $data, $errors);
                 }
             }
@@ -72,9 +78,10 @@
             }
         }
 
-        private function checkData($date){
+        private function checkData($date, $idRoom){
             $errors = array();
             if (!$this->utils->checkDate($date)) array_push($errors, "Date cannot be earlier than current.");
+            if (!$this->RoomDAO->ExistID($idRoom)) array_push($errors, "The IDRoom entered does not exist.");
             return $errors;
         }
 

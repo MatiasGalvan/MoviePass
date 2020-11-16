@@ -7,23 +7,23 @@
     use DAO\IMovieFunctionDAO as IMovieFunctionDAO;
     use Models\MovieFunction as MovieFunction;
 
-    class MovieFunctionDAO{
+    class MovieFunctionDAO implements IMovieFunctionDAO{
 
         private $connection;
         private $tableName = "MovieFunction";
 
-
         public function __construct(){
         }
 
-        public function Add(MovieFunction $movieFunction, $idRoom){
+        public function Add(MovieFunction $movieFunction){
             try{
-                $query = "INSERT INTO ".$this->tableName."(functionDate, startTime, idMovie, idRoom) VALUES (:functionDate, :startTime, :idMovie, :idRoom);";
+                $query = "INSERT INTO ".$this->tableName."(functionDate, startTime, idMovie, idRoom, tickets) VALUES (:functionDate, :startTime, :idMovie, :idRoom, :tickets);";
 
                 $parameters["functionDate"] = $movieFunction->getDate();
                 $parameters["startTime"] = $movieFunction->getStart();
                 $parameters["idMovie"] = $movieFunction->getMovieId();
-                $parameters["idRoom"] = $idRoom;
+                $parameters["idRoom"] = $movieFunction->getIdRoom();
+                $parameters["tickets"] = $movieFunction->getTickets();
 
                 $this->connection = Connection::GetInstance();
 
@@ -46,10 +46,12 @@
                 
                 foreach ($resultSet as $row){                
                     $movieFunction = new MovieFunction();
+                    $movieFunction->setIdFunction($row["idFunction"]);
                     $movieFunction->setDate($row["functionDate"]);
                     $movieFunction->setStart($row["startTime"]);
                     $movieFunction->setMovieId($row["idMovie"]);
                     $movieFunction->setIdRoom($row["idRoom"]);
+                    $movieFunction->setTickets($row["tickets"]);
 
                     array_push($movieFunctionList, $movieFunction);
                 }
@@ -88,12 +90,13 @@
 
                 $resultSet = $this->connection->Execute($query, $parameters);
                 
-                foreach ($resultSet as $row){                
-
+                foreach ($resultSet as $row){    
+                    $movieFunction->setIdFunction($row["idFunction"]);
                     $movieFunction->setDate($row["functionDate"]);
                     $movieFunction->setStart($row["startTime"]);
                     $movieFunction->setMovieId($row["idMovie"]);
                     $movieFunction->setIdRoom($row["idRoom"]);
+                    $movieFunction->setTickets($row["tickets"]);
                 }
 
                 return $movieFunction;
@@ -116,11 +119,13 @@
                 $resultSet = $this->connection->Execute($query, $parameters);
                 
                 foreach ($resultSet as $row){    
-                    $movieFunction = new MovieFunction();            
+                    $movieFunction = new MovieFunction();        
+                    $movieFunction->setIdFunction($row["idFunction"]);
                     $movieFunction->setDate($row["functionDate"]);
                     $movieFunction->setStart($row["startTime"]);
                     $movieFunction->setMovieId($row["idMovie"]);
                     $movieFunction->setIdRoom($row["idRoom"]);
+                    $movieFunction->setTickets($row["tickets"]);
 
                     array_push($movieFunctionList, $movieFunction);
                 }
@@ -156,35 +161,6 @@
             }
         }
 
-        public function ExistsByMovie($idMovie){
-            try{
-                $response = array();
-                $query = "SELECT * FROM ".$this->tableName." WHERE idMovie = :idMovie";
-                $parameters['idMovie'] = $idMovie;
-
-                $this->connection = Connection::GetInstance();
-
-                $resultSet = $this->connection->Execute($query, $parameters);
-                
-                foreach ($resultSet as $row){    
-                    if($row["idMovie"] != null){
-                        $func = new MovieFunction();
-                        $func->setDate($row["functionDate"]);
-                        $func->setStart($row["startTime"]);
-                        $func->setMovieId($row["idMovie"]);
-                        $func->setIdRoom($row["idRoom"]);
-                        $func->setIdFunction($row["idFunction"]);
-                        array_push($response, $func);
-                    }
-                }
-
-                return $response; 
-            }    
-            catch(Exception $ex){
-                throw $ex;
-            }
-        }
-
         public function GetFunctions($idCinema){
             try{
                 $functionsList = array();
@@ -203,10 +179,35 @@
                     $func->setMovieId($function["idMovie"]);
                     $func->setIdRoom($function["idRoom"]);
                     $func->setIdFunction($function["idFunction"]);
+                    $func->setTickets($function["tickets"]);
+
                     array_push($functionsList, $func);
                 }
 
                 return $functionsList;
+            }
+            catch(Exception $ex){
+                throw $ex;
+            }
+        }
+
+        public function ExistID($idFunction){
+            try{
+                $response = false;
+                $query = "SELECT idFunction FROM " . $this->tableName . "  WHERE idFunction = :idFunction";
+                $param['idFunction'] = $idFunction;
+
+                $this->connection = Connection::GetInstance();
+
+                $resultSet = $this->connection->Execute($query, $param);
+
+                foreach ($resultSet as $row){   
+                    if($row['idFunction'] != null){
+                        $response = true;
+                    }
+                }
+
+                return $response;
             }
             catch(Exception $ex){
                 throw $ex;
