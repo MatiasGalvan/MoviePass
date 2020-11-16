@@ -10,6 +10,7 @@
     use Controllers\HomeController as HomeController;
     use Utils\Utils as Utils; 
 
+
     class TicketController{
 
         private $ticketDAO;
@@ -69,6 +70,8 @@
                 $ticket->setFinalValue($ticketValue * $quantity);
                 $ticket->setQuantity($quantity);
                 $ticket->setIdUser($this->userDAO->GetByEmail($_SESSION["email"]));
+
+                $this->utils->SendEmail($_SESSION["email"]);
 
                 $this->ticketDAO->Add($ticket);
 
