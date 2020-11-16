@@ -101,13 +101,15 @@
 
                     $this->TicketDAO->Add($ticket);
 
+                    $function = $this->FunctionDAO->GetById($idFunction);
+                    $tickets = $function->getTickets() - $quantity;
+                    $this->FunctionDAO->Update($idFunction, $tickets);
+
                     $this->ShowTicketPurchaseView($idCinema, $idFunction, array(), array(), "Ticket added successfully");
                 }
                 else{
-                    $data['idCinema'] = $idCinema;
-                    $data['idFunction'] = $idFunction;
                     $data['quantity'] = $quantity;
-                    $this->ShowTicketPurchaseView($data, $errors);
+                    $this->ShowTicketPurchaseView($idCinema, $idFunction, $data, $errors);
                 }
             }
             else{
@@ -120,7 +122,13 @@
             $errors = array();
             if ($quantity < 0 || $quantity > 10) array_push($errors, "The number entered must be between 1 and 10.");
             if (!$this->CinemaDAO->ExistID($idCinema)) array_push($errors, "The cinema ID entered does not exist.");
-            if (!$this->FunctionDAO->ExistID($idFunction)) array_push($errors, "The function ID entered does not exist.");
+            if (!$this->FunctionDAO->ExistID($idFunction)){
+                array_push($errors, "The function ID entered does not exist.");
+            }
+            else{
+                $function = $this->FunctionDAO->GetById($idFunction);
+                if( ($function->getTickets() - $quantity) < 0) array_push($errors, "There are only " . $function->getTickets() . " tickets available.");
+            }
             return $errors;
         }
 

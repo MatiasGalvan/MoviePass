@@ -211,7 +211,7 @@
                     $i = 0;
                     $flag = false;
                     while($i < count($func) && $flag == false){
-                        if($this->utils->checkDate($func[$i]->getDate())){
+                        if($this->utils->checkDate($func[$i]->getDate()) && $func[$i]->getTickets() > 0){
                             array_push($this->movieList, $movie);
                             $flag = true;
                         }

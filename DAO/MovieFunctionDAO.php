@@ -63,6 +63,22 @@
             }
         }
 
+        public function Update($idFunction, $tickets){
+            try{                
+                $query = "UPDATE " . $this->tableName . " SET tickets = :tickets WHERE idFunction = :idFunction;";
+                
+                $parameters['idFunction'] = $idFunction;
+                $parameters["tickets"] = $tickets;
+
+                $this->connection = Connection::GetInstance();
+
+                $this->connection->ExecuteNonQuery($query, $parameters);
+            }
+            catch(Exception $ex){
+                throw $ex;
+            }
+        }
+
         public function Remove($idFunction){
             try{                
                 $query = "DELETE FROM ".$this->tableName." WHERE idFunction = :idFunction";
