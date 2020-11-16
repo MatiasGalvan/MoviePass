@@ -3,7 +3,7 @@
 ?>
 
 <div class="container">
-    <h3 class="mb-4 mt-4">Rooms List</h3>
+    <h3 class="mb-4 mt-4">Cinema List <a href="<?php echo FRONT_ROOT ?>Cinema/ShowAddCinemaView"><i class="fas fa-plus"></i> </a></h3>
     <div class="row justify-content-center">
         <div class="table-responsive">
 
@@ -15,15 +15,48 @@
                 <div class="card">
                     <a class="card-link custom-anchor" data-toggle="collapse" href="#<?php echo $name ?>">        
                         <div class="card-header flex">
-                            <?php echo $name ?>  
+                            <?php echo $name ?> 
+                            <?php echo " - " ?> 
+                            <?php echo $cinema->getAddress()?>    
+                            <?php echo " - " ?> 
+                            <?php echo "Capacity : ". $cinema->getCapacity()?>  
+                            <?php echo " - " ?> 
+                            <?php echo "Ticket Value : " . $cinema->getTicketValue()?>  
                         </div>
+
                     </a>
                     
                     <div id="<?php echo $name ?>" class="collapse" data-parent="#accordion">
-                        <div class="card-body">
-                            
+                        <div class="card-body"> 
+                        <div class="row">
+                            <div class="col-sm">
+                            <form action="<?php echo FRONT_ROOT ?>Cinema/UpdateCinema" method="POST">
+                                <input type="hidden" name="id" placeholder="ID" value="<?php echo $cinema->getId() ?>">
+                                <button type="submit" class="btn btn-warning"> Modify <i class="far fa-edit"></i>
+                                </button>
+                        </form> 
+                            </div>
+                            <div class="col-sm">
+                            <form action="<?php echo FRONT_ROOT ?>Cinema/RemoveCinema" method="POST">
+                             <input type="hidden" name="id" placeholder="ID" value="<?php echo $cinema->getId() ?>">
+                                <button type="submit" class="btn btn-danger" <?php if(!empty($cinema->existRoom())) echo "disabled=\"true\""; ?>>
+                                Remove <i class="far fa-trash-alt"></i>
+                                </button>
+                        </form>
+                            </div>
+
+                            <div class="col-sm">
+                            <form action="<?php echo FRONT_ROOT ?>Room/ShowAddRoomView" method="POST">
+                                <input type="hidden" name="id" placeholder="ID" value="<?php echo $cinema->getId() ?>">
+                                <button type="submit" class="btn btn-success">Add Room <i class="fas fa-plus"></i>
+                                </button>
+                        </form>
+                            </div>
+                        </div>          
+
                         <table class="table table-striped table-dark table-bordered table-hover">
                             <thead>
+
                                 <th>ID Room</th>
                                 <th>ID Cinema</th>
                                 <th>Room Name</th>
