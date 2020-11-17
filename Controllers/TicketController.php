@@ -11,6 +11,7 @@
     use Controllers\HomeController as HomeController;
     use Utils\Utils as Utils; 
 
+
     class TicketController{
 
         private $TicketDAO;
@@ -95,6 +96,8 @@
                     $ticket->setIdFunction($idFunction);
                     $ticket->setQuantity($quantity);
                     $ticket->setIdUser($this->UserDAO->GetByEmail($_SESSION["email"]));
+
+                    $this->utils->SendEmail($_SESSION["email"]);
                     
                     $cinema = $this->CinemaDAO->GetById($idCinema);
                     $ticket->setFinalValue($cinema->GetTicketValue() * $quantity);

@@ -24,12 +24,6 @@
             require_once(VIEWS_PATH."add-room.php");
         }
 
-        public function ShowRooms($message = ""){
-            $cinemaList = $this->CinemaDAO->GetAll();
-            if(empty($cinemaList)) $message = "No rooms available";
-            require_once(VIEWS_PATH."rooms-list.php");
-        }
-
         public function AddRoom($idCinema, $roomName, $capacity){
             if($this->utils->ValidateAdmin()){
 
@@ -81,7 +75,7 @@
                     $message = "Cinema removed successfully";
                 }
                 
-                $this->ShowRooms($message);
+                #$this->ShowRooms($message); ESTO NO EXISTE
             }
             else{
                 $home = new HomeController();

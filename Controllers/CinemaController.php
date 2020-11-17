@@ -121,7 +121,12 @@
 
         public function ModifyCinema($id, $name, $address, $ticketValue){
             if($this->utils->ValidateAdmin()){
+                
                 $errors = $this->checkData($name, $address, $ticketValue, $id);
+                $data['id'] = $id;
+                $data['name'] = $name;
+                $data['address'] = $address;
+                $data['ticketValue'] = $ticketValue;
 
                 if(count($errors) == 0 && $this->cinemaDAO->ExistID($id)){
                     $cinema = new Cinema();
@@ -129,17 +134,13 @@
                     $cinema->setName($name);
                     $cinema->setAddress($address);
                     $cinema->setTicketValue($ticketValue);
+                    
         
                     $this->cinemaDAO->Update($cinema);
         
-                    $this->ShowUpdateCinemaView(array(), array(), "Cinema updated successfully");
+                    $this->ShowUpdateCinemaView($data, array(), "Cinema updated successfully");
                 }
                 else{
-                    
-                    $data['id'] = $id;
-                    $data['name'] = $name;
-                    $data['address'] = $address;
-                    $data['ticketValue'] = $ticketValue;
                     $this->ShowUpdateCinemaView($data, $errors);
                 }
             }
