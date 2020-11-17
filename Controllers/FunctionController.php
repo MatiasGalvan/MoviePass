@@ -78,10 +78,14 @@
             }
         }
 
+        
         private function checkData($date,$start,$idRoom,$idMovie){
             $errors = array();
+            $currentDate = date("Y-m-d", time());
+            $currentTime = date("H:i", time());
             if (!$this->utils->checkDate($date)) array_push($errors, "Date cannot be earlier than current.");
-            
+            if($date == $currentDate && $start < $currentTime) array_push($errors, "Time cannot be earlier than current.");
+
             if (!$this->RoomDAO->ExistID($idRoom)){
                 array_push($errors, "The ID Room entered does not exist.");
             }
@@ -99,8 +103,10 @@
                     $movie = $this->MovieDAO->GetById($idMovie);
                     $end = $this->utils->AddMinutes($start, $movie->getRuntime());
 
-                    if( ($start >= $functions[$i]->getStart() && $start <= $time) || ( $end >= $functions[$i]->getStart() && $end <= $time) ){
-                        $flag = false;
+                    if($functions[$i]->getDate() == $date ){
+                        if( ($start >= $functions[$i]->getStart() && $start <= $time) || ( $end >= $functions[$i]->getStart() && $end <= $time) ){
+                            $flag = false;
+                        }
                     }
                     $i++;
                 }
@@ -109,7 +115,7 @@
 
             return $errors;
         }
-
+        
     }
 
 ?>
