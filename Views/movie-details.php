@@ -1,26 +1,40 @@
 <?php
     $url;
 
-    (!empty($_SESSION['email'])) ? $url = "nav-client.php" : $url = "nav-unknown.php";
+    if(isset($_SESSION['email']) && !empty($_SESSION['email'])){
+        if(isset($_SESSION['role']) && $_SESSION['role'] == 'admin'){
+            $url = "nav-admin.php";
+        }
+        else{
+            $url = "nav-client.php";
+        }
+    } 
+    else{
+        $url = "nav-unknown.php";
+    }
 
     require_once(VIEWS_PATH.$url);
 ?>
 
 <div class="container">
 
+    <?php if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){ ?>
     <div class="mt-3">
         <a href="<?php echo FRONT_ROOT ?>Movie/ShowMovies" class="custom-anchor mt-3"><i class="far fa-arrow-alt-circle-left"></i> Go Back</a>
     </div>
+    <?php } ?>
 
+    <div class="mt-3">
     <?php 
         if(isset($_SESSION['role']) && $_SESSION['role'] == 'admin'){
-            $content = "<a href=\"" . FRONT_ROOT . "Function/ShowFunctions\" class=\"custom-anchor mt-3\"><i class=\"far fa-arrow-alt-circle-left\"></i> Go Back to admin view</a>";
+            $content = "<a href=\"" . FRONT_ROOT . "/Movie/ShowUpdateMovies\" class=\"custom-anchor mt-3\"><i class=\"far fa-arrow-alt-circle-left\"></i> Go Back to admin view</a>";
             echo $content;
         }
         if(isset($message)){
             echo "<p class=\"message mt-2\">" . $message . "</p>";
         }
     ?>
+    </div>
 
     <div class="row">
         <div class="col-4">
@@ -45,7 +59,11 @@
                 ?>
             </p>
 
-            <span>Release date: <?php echo $movie->getReleaseDate(); ?></span>
+            <p>Release date: <?php echo $movie->getReleaseDate(); ?></p>
+
+            <p>Original language: <?php echo $movie->getOriginalLanguage(); ?></p>
+
+            <p>Duration: <?php echo $movie->getRuntime(); ?> minutes</p>
 
             <h5 class="mt-3">Overview</h5>
             <p>
@@ -58,7 +76,11 @@
             <div class="row justify-content-center">
                 <div class="table-responsive">
                     <div id="accordion">
-                        <?php foreach ($cinemaList as $cinema) { 
+                        <?php 
+                        $i = 0;
+                        
+                        foreach ($cinemaList as $cinema) { 
+                            $i++;
                             $name = $cinema->getName();
                         ?>
 
@@ -79,15 +101,17 @@
                                             <th>Action</th>
                                         </thead>
                                         <tbody >
-                                            <?php foreach($cinema->getRooms() as $room){
-                                                    foreach($room->getFunctions() as $function) {?>
+                                            <?php 
+                                                foreach($cinema->getRooms() as $room){
+                                                    foreach($room->getFunctions() as $function) {
+                                            ?>
                                             <tr>
                                                 <td class="align-middle"><?php echo $function->getDate() ?></td>
                                                 <td class="align-middle"><?php echo $function->getStart() ?></td>
                                                 <td>
                                                     <?php
                                                         $url;
-                                                        if(isset(($_SESSION['email'])) && !empty($_SESSION['email'])){
+                                                        if(isset(($_SESSION['email'])) && !empty($_SESSION['email'] && $_SESSION["role"] == "client")){
                                                             $url = 
                                                             "
                                                             <form action=\"" . FRONT_ROOT . "Ticket/ShowTicketPurchaseView\" method=\"POST\">
@@ -115,7 +139,9 @@
                                                     ?> 
                                                 </td>
                                             </tr>
-                                            <?php }} ?>
+                                            <?php 
+                                                }} 
+                                            ?>
                                         </tbody>
                                     </table>
 
@@ -126,6 +152,12 @@
                     </div> 
                 </div>
             </div>
+
+            <?php
+                if($i == 0){
+                    echo "<p>No functions available</p>";
+                }
+            ?>
 
         </div>
 

@@ -37,7 +37,7 @@
                             <td class="align-middle"><?php echo $cinema->getCapacity() ?></td>
                             <td class="align-middle"><?php echo $cinema->getTicketValue() ?></td>
                             <td style="text-align: center; ">
-                                <form action="<?php echo FRONT_ROOT ?>Cinema/UpdateCinema" method="POST">
+                                <form action="<?php echo FRONT_ROOT ?>Cinema/UpdateCinema" method="GET">
                                     <input type="hidden" name="id" placeholder="ID" value="<?php echo $cinema->getId() ?>">
                                     <button type="submit" class="btn btn-warning">
                                         Modify <i class="far fa-edit"></i>
@@ -45,7 +45,7 @@
                                 </form>
                             </td>
                             <td style="text-align: center;">
-                                <form action="<?php echo FRONT_ROOT ?>Cinema/RemoveCinema" method="POST">
+                                <form action="<?php echo FRONT_ROOT ?>Cinema/RemoveCinema" method="GET">
                                     <input type="hidden" name="id" placeholder="ID" value="<?php echo $cinema->getId() ?>">
                                     <button type="submit" class="btn btn-danger" <?php if(!empty($cinema->existRoom())) echo "disabled=\"true\""; ?>>
                                         Remove <i class="far fa-trash-alt"></i>
@@ -53,7 +53,7 @@
                                 </form>
                             </td>
                             <td style="text-align: center;">
-                                <form action="<?php echo FRONT_ROOT ?>Room/ShowAddRoomView" method="POST">
+                                <form action="<?php echo FRONT_ROOT ?>Room/ShowAddRoomView" method="GET">
                                     <input type="hidden" name="id" placeholder="ID" value="<?php echo $cinema->getId() ?>">
                                     <button type="submit" class="btn btn-success">Add Room <i class="fas fa-plus"></i>
                                     </button>

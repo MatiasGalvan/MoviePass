@@ -12,30 +12,17 @@
         }
     ?>
     <h3 class="mb-4 mt-4">Movie List</h3>
-    <div class="row justify-content-center">
-        <div class="table-responsive">
-            <table class="table table-striped table-dark table-bordered">
-                    <thead>
-                         <th>ID</th>
-                         <th>Title</th>
-                         <th>Release Date</th>
-                         <th>Poster Path</th>
-                         <th>Overview</th>
-                         <th>Language</th>
-                    </thead>
-                    <tbody>
-                        <?php foreach($movieList as $movie){ ?>
-                        <tr>
-                            <td><?php echo $movie->getId() ?></td>
-                            <td><?php echo $movie->getTitle() ?></td>
-                            <td><?php echo $movie->getReleaseDate() ?></td>
-                            <td><?php echo $movie->getPosterPath() ?></td>
-                            <td><?php echo $movie->getOverview() ?></td>
-                            <td><?php echo $movie->getOriginalLanguage() ?></td>
-                        </tr>
-                        <?php } ?>
-                    </tbody>
-            </table>
-        </div>
+
+    <div class="d-flex flex-row bd-highlight mb-3">   
+        <div class="row justify-content-around flex-grow-1">
+            <?php foreach ($movieList as $movie) { ?>
+                <a href="<?php echo FRONT_ROOT ?>Movie/ShowMovieDetails?idMovie=<?php echo $movie->getId(); ?>">
+                    <div class="card" style="width: 220px;">
+                        <img src="<?php echo IMG_URL_300 . $movie->getPosterPath() ?>" class="card-img-top zoom" alt="Image not found">
+                    </div>
+                </a>
+            <?php } ?>  
+        </div> 
     </div>
+
 </div>   
