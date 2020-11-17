@@ -72,33 +72,44 @@
             }
         }
 
+        
         private function checkData($date,$start,$idRoom,$idMovie){
             $errors = array();
+            $currentDate = date("Y-m-d", time());
+            $currentTime = date("H:i", time());
             if (!$this->utils->checkDate($date)) array_push($errors, "Date cannot be earlier than current.");
+            if($date == $currentDate && $start < $currentTime) array_push($errors, "Time cannot be earlier than current.");
 
-            $room = $this->RoomDAO->GetById($idRoom);
-            $functions = $room->getFunctions();
-            $flag = true;
-            $i = 0;
-
-            while($flag == true && $i < count($functions) ){
-                $movie = $this->MovieDAO->GetById($functions[$i]->getMovieId());
-                $time = $this->utils->AddMinutes($functions[$i]->getStart(), $movie->getRuntime());
-                $time = $this->utils->AddMinutes($time, 15);
-
-                $movie = $this->MovieDAO->GetById($idMovie);
-                $end = $this->utils->AddMinutes($start, $movie->getRuntime());
-
-                if( ($start >= $functions[$i]->getStart() && $start <= $time) || ( $end >= $functions[$i]->getStart() && $end <= $time) ){
-                    $flag = false;
-                }
-                $i++;
+            if (!$this->RoomDAO->ExistID($idRoom)){
+                array_push($errors, "The ID Room entered does not exist.");
             }
-            if (!$flag) array_push($errors, "The schedule is not available.");
+            else{
+                $room = $this->RoomDAO->GetById($idRoom);
+                $functions = $room->getFunctions();
+                $flag = true;
+                $i = 0;
+
+                while($flag == true && $i < count($functions) ){
+                    $movie = $this->MovieDAO->GetById($functions[$i]->getMovieId());
+                    $time = $this->utils->AddMinutes($functions[$i]->getStart(), $movie->getRuntime());
+                    $time = $this->utils->AddMinutes($time, 15);
+
+                    $movie = $this->MovieDAO->GetById($idMovie);
+                    $end = $this->utils->AddMinutes($start, $movie->getRuntime());
+
+                    if($functions[$i]->getDate() == $date ){
+                        if( ($start >= $functions[$i]->getStart() && $start <= $time) || ( $end >= $functions[$i]->getStart() && $end <= $time) ){
+                            $flag = false;
+                        }
+                    }
+                    $i++;
+                }
+                if (!$flag) array_push($errors, "The schedule is not available.");
+            }
 
             return $errors;
         }
-
+        
     }
 
 ?>
