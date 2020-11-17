@@ -15,34 +15,12 @@
   <div class="collapse navbar-collapse flex-row-reverse" id="navbarNav">
     <ul class="navbar-nav">
 
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Cinemas
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="<?php echo FRONT_ROOT ?>Cinema/ShowAddCinemaView">Add Cinema</a>
-          <a class="dropdown-item" href="<?php echo FRONT_ROOT ?>Cinema/ShowCinemas">Cinema List</a>
-        </div>
+      <li class="nav-item">
+          <a class="nav-link" href="<?php echo FRONT_ROOT ?>Cinema/ShowCinemas">Cinemas</a>
       </li>
-
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Rooms
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="<?php echo FRONT_ROOT ?>Room/ShowRooms">Rooms List</a>
-        </div>
+      <li class="nav-item">
+          <a class="nav-link" href="<?php echo FRONT_ROOT ?>Function/ShowFunctions">Functions</a>
       </li>
-
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Functions
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="<?php echo FRONT_ROOT ?>Function/ShowFunctions">Functions List</a>
-        </div>
-      </li>
-
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Update
