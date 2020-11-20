@@ -2,6 +2,8 @@
 
     namespace Utils;
 
+    use Endroid\QrCode\QrCode;
+
     class Utils{
 
         public static function ValidateAdmin(){
@@ -102,6 +104,13 @@
             $seconds = $minutes * 60;
             $newTime = date("H:i:s", $secondsTime + $seconds);
             return $newTime;
+        }
+
+        public static function GenerateQR($id, $url, $movie){
+            $qrCode = new QrCode($url);
+            $qrCode->setSize(250);
+            $qrCode->setLabel($movie);
+            $qrCode->writeFile("Data/temp/" . $id . ".png");
         }
 
     }

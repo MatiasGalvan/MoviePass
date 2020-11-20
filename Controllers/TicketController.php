@@ -12,8 +12,6 @@
     use Controllers\HomeController as HomeController;
     use Utils\Utils as Utils; 
 
-    #include(FRONT_ROOT . "Utils/phpqrcode/qrlib.php");
-
     class TicketController{
 
         private $TicketDAO;
@@ -136,14 +134,17 @@
                     $cinema = $this->CinemaDAO->GetById($idCinema);
                     $ticket->setFinalValue($cinema->GetTicketValue() * $quantity);
 
-                    $this->TicketDAO->Add($ticket);
+                    $id = $this->TicketDAO->Add($ticket);
 
                     $function = $this->FunctionDAO->GetById($idFunction);
                     $tickets = $function->getTickets() - $quantity;
                     $this->FunctionDAO->Update($idFunction, $tickets);
 
-                    $url = "http://localhost/LabIV/MoviePass/Ticket/ShowTicketDetails/" . $ticket->getIdTicket();
-                    #QRCode::png($url, FRONT_ROOT . "Data/temp/qr.png", QR_ECLEVEL_L, 4);
+                    $movie = $this->MovieDAO->GetById($function->getMovieId());
+
+                    $url = "http://localhost/LabIV/MoviePass/Ticket/ShowTicketDetails/" . $id;
+                    
+                    $this->utils->GenerateQR($id, $url, $movie->getTitle());
 
                     $this->ShowTicketPurchaseView($idCinema, $idFunction, array(), array(), "Ticket added successfully");
                 }

@@ -40,6 +40,8 @@
 
         public function Add(Ticket $ticket){
             try{
+                $response = null;
+
                 $query = "INSERT INTO ".$this->tableName." (idCinema, idFunction, idUser, finalValue, quantity) VALUES (:idCinema, :idFunction, :idUser, :finalValue, :quantity);";
 
                 $parameters["idCinema"] = $ticket->getIdCinema();
@@ -50,7 +52,9 @@
 
                 $this->connection = Connection::GetInstance();
 
-                $this->connection->ExecuteNonQuery($query, $parameters);
+                $response = $this->connection->ExecuteNonQuery($query, $parameters);
+
+                return $response;
             }
             catch(Exception $ex){
                 throw $ex;

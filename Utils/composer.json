@@ -1,0 +1,7 @@
+{
+    "name": "admin/admin",
+    "description": "",
+    "require": {
+        "endroid/qr-code": "3.9.3"
+    }
+}

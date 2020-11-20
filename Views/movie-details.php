@@ -104,6 +104,7 @@
                                             <?php 
                                                 foreach($cinema->getRooms() as $room){
                                                     foreach($room->getFunctions() as $function) {
+                                                        if($function->getTickets() > 0){
                                             ?>
                                             <tr>
                                                 <td class="align-middle"><?php echo $function->getDate() ?></td>
@@ -140,7 +141,7 @@
                                                 </td>
                                             </tr>
                                             <?php 
-                                                }} 
+                                                }}} 
                                             ?>
                                         </tbody>
                                     </table>
