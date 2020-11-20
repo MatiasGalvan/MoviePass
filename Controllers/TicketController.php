@@ -131,8 +131,7 @@
                     $ticket->setIdFunction($idFunction);
                     $ticket->setQuantity($quantity);
                     $ticket->setIdUser($this->UserDAO->GetByEmail($_SESSION["email"]));
-
-                    $this->utils->SendEmail($_SESSION["email"]);
+                    #$this->utils->SendEmail($_SESSION["email"]);
                     
                     $cinema = $this->CinemaDAO->GetById($idCinema);
                     $ticket->setFinalValue($cinema->GetTicketValue() * $quantity);
@@ -146,7 +145,6 @@
                     $movie = $this->MovieDAO->GetById($function->getMovieId());
 
                     $url = "http://localhost/LabIV/MoviePass/Ticket/ShowTicketDetails/" . $id;
-                    
                     $this->utils->GenerateQR($id, $url, $movie->getTitle());
 
                     $this->ShowTicketPurchaseView($idCinema, $idFunction, array(), array(), "Ticket added successfully");

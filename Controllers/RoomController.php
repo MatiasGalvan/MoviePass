@@ -41,7 +41,7 @@
                     $cap = $cinema->getCapacity() + $capacity;
                     $this->CinemaDAO->UpdateCapacity($cinema->getId(), $cap);
         
-                    $this->ShowAddRoomView("", array(), array(), "Room added successfully");
+                    $this->ShowAddRoomView($idCinema, array(), array(), "Room added successfully");
                 }
                 else{
                     $data['roomName'] = $roomName;
