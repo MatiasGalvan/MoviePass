@@ -26,7 +26,7 @@
                             <thead>
                                 <th>Date</th>
                                 <th>Start</th>
-                                <th>ID Movie</th>
+                                <th>Movie Name</th>
                                 <th>Available Tickets</th>
                                 <th>Actions</th>
                             </thead>

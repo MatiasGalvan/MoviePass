@@ -33,6 +33,11 @@
             $this->utils = new Utils();
         }
 
+        public function ShowPostPurchaseView(){
+            require_once(VIEWS_PATH."post-purchase.php");
+
+        }
+
         public function ShowTicketPurchaseView($idCinema, $idFunction, $data = array(), $errors = array(), $message = ""){
             if($this->utils->ValidateUser()){
                 if($this->CinemaDAO->ExistID($idCinema) && $this->FunctionDAO->ExistID($idFunction)){
@@ -131,8 +136,6 @@
                     $ticket->setIdFunction($idFunction);
                     $ticket->setQuantity($quantity);
                     $ticket->setIdUser($this->UserDAO->GetByEmail($_SESSION["email"]));
-
-                    $this->utils->SendEmail($_SESSION["email"]);
                     
                     $cinema = $this->CinemaDAO->GetById($idCinema);
                     $ticket->setFinalValue($cinema->GetTicketValue() * $quantity);
@@ -149,7 +152,9 @@
                     
                     $this->utils->GenerateQR($id, $url, $movie->getTitle());
 
-                    $this->ShowTicketPurchaseView($idCinema, $idFunction, array(), array(), "Ticket added successfully");
+                    $this->utils->SendEmail($_SESSION["email"],$id);
+
+                    $this->ShowPostPurchaseView();
                 }
                 else{
                     $data['quantity'] = $quantity;

@@ -40,9 +40,6 @@
 
                         <table class="table table-striped table-dark table-bordered table-hover mt-3">
                             <thead>
-
-                                <th>ID Room</th>
-                                <th>ID Cinema</th>
                                 <th>Room Name</th>
                                 <th>Capacity</th>
                                 <th>Actions</th>
@@ -53,8 +50,6 @@
                                     foreach($cinema->getRooms() as $room){
                                 ?>
                                 <tr>     
-                                    <td class="align-middle"><?php echo $room->getIdRoom() ?></td>
-                                    <td class="align-middle"><?php echo $room->getIdCinema() ?></td>
                                     <td class="align-middle"><?php echo $room->getRoomName() ?></td>
                                     <td class="align-middle"><?php echo $room->getCapacity() ?></td>
                                     <td style="text-align: center;">
