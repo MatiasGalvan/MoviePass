@@ -149,7 +149,6 @@
                     $movie = $this->MovieDAO->GetById($function->getMovieId());
 
                     $url = "http://localhost/LabIV/MoviePass/Ticket/ShowTicketDetails/" . $id;
-                    
                     $this->utils->GenerateQR($id, $url, $movie->getTitle());
 
                     $this->utils->SendEmail($_SESSION["email"],$id);

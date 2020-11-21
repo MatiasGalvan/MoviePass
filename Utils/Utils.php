@@ -150,6 +150,10 @@
             }
         }
 
+        public static function FormatDate($date){
+            return date("d/m/Y", strtotime($date));
+        }
+
     }
 
 ?>
