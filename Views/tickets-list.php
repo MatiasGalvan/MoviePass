@@ -21,7 +21,6 @@
         <div class="table-responsive">
             <table class="table table-striped table-dark table-bordered table-hover">
                     <thead>
-                         <th>ID</th>
                          <th>Cinema</th>
                          <th>Movie</th>
                          <th>Date</th>
@@ -32,7 +31,6 @@
                     <tbody >
                         <?php foreach($data as $ticket){ ?>
                         <tr>
-                            <td class="align-middle"><?php echo $ticket["idTicket"] ?></td>
                             <td class="align-middle"><?php echo $ticket["cinemaName"] ?></td>
                             <td class="align-middle"><?php echo $ticket["movie"] ?></td>
                             <td class="align-middle"><?php echo $ticket["date"] ?></td>
