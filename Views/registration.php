@@ -1,17 +1,18 @@
-<?php
-    $url = "";
-    $flag = false;
+<div style="height: 100vh;">
 
-    if(!isset($_SESSION['email']) || empty($_SESSION['email'])){
-        $url = "nav-unknown.php";
-        $flag = true;
-    }
+    <?php
+        $url = "";
+        $flag = false;
 
-    if($url != "") require_once(VIEWS_PATH.$url);
-?>
+        if(!isset($_SESSION['email']) || empty($_SESSION['email'])){
+            $url = "nav-unknown.php";
+            $flag = true;
+        }
 
-<main>
-    <div class="d-flex justify-content-center align-items-center <?php if($flag) echo "mt-5"; else echo "login-container"; ?>">
+        if($url != "") require_once(VIEWS_PATH.$url);
+    ?>
+
+    <div class="d-flex justify-content-center align-items-center <?php if(!$flag)echo "login-container"; ?>" <?php if($flag) echo "style=\"height:91%\";"; ?> >
         <form action="<?php echo FRONT_ROOT ?>Home/Register" method="POST" class="login-form text-center">
             <h1 id="signUp" class="mb-4 font-weight-light text-uppercase">Sign Up</h1>
             <div class="form-row">
@@ -49,4 +50,5 @@
             <p class="mt-3 font-weight-normal">Already have an account? <a href="<?php echo FRONT_ROOT ?>Home/ShowLoginView"><strong>Sign in</strong></a></p>
         </form>
     </div>
-</main>
+
+</div>
