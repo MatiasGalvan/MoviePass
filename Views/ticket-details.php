@@ -14,7 +14,7 @@
                 </tr>
                 <tr>
                     <td><?php echo $data['room']; ?></td>
-                    <td><?php echo $data['date']; ?></td>
+                    <td><?php echo $this->utils->FormatDate($data['date']); ?></td>
                     <td><?php echo $data['time']; ?></td>
                     <td><?php echo $data['quantity']; ?></td>
                 </tr>

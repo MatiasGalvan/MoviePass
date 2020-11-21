@@ -33,7 +33,7 @@
                         <tr>
                             <td class="align-middle"><?php echo $ticket["cinemaName"] ?></td>
                             <td class="align-middle"><?php echo $ticket["movie"] ?></td>
-                            <td class="align-middle"><?php echo $ticket["date"] ?></td>
+                            <td class="align-middle"><?php echo $this->utils->FormatDate($ticket["date"]) ?></td>
                             <td class="align-middle"><?php echo $ticket["time"] ?></td>
                             <td class="align-middle"><?php echo $ticket["quantity"] ?></td>
                             <td class="align-middle"><?php echo $ticket["total"] ?></td>
