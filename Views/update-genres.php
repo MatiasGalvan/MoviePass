@@ -16,13 +16,11 @@
         <div class="table-responsive">
             <table class="table table-striped table-dark table-bordered">
                     <thead>
-                         <th>ID</th>
                          <th>Name</th>
                     </thead>
                     <tbody>
                         <?php foreach($genreList as $genre){ ?>
                         <tr>
-                            <td><?php echo $genre->getId() ?></td>
                             <td><?php echo $genre->getName() ?></td>
                         </tr>
                         <?php } ?>

@@ -26,7 +26,7 @@
                             <thead>
                                 <th>Date</th>
                                 <th>Start</th>
-                                <th>ID Movie</th>
+                                <th>Movie Name</th>
                                 <th>Available Tickets</th>
                                 <th>Actions</th>
                             </thead>
@@ -36,7 +36,7 @@
                                         foreach($room->getFunctions() as $function){ 
                                 ?>
                                 <tr>         
-                                    <td class="align-middle"><?php echo $function->getDate() ?></td>
+                                    <td class="align-middle"><?php echo $this->utils->FormatDate($function->getDate()); ?></td>
                                     <td class="align-middle"><?php echo $function->getStart() ?></td>
                                     <td class="align-middle">
                                         <?php

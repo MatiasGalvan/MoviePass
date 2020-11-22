@@ -9,7 +9,7 @@
 <div class="p-5">
     <h3 class="mb-4">Now Playing Movies</h3>
     
-    <div class="row">
+    <div class="row shadow p-3">
 
         <div class="col-2">
             <h4 class="mb-3">Filter Movies</h4>

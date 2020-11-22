@@ -59,7 +59,7 @@
                 ?>
             </p>
 
-            <p>Release date: <?php echo $movie->getReleaseDate(); ?></p>
+            <p>Release date: <?php echo $this->utils->FormatDate($movie->getReleaseDate()); ?></p>
 
             <p>Original language: <?php echo $movie->getOriginalLanguage(); ?></p>
 
@@ -107,7 +107,7 @@
                                                         if($function->getTickets() > 0){
                                             ?>
                                             <tr>
-                                                <td class="align-middle"><?php echo $function->getDate() ?></td>
+                                                <td class="align-middle"><?php echo $this->utils->FormatDate($function->getDate()); ?></td>
                                                 <td class="align-middle"><?php echo $function->getStart() ?></td>
                                                 <td>
                                                     <?php

@@ -116,7 +116,7 @@
             $qrCode->writeFile("Data/temp/" . $id . ".png");
         }
         
-        public static function SendEmail($email){
+        public static function SendEmail($email,$id){
             try {
                 //Server settings
                 $mail = new  PHPMailer();
@@ -135,8 +135,8 @@
             
             
                 // Attachments //Enviar archivos o imagenes
-                $mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
-                $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
+                // Add attachments
+                $mail->addAttachment("Data/temp/".$id.".png", 'QR');    // Optional name
             
                 // Content
                 $mail->isHTML(true);                                  // Set email format to HTML
@@ -145,10 +145,13 @@
                 $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
             
                 $mail->send();
-                echo 'Message has been sent';
             } catch (Exception $e) {
                 echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
             }
+        }
+
+        public static function FormatDate($date){
+            return date("d/m/Y", strtotime($date));
         }
 
     }

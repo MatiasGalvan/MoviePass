@@ -1,0 +1,9 @@
+
+.vscode/*
+.vscode/Data/temp/*
+!.vscode/tasks.json
+!.vscode/launch.json
+*.code-workspace
+
+.history
+.ionide
