@@ -77,17 +77,7 @@
             return $response;
         }
 
-        public function getRemainderTickets($idMovie){
-            $response = 0;
-            foreach($this->rooms as $room){
-                foreach($room->getFunctions() as $function){
-                    if($function->getIdMovie() == $idMovie){
-                        $response += $function->getTickets();
-                    }
-                }
-            }
-            return $response;
-        }
+        
 
 
     }
