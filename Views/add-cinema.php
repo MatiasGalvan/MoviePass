@@ -1,8 +1,10 @@
-<?php
-    require_once(VIEWS_PATH."nav-admin.php")
-?>
-<main>
-    <div class="mt-5">
+<div style="height: 100vh;">
+
+    <?php
+        require_once(VIEWS_PATH."nav-admin.php")
+    ?>
+
+    <div class="d-flex justify-content-center align-items-center" style="height: 91%;">
         <form action="<?php echo FRONT_ROOT ?>Cinema/AddCinema" method="POST" class="login-form text-center">
             <h1 class="mb-5 font-weight-light text-uppercase">ADD CINEMA</h1>
             <div class="form-group">
@@ -19,18 +21,18 @@
             </div>
             <button type="submit" class="btn mt-5 btn-lg btn-custom btn-block text-uppercase">Add Cinema</button>
             <?php
-            if(isset($errors)){
-                echo "<ul class = \"mt-3\">";
-                foreach ($errors as $error){
-                    echo "<li class=\"message\">" . $error . "</li>";
+                if(isset($errors)){
+                    echo "<ul class = \"mt-3\">";
+                    foreach ($errors as $error){
+                        echo "<li class=\"message\">" . $error . "</li>";
+                    }
+                    echo "</ul>";
                 }
-                echo "</ul>";
-            }
-            if(isset($message)){
-                echo "<p class=\"message\">" . $message . "</p>";
-            }
+                if(isset($message)){
+                    echo "<p class=\"message\">" . $message . "</p>";
+                }
             ?>
         </form>
-
     </div>
-</main>
+
+</div>

@@ -116,7 +116,7 @@
             $qrCode->writeFile("Data/temp/" . $id . ".png");
         }
         
-        public static function SendEmail($email,$id){
+        public static function SendEmail($email, $id, $movie){
             try {
                 //Server settings
                 $mail = new  PHPMailer();
@@ -136,13 +136,16 @@
             
                 // Attachments //Enviar archivos o imagenes
                 // Add attachments
-                $mail->addAttachment("Data/temp/".$id.".png", 'QR');    // Optional name
+                $mail->addAttachment("Data/temp/".$id.".png", $movie . ' - QR');    // Optional name
             
                 // Content
                 $mail->isHTML(true);                                  // Set email format to HTML
-                $mail->Subject = 'Prueba de moviePass';
-                $mail->Body    = 'Probando envio de correo con PHPMailer</b>';
-                $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+                $mail->Subject = 'Thank you for buying in MoviePass!';
+                $mail->Body    = '
+                    <h1 style="text-align: center; color: #723dbe;">Movie Pass</h1>
+                    <p text-align: center;>Thank you for your recent transaction on MoviePass. Below we attach the QR corresponding to your purchase.</p>
+                ';
+                $mail->AltBody = 'Thank you for your recent transaction on MoviePass. Below we attach the QR corresponding to your purchase.';
             
                 $mail->send();
             } catch (Exception $e) {

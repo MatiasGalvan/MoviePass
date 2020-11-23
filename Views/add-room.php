@@ -1,8 +1,10 @@
-<?php
-    require_once(VIEWS_PATH."nav-admin.php")
-?>
-<main>
-    <div class="mt-5">
+<div style="height: 100vh;">
+
+    <?php
+        require_once(VIEWS_PATH."nav-admin.php")
+    ?>
+
+    <div class="d-flex justify-content-center align-items-center" style="height: 91%;">
         <form action="<?php echo FRONT_ROOT ?>Room/AddRoom" method="POST" class="login-form text-center">
             <h1 class="mb-5 font-weight-light text-uppercase">ADD ROOM</h1>
             <input type="hidden" name="id" placeholder="ID" value="<?php echo $idCinema ?>">
@@ -30,4 +32,5 @@
         </form>
 
     </div>
-</main>
+
+</div>
