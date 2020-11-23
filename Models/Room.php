@@ -49,6 +49,16 @@
         public function setFunctions($functions){
             $this->functions = $functions;
         }
+
+        public function existFunction(){
+            $response = false;
+            
+            if(empty($this->functions)){
+                $response = true;
+            }        
+        
+            return $response;
+        }
         
     }
     
