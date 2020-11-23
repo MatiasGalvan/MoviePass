@@ -30,7 +30,7 @@
                                 <th>Available Tickets</th>
                                 <th>Actions</th>
                             </thead>
-                            <tbody >
+                            <tbody>
                                 <?php 
                                     foreach($cinema->getRooms() as $room){ 
                                         foreach($room->getFunctions() as $function){ 
