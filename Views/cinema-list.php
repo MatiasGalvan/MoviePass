@@ -5,6 +5,13 @@
 <div class="container">
     <h3 class="mb-4 mt-4">Cinema List <a href="<?php echo FRONT_ROOT ?>Cinema/ShowAddCinemaView" style="text-decoration: none; color:#723dbe;"><i class="fas fa-plus"></i></a></h3>
     <div class="row justify-content-center">
+
+        <?php
+            if(isset($message) && $message != ""){
+                echo "<p class=\"message mt-2\">" . $message . "</p>";
+            }
+        ?>
+
         <div class="table-responsive">
 
             <div id="accordion">
@@ -52,14 +59,15 @@
                                 <tr>     
                                     <td class="align-middle"><?php echo $room->getRoomName() ?></td>
                                     <td class="align-middle"><?php echo $room->getCapacity() ?></td>
-                                    <td style="text-align: center;">
-                                        <form action="<?php echo FRONT_ROOT ?>Function/ShowAddFunctionView" method="POST">
-                                            <input type="hidden" name="idRoom" placeholder="ID" value="<?php echo $room->getIdRoom() ?>">
-                                            <input type="hidden" name="idCinema" placeholder="ID" value="<?php echo $room->getIdCinema() ?>">
-                                            <button type="submit" class="btn btn-success">
-                                                Add Function <i class="fas fa-plus"></i>
-                                            </button>
-                                        </form>
+                                    <td class="" style="text-align: center;">
+                                        <a class="btn btn-success" href="<?php echo FRONT_ROOT ?>Function/ShowAddFunctionView<?php echo "?idRoom=" . $room->getIdRoom() . "&idCinema=" . $room->getIdCinema() ?>">Add Function <i class="fas fa-plus"></i></a>
+
+                                        <?php 
+                                            if($room->existFunction()){
+                                                $content = "<a class=\"btn btn-danger\" href=\"" .  FRONT_ROOT . "Room/RemoveRoom/" . $room->getIdRoom() . "\">Remove <i class=\"far fa-trash-alt\"></i></a>";
+                                                echo $content;
+                                            }
+                                        ?>
                                     </td>
                                 </tr>                               
                                 <?php }}
@@ -77,12 +85,6 @@
                 </div>
                 <?php } ?>
             </div> 
-
-            <?php
-                if(isset($message) && $message != ""){
-                    echo "<p class=\"message mt-2\">" . $message . "</p>";
-                }
-            ?>
 
         </div>
     </div>

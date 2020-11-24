@@ -6,16 +6,17 @@
     use DAO\RoomDAO as RoomDAO;
     use DAO\CinemaDAO as CinemaDAO;
     use Controllers\HomeController as HomeController;
+    use Controllers\CinemaController as CinemaController;
     use Utils\Utils as Utils; 
 
     class RoomController{
 
-        private $roomDAO;
+        private $RoomDAO;
         private $CinemaDAO;
         private $utils;
 
         public function __construct(){
-            $this->roomDAO = new RoomDAO();
+            $this->RoomDAO = new RoomDAO();
             $this->CinemaDAO = new CinemaDAO();
             $this->utils = new Utils();
         }
@@ -37,7 +38,7 @@
                     $room->setRoomName($roomName);
                     $room->setCapacity($capacity);
         
-                    $this->roomDAO->Add($room);
+                    $this->RoomDAO->Add($room);
                     $cap = $cinema->getCapacity() + $capacity;
                     $this->CinemaDAO->UpdateCapacity($cinema->getId(), $cap);
         
@@ -61,7 +62,7 @@
             if (!$this->CinemaDAO->ExistID($idCinema)) array_push($errors, "The ID entered does not exist");
             if (!$this->utils->checkString($roomName)) array_push($errors, "Invalid format. Name must be between 3 and 20 characters. And start with uppercase.");
             if (!$this->utils->checkNumber($capacity)) array_push($errors, "Invalid format. Value must be between 1 to 4 digits.");
-            if ($this->roomDAO->ExistName($roomName,$idCinema)) array_push($errors, "The name entered is already taken");
+            if ($this->RoomDAO->ExistName($roomName,$idCinema)) array_push($errors, "The name entered is already taken");
 
             return $errors;
         }
@@ -70,18 +71,26 @@
             if($this->utils->ValidateAdmin()){
                 $message = "The ID entered does not exist";
 
-                if($this->roomDAO->ExistID($idRoom)){
-                    $this->roomDAO->Remove($idRoom);
-                    $message = "Cinema removed successfully";
+                if($this->RoomDAO->ExistID($idRoom)){
+                    $room = $this->RoomDAO->GetById($idRoom);
+                    $cinema = $this->CinemaDAO->GetById($room->getIdCinema());
+
+                    $cap = $cinema->getCapacity() - $room->getCapacity();
+                    $this->CinemaDAO->UpdateCapacity($cinema->getId(), $cap);
+
+                    $this->RoomDAO->Remove($idRoom);
+                    $message = "Room removed successfully";        
                 }
                 
-                #$this->ShowRooms($message); ESTO NO EXISTE
+                $cinema = new CinemaController();
+                $cinema->ShowCinemas($message);
             }
             else{
                 $home = new HomeController();
                 $home->Logout("You are not allowed to see this page");
             }
-        }     
+        }   
+
     }
 
 ?>

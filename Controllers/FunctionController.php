@@ -29,6 +29,7 @@
 
         public function ShowAddFunctionView($idRoom = "", $data = array(), $errors = array(), $message = ""){
             if($this->RoomDAO->ExistID($idRoom)){
+                $room = $this->RoomDAO->GetById($idRoom);
                 $movieList = $this->MovieDAO->GetAll();
                 require_once(VIEWS_PATH."add-functions.php");
             }
@@ -79,10 +80,13 @@
         }
 
         
-        private function checkData($date,$start,$idRoom,$idMovie){
+        private function checkData($date, $start, $idRoom, $idMovie){
             $errors = array();
             $currentDate = date("Y-m-d", time());
-            $currentTime = date("H:i", time());
+            $currentTime = date("H:i:s", time());
+
+            $start = date("H:i:s", strtotime($start));
+
             if (!$this->utils->checkDate($date)) array_push($errors, "Date cannot be earlier than current.");
             if($date == $currentDate && $start < $currentTime) array_push($errors, "Time cannot be earlier than current.");
 
@@ -96,6 +100,7 @@
                 $i = 0;
 
                 while($flag == true && $i < count($functions) ){
+                    
                     $movie = $this->MovieDAO->GetById($functions[$i]->getMovieId());
                     $time = $this->utils->AddMinutes($functions[$i]->getStart(), $movie->getRuntime());
                     $time = $this->utils->AddMinutes($time, 15);
@@ -110,6 +115,7 @@
                     }
                     $i++;
                 }
+                echo $flag;
                 if (!$flag) array_push($errors, "The schedule is not available.");
             }
 
