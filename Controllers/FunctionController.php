@@ -30,6 +30,7 @@
         public function ShowAddFunctionView($idRoom = "", $data = array(), $errors = array(), $message = ""){
             if($this->RoomDAO->ExistID($idRoom)){
                 $room = $this->RoomDAO->GetById($idRoom);
+                $cinema = $this->CinemaDAO->GetById($room->getIdCinema());
                 $movieList = $this->MovieDAO->GetAll();
                 require_once(VIEWS_PATH."add-functions.php");
             }
@@ -115,7 +116,6 @@
                     }
                     $i++;
                 }
-                echo $flag;
                 if (!$flag) array_push($errors, "The schedule is not available.");
             }
 

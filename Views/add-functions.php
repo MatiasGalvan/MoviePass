@@ -46,12 +46,13 @@
         </div>
 
         <div class="col-5" style="margin-left: -100px;">
+            <h4 class="mb-3 font-weight-light"><?php echo $cinema->getName() . " - " . $room->getRoomName() ?></h4>
             <div class="d-flex justify-content-center align-items-center">
                 <table class="table table-striped table-bordered table-hover">
                     <thead>
-                        <th>Movie Name</th>
                         <th>Date</th>
-                        <th>Start</th>                 
+                        <th>Start</th> 
+                        <th>Movie Name</th>                                        
                     </thead>
                     <tbody>
                         <?php foreach($room->getFunctions() as $function){ ?>

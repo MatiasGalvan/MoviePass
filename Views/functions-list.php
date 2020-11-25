@@ -24,6 +24,7 @@
                             
                         <table class="table table-striped table-dark table-bordered table-hover">
                             <thead>
+                                <th>Room Name</th>
                                 <th>Date</th>
                                 <th>Start</th>
                                 <th>Movie Name</th>
@@ -36,6 +37,7 @@
                                         foreach($room->getFunctions() as $function){ 
                                 ?>
                                 <tr>         
+                                    <td class="align-middle"><?php echo $room->getRoomName() ?></td>
                                     <td class="align-middle"><?php echo $this->utils->FormatDate($function->getDate()); ?></td>
                                     <td class="align-middle"><?php echo $function->getStart() ?></td>
                                     <td class="align-middle">
