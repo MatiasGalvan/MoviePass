@@ -30,6 +30,10 @@
         public function ShowAddFunctionView($idRoom = "", $data = array(), $errors = array(), $message = ""){
             if($this->RoomDAO->ExistID($idRoom)){
                 $room = $this->RoomDAO->GetById($idRoom);
+<<<<<<< HEAD
+=======
+                $cinema = $this->CinemaDAO->GetById($room->getIdCinema());
+>>>>>>> master
                 $movieList = $this->MovieDAO->GetAll();
                 require_once(VIEWS_PATH."add-functions.php");
             }
@@ -82,13 +86,26 @@
         
         private function checkData($date, $start, $idRoom, $idMovie){
             $errors = array();
+
             $currentDate = date("Y-m-d", time());
             $currentTime = date("H:i:s", time());
 
             $start = date("H:i:s", strtotime($start));
 
+            $cinemaList = $this->CinemaDAO->GetAll();
+
             if (!$this->utils->checkDate($date)) array_push($errors, "Date cannot be earlier than current.");
             if($date == $currentDate && $start < $currentTime) array_push($errors, "Time cannot be earlier than current.");
+
+            foreach($cinemaList as $cinema){
+                foreach($cinema->getRooms() as $room){
+                    foreach($room->getFunctions() as $function){
+                        if($function->getDate() == $date && $function->getMovieId() == $idMovie && $idRoom != $function->getIdRoom()){
+                            array_push($errors, "The film is already playing in another cinema or room on that date.");
+                        }
+                    }
+                }
+            }
 
             if (!$this->RoomDAO->ExistID($idRoom)){
                 array_push($errors, "The ID Room entered does not exist.");
@@ -115,9 +132,12 @@
                     }
                     $i++;
                 }
-                echo $flag;
-                if (!$flag) array_push($errors, "The schedule is not available.");
+                if(!$flag){
+                    array_push($errors, "The schedule is not available.");
+                }
             }
+
+            
 
             return $errors;
         }
