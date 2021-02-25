@@ -30,10 +30,7 @@
         public function ShowAddFunctionView($idRoom = "", $data = array(), $errors = array(), $message = ""){
             if($this->RoomDAO->ExistID($idRoom)){
                 $room = $this->RoomDAO->GetById($idRoom);
-<<<<<<< HEAD
-=======
                 $cinema = $this->CinemaDAO->GetById($room->getIdCinema());
->>>>>>> master
                 $movieList = $this->MovieDAO->GetAll();
                 require_once(VIEWS_PATH."add-functions.php");
             }
